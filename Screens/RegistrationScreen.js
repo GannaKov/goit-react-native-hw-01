@@ -12,6 +12,7 @@ import {
 export const RegistrationScreen = () => {
   return (
     <View style={styles.container}>
+      <View style={styles.addPhoto}></View>
       <Text style={styles.title}>Регистрация</Text>
       <View style={styles.form}>
         <TextInput
@@ -42,6 +43,8 @@ export const RegistrationScreen = () => {
 };
 const styles = StyleSheet.create({
   container: {
+    position: "relative",
+
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     marginTop: "auto",
@@ -51,7 +54,22 @@ const styles = StyleSheet.create({
     paddingTop: 92,
     paddingBottom: 78,
   },
+  addPhoto: {
+    position: "absolute",
 
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+    top: -60,
+    alignSelf: "center",
+    // left: 0,
+    // right: 0,
+    // justifyContent: "center",
+    // alignItems: "center",
+
+    marginHorizontal: "auto",
+    width: 120,
+    height: 120,
+  },
   title: {
     marginBottom: 33,
 
