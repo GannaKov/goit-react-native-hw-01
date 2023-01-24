@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   StyleSheet,
   Text,
@@ -10,51 +11,107 @@ import {
 
 export const RegistrationScreen = () => {
   return (
-    <View>
-      <Text>Регистрация</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Регистрация</Text>
       <View style={styles.form}>
         <TextInput
           style={styles.input}
           placeholder="Логин"
           placeholderTextColor="#BDBDBD"
-          textAlign={"center"}
         ></TextInput>
         <TextInput
           style={styles.input}
           placeholder="Адрес электронной почты"
           placeholderTextColor="#BDBDBD"
-          textAlign={"center"}
         ></TextInput>
         <TextInput
-          style={styles.input}
+          style={styles.inputLast}
           placeholder="Пароль"
           placeholderTextColor="#BDBDBD"
-          textAlign={"center"}
-        ></TextInput>
+          secureTextEntry={true}
+        >
+          <Text style={styles.passwordShow}>Показать</Text>
+        </TextInput>
         <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
           <Text style={styles.btnTitle}>Зарегистрироваться</Text>
         </TouchableOpacity>
+        <Text style={styles.text}>Уже есть аккаунт? Войти</Text>
       </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
-  //   container: {
-  //     // flex: 1,
-  //     backgroundColor: "#fff",
-  //   },
-  form: {
-    marginHorizontal: 40,
+  container: {
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    marginTop: "auto",
+    //height: "auto",
+    backgroundColor: "#FFFFFF",
+
+    paddingTop: 92,
+    paddingBottom: 78,
   },
+
+  title: {
+    marginBottom: 33,
+
+    //     font- family: 'Roboto';
+    // font-style: normal;
+    // font-weight: 500;
+    fontSize: 30,
+    //line-height: 35px;
+    textAlign: "center",
+    //letter-spacing: 0.01em;
+
+    color: "#212121",
+  },
+  form: {
+    marginHorizontal: 16,
+
+    //flex: 1,
+    outlineColor: "#dc143c",
+    //marginHorizontal: 40,
+    outlineWidth: 1,
+    outlineStyle: "solid",
+  },
+
   input: {
     borderWidth: 1,
-
+    paddingHorizontal: 16,
     height: 40,
     borderWidth: 1,
     //   solid #E8E8E8;
+    backgroundColor: "#F6F6F6",
     borderRadius: 8,
-    borderRadius: 6,
-    color: "#E8E8E8",
+    borderColor: "#E8E8E8",
+    borderStyle: "solid",
+    marginBottom: 16,
+    //marginHorizontal: 16,
+  },
+  passwordShow: {
+    //font- family: 'Roboto';
+    //font-style: normal;
+    //font-weight: 400;
+    fontSize: 16,
+    //line-height: 19px;
+    /* identical to box height */
+
+    //textAlign: "right",
+    marginRight: 16,
+    color: "#1B4371",
+  },
+
+  inputLast: {
+    paddingHorizontal: 16,
+    height: 40,
+    backgroundColor: "#F6F6F6",
+    //   solid #E8E8E8;
+    borderRadius: 8,
+    borderColor: "#E8E8E8",
+    borderStyle: "solid",
+    borderWidth: 1,
+    marginBottom: 43,
+    // marginHorizontal: 16,
   },
   btn: {
     // backgroundColor: "#ffb6c1",
@@ -65,7 +122,6 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     //   marginHorizontal: 20,
     // flex: 1,
-    marginTop: 30,
     alignItems: "center",
     paddingLeft: 32,
     paddingRight: 32,
@@ -73,6 +129,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     backgroundColor: "#FF6C00",
     borderRadius: 100,
+    marginBottom: 16,
   },
   btnTitle: {
     color: "#f0f8ff",
@@ -84,5 +141,17 @@ const styles = StyleSheet.create({
     // lineHeight: 1.19,
     textAlign: "center",
     color: "#FFFFFF",
+  },
+  text: {
+    //font- family: 'Roboto';
+    // font-style: normal;
+    // font-weight: 400;
+    fontSize: 16,
+    //line-height: 19px;
+    /* identical to box height */
+
+    textAlign: "center",
+
+    color: "#1B4371",
   },
 });
