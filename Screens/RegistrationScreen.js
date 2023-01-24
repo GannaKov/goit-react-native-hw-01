@@ -25,14 +25,16 @@ export const RegistrationScreen = () => {
           placeholder="Адрес электронной почты"
           placeholderTextColor="#BDBDBD"
         ></TextInput>
-        <TextInput
-          style={styles.inputLast}
-          placeholder="Пароль"
-          placeholderTextColor="#BDBDBD"
-          secureTextEntry={true}
-        >
+        <View>
+          <TextInput
+            style={styles.inputLast}
+            placeholder="Пароль"
+            placeholderTextColor="#BDBDBD"
+            secureTextEntry={true}
+          />
           <Text style={styles.passwordShow}>Показать</Text>
-        </TextInput>
+        </View>
+
         <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
           <Text style={styles.btnTitle}>Зарегистрироваться</Text>
         </TouchableOpacity>
@@ -122,7 +124,8 @@ const styles = StyleSheet.create({
   },
   passwordShow: {
     position: "absolute",
-    left: 0,
+    right: 16,
+    top: 10,
     //font- family: 'Roboto';
     //font-style: normal;
     //font-weight: 400;
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
     //line-height: 19px;
     /* identical to box height */
 
-    textAlign: "right",
+    //textAlign: "right",
     color: "#1B4371",
   },
   btn: {
@@ -175,3 +178,4 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 });
+//
