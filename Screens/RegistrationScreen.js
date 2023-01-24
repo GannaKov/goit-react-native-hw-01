@@ -106,20 +106,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     //marginHorizontal: 16,
   },
-  passwordShow: {
-    //font- family: 'Roboto';
-    //font-style: normal;
-    //font-weight: 400;
-    fontSize: 16,
-    //line-height: 19px;
-    /* identical to box height */
-
-    //textAlign: "right",
-    marginRight: 16,
-    color: "#1B4371",
-  },
 
   inputLast: {
+    position: "relative",
     paddingHorizontal: 16,
     height: 40,
     backgroundColor: "#F6F6F6",
@@ -130,6 +119,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 43,
     // marginHorizontal: 16,
+  },
+  passwordShow: {
+    position: "absolute",
+    left: 0,
+    //font- family: 'Roboto';
+    //font-style: normal;
+    //font-weight: 400;
+    fontSize: 16,
+    //line-height: 19px;
+    /* identical to box height */
+
+    textAlign: "right",
+    color: "#1B4371",
   },
   btn: {
     // backgroundColor: "#ffb6c1",
