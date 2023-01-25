@@ -4,8 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  ImageBackground,
   TextInput,
   TouchableOpacity,
 } from "react-native";
@@ -84,7 +82,8 @@ const styles = StyleSheet.create({
   },
   btnAddPhoto: {
     position: "absolute",
-    bottom: "40%",
+    backgroundColor: "#FFFFFF",
+    bottom: 14,
     right: "-10%",
     //transform: [{ translateX: -50 }],
     width: 25,
@@ -96,6 +95,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   btnAddPhotoIcon: {
+    //fontSize: 25,
     color: "#FF6C00",
     //width: "200%",
     // textAlignVertical: "center",
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
 
     //flex: 1,
-    outlineColor: "#dc143c",
+
     //marginHorizontal: 40,
     outlineWidth: 1,
     outlineStyle: "solid",
