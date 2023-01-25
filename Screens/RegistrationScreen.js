@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
   ImageBackground,
   TextInput,
   TouchableOpacity,
@@ -12,7 +13,14 @@ import {
 export const RegistrationScreen = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.addPhoto}></View>
+      <View style={styles.userPhoto}></View>
+      <TouchableOpacity
+        style={styles.btnAddPhoto}
+        onPress={() => Alert.alert("Simple Button pressed")}
+      >
+        <Text style={styles.btnAddPhotoIcon}>+</Text>
+      </TouchableOpacity>
+
       <Text style={styles.title}>Регистрация</Text>
       <View style={styles.form}>
         <TextInput
@@ -56,7 +64,8 @@ const styles = StyleSheet.create({
     paddingTop: 92,
     paddingBottom: 78,
   },
-  addPhoto: {
+
+  userPhoto: {
     position: "absolute",
 
     backgroundColor: "#F6F6F6",
@@ -71,6 +80,22 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
     width: 120,
     height: 120,
+  },
+  btnAddPhoto: {
+    //backgroundColor: "#fff8dc",
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "#FF6C00",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  btnAddPhotoIcon: {
+    color: "#FF6C00",
+    //width: "200%",
+    // textAlignVertical: "center",
+    textAlign: "center",
   },
   title: {
     marginBottom: 33,
