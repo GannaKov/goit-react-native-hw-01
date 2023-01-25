@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   StyleSheet,
@@ -6,24 +6,40 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
 export const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const emailHandler = (text) => setEmail(text);
+  const passwordHandler = (text) => setPassword(text);
+  console.log(email, password);
+  console.log("Pl", Platform.OS);
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <Text style={styles.title}>Войти</Text>
       <View style={styles.form}>
         <TextInput
           style={styles.input}
           placeholder="Адрес электронной почты"
           placeholderTextColor="#BDBDBD"
-        ></TextInput>
+          value={email}
+          onChangeText={emailHandler}
+        />
+
         <View>
           <TextInput
             style={styles.inputLast}
             placeholder="Пароль"
             placeholderTextColor="#BDBDBD"
             secureTextEntry={true}
+            value={password}
+            onChangeText={passwordHandler}
           />
           <Text style={styles.passwordShow}>Показать</Text>
         </View>
@@ -33,7 +49,7 @@ export const LoginScreen = () => {
         </TouchableOpacity>
         <Text style={styles.text}>Нет аккаунта? Зарегистрироваться</Text>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
@@ -46,7 +62,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
 
     paddingTop: 32,
-    paddingBottom: 144,
   },
 
   title: {
@@ -68,6 +83,8 @@ const styles = StyleSheet.create({
     //marginHorizontal: 40,
     outlineWidth: 1,
     outlineStyle: "solid",
+    //paddingBottom: 144,
+    marginBottom: 144,
   },
 
   input: {

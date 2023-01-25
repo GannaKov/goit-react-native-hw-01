@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   StyleSheet,
@@ -6,11 +6,23 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
 export const RegistrationScreen = () => {
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const loginHandler = (text) => setLogin(text);
+  const emailHandler = (text) => setEmail(text);
+  const passwordHandler = (text) => setPassword(text);
+  console.log(login, email, password);
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <View style={styles.userPhoto}>
         <TouchableOpacity
           style={styles.btnAddPhoto}
@@ -26,18 +38,24 @@ export const RegistrationScreen = () => {
           style={styles.input}
           placeholder="Логин"
           placeholderTextColor="#BDBDBD"
+          value={login}
+          onChangeText={loginHandler}
         ></TextInput>
         <TextInput
           style={styles.input}
           placeholder="Адрес электронной почты"
           placeholderTextColor="#BDBDBD"
-        ></TextInput>
+          value={email}
+          onChangeText={emailHandler}
+        />
         <View>
           <TextInput
             style={styles.inputLast}
             placeholder="Пароль"
             placeholderTextColor="#BDBDBD"
             secureTextEntry={true}
+            value={password}
+            onChangeText={passwordHandler}
           />
           <Text style={styles.passwordShow}>Показать</Text>
         </View>
@@ -47,7 +65,7 @@ export const RegistrationScreen = () => {
         </TouchableOpacity>
         <Text style={styles.text}>Уже есть аккаунт? Войти</Text>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
@@ -61,7 +79,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
 
     paddingTop: 92,
-    paddingBottom: 78,
+    // paddingBottom: 78,
   },
 
   userPhoto: {
@@ -116,7 +134,8 @@ const styles = StyleSheet.create({
   },
   form: {
     marginHorizontal: 16,
-
+    //marginBottom: 78,
+    paddingBottom: 78,
     //flex: 1,
 
     //marginHorizontal: 40,
