@@ -13,13 +13,14 @@ import {
 export const RegistrationScreen = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.userPhoto}></View>
-      <TouchableOpacity
-        style={styles.btnAddPhoto}
-        onPress={() => Alert.alert("Simple Button pressed")}
-      >
-        <Text style={styles.btnAddPhotoIcon}>+</Text>
-      </TouchableOpacity>
+      <View style={styles.userPhoto}>
+        <TouchableOpacity
+          style={styles.btnAddPhoto}
+          onPress={() => Alert.alert("Simple Button pressed")}
+        >
+          <Text style={styles.btnAddPhotoIcon}>+</Text>
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.title}>Регистрация</Text>
       <View style={styles.form}>
@@ -82,7 +83,10 @@ const styles = StyleSheet.create({
     height: 120,
   },
   btnAddPhoto: {
-    //backgroundColor: "#fff8dc",
+    position: "absolute",
+    bottom: "40%",
+    right: "-10%",
+    //transform: [{ translateX: -50 }],
     width: 25,
     height: 25,
     borderRadius: 50,
