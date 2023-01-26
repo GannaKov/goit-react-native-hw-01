@@ -8,8 +8,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
   Alert,
 } from "react-native";
 
@@ -77,9 +75,9 @@ const styles = StyleSheet.create({
 
   title: {
     marginBottom: 33,
-    fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Medium",
     fontStyle: "normal",
-    fontWeight: "500",
+    //fontWeight: 500, //Roboto-Medium
     fontSize: 30,
     //line-height: 35px;
     textAlign: "center",

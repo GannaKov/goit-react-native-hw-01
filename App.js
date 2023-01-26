@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useCallback } from "react";
+import { useFonts } from "expo-font";
 import * as Font from "expo-font";
 import { AppLoading } from "expo";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -12,16 +15,27 @@ import {
 import { RegistrationScreen } from "./Screens/RegistrationScreen";
 import { LoginScreen } from "./Screens/LoginScreen";
 
-const loadFonts = async () => {
-  await Font.loadAsync({
+// const loadFonts = async () => {
+//   await Font.loadAsync({
+//     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+//     // "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+//   });
+// };
+SplashScreen.preventAutoHideAsync();
+
+export default function App() {
+  const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
   });
-};
 
-export default function App() {
-  const [isReady, setIsReady] = useState(false);
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
+  // console.log(isReady);
   // if (!isReady) {
   //   return (
   //     <AppLoading
@@ -31,9 +45,12 @@ export default function App() {
   //     />
   //   );
   // }
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
         <ImageBackground
           style={styles.image}
           source={require("./assets/photo-BG.jpg")}
