@@ -1,19 +1,48 @@
+import React, { useState } from "react";
+import * as Font from "expo-font";
+import { AppLoading } from "expo";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { RegistrationScreen } from "./Screens/RegistrationScreen";
-//import { LoginScreen } from "./Screens/LoginScreen";
+import { LoginScreen } from "./Screens/LoginScreen";
+
+const loadFonts = async () => {
+  await Font.loadAsync({
+    "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
+  });
+};
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false);
+
+  // if (!isReady) {
+  //   return (
+  //     <AppLoading
+  //       startAsync={loadFonts}
+  //       onFinish={() => setIsReady(true)}
+  //       onError={console.warn}
+  //     />
+  //   );
+  // }
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        style={styles.image}
-        source={require("./assets/photo-BG.jpg")}
-      >
-        <RegistrationScreen />
-        <StatusBar style="auto" />
-      </ImageBackground>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.image}
+          source={require("./assets/photo-BG.jpg")}
+        >
+          <RegistrationScreen />
+          <StatusBar style="auto" />
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

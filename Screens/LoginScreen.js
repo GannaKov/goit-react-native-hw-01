@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
 } from "react-native";
 
 export const LoginScreen = () => {
@@ -17,9 +20,13 @@ export const LoginScreen = () => {
   const passwordHandler = (text) => setPassword(text);
   console.log(email, password);
   console.log("Pl", Platform.OS);
+
+  const onLogin = () => {
+    Alert.alert("Credentials", `${email} + ${password}`);
+  };
   return (
     <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
       style={styles.container}
     >
       <Text style={styles.title}>Войти</Text>
@@ -44,7 +51,11 @@ export const LoginScreen = () => {
           <Text style={styles.passwordShow}>Показать</Text>
         </View>
 
-        <TouchableOpacity style={styles.btn} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.btn}
+          activeOpacity={0.8}
+          onPress={onLogin}
+        >
           <Text style={styles.btnTitle}>Войти</Text>
         </TouchableOpacity>
         <Text style={styles.text}>Нет аккаунта? Зарегистрироваться</Text>
@@ -66,10 +77,9 @@ const styles = StyleSheet.create({
 
   title: {
     marginBottom: 33,
-
-    //     font- family: 'Roboto';
-    // font-style: normal;
-    // font-weight: 500;
+    fontFamily: "Roboto-Regular",
+    fontStyle: "normal",
+    fontWeight: "500",
     fontSize: 30,
     //line-height: 35px;
     textAlign: "center",
@@ -116,9 +126,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 16,
     top: 10,
-    //font- family: 'Roboto';
-    //font-style: normal;
-    //font-weight: 400;
+    fontFamily: "Roboto-Regular",
+    fontStyle: "normal",
+    fontWeight: 400,
     fontSize: 16,
     //line-height: 19px;
     /* identical to box height */
@@ -140,9 +150,9 @@ const styles = StyleSheet.create({
   btnTitle: {
     color: "#f0f8ff",
 
-    // fontFamily: "Roboto",
-    // fontStyle: "normal",
-    // fontWeight: 400,
+    fontFamily: "Roboto-Regular",
+    fontStyle: "normal",
+    fontWeight: 400,
     fontSize: 16,
     // lineHeight: 1.19,
     textAlign: "center",
@@ -150,9 +160,9 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    //font- family: 'Roboto';
-    // font-style: normal;
-    // font-weight: 400;
+    fontFamily: "Roboto-Regular",
+    fontStyle: "normal",
+    fontWeight: 400,
     fontSize: 16,
     //line-height: 19px;
     /* identical to box height */
@@ -161,4 +171,5 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 });
-//
+//keyboardVerticalOffset={Platform.select({ ios: 100, android: 500 })}
+//includeFontPadding:false    textAlignVertical to center.
