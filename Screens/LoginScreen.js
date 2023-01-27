@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     top: 10,
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    fontWeight: 400,
+    //fontWeight: 400,
     fontSize: 16,
     //line-height: 19px;
     /* identical to box height */
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
 
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    fontWeight: 400,
+    //fontWeight: 400,
     fontSize: 16,
     // lineHeight: 1.19,
     textAlign: "center",
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    fontWeight: 400,
+    //fontWeight: 400,
     fontSize: 16,
     //line-height: 19px;
     /* identical to box height */

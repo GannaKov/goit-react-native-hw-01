@@ -56,7 +56,7 @@ export default function App() {
           style={styles.image}
           source={require("./assets/photo-BG.jpg")}
         >
-          <LoginScreen />
+          <RegistrationScreen />
           <StatusBar style="auto" />
         </ImageBackground>
       </View>
@@ -83,3 +83,4 @@ const styles = StyleSheet.create({
 
 /* <Text>Open up App.js to start working KuKuKu!</Text>
       <StatusBar style="auto" /> */
+//// "orientation": "default",
