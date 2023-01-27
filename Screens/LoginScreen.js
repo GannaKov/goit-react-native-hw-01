@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import {
+  Keyboard,
   StyleSheet,
   Text,
   View,
@@ -11,17 +12,27 @@ import {
   Alert,
 } from "react-native";
 
+const initialLoginState = {
+  email: "",
+  password: "",
+};
 export const LoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const emailHandler = (text) => setEmail(text);
-  const passwordHandler = (text) => setPassword(text);
-  console.log(email, password);
-  console.log("Pl", Platform.OS);
-
-  const onLogin = () => {
-    Alert.alert("Credentials", `${email} + ${password}`);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const emailHandler = (text) => setEmail(text);
+  // const passwordHandler = (text) => setPassword(text);
+  const [state, setState] = useState(initialLoginState);
+  const onSubmitPress = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    Alert.alert(`${state.email} ${state.password}`);
+    console.log(state);
+    setState(initialLoginState);
   };
+  // const onLogin = () => {
+  //   Alert.alert("Credentials", `${email} + ${password}`);
+  // };
   return (
     <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
       behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
@@ -33,8 +44,11 @@ export const LoginScreen = () => {
           style={styles.input}
           placeholder="Адрес электронной почты"
           placeholderTextColor="#BDBDBD"
-          value={email}
-          onChangeText={emailHandler}
+          value={state.email}
+          onChangeText={(value) =>
+            setState((prevState) => ({ ...prevState, email: value }))
+          }
+          onFocus={() => setIsShowKeyboard(true)}
         />
 
         <View>
@@ -43,8 +57,11 @@ export const LoginScreen = () => {
             placeholder="Пароль"
             placeholderTextColor="#BDBDBD"
             secureTextEntry={true}
-            value={password}
-            onChangeText={passwordHandler}
+            value={state.password}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, password: value }))
+            }
+            onFocus={() => setIsShowKeyboard(true)}
           />
           <Text style={styles.passwordShow}>Показать</Text>
         </View>
@@ -52,7 +69,8 @@ export const LoginScreen = () => {
         <TouchableOpacity
           style={styles.btn}
           activeOpacity={0.8}
-          onPress={onLogin}
+          // onPress={onLogin}
+          onPress={onSubmitPress}
         >
           <Text style={styles.btnTitle}>Войти</Text>
         </TouchableOpacity>
@@ -91,7 +109,6 @@ const styles = StyleSheet.create({
     //marginHorizontal: 40,
     outlineWidth: 1,
     outlineStyle: "solid",
-    //paddingBottom: 144,
     marginBottom: 144,
   },
 
@@ -171,3 +188,4 @@ const styles = StyleSheet.create({
 });
 //keyboardVerticalOffset={Platform.select({ ios: 100, android: 500 })}
 //includeFontPadding:false    textAlignVertical to center.
+//<View style={{ ...styles.form, marginBottom: isShowKeyboard ? 50 : 144 }}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Keyboard,
   StyleSheet,
   Text,
   View,
@@ -10,17 +11,33 @@ import {
   Alert,
 } from "react-native";
 
+const initialRegistrationState = {
+  login: "",
+  email: "",
+  password: "",
+};
 export const RegistrationScreen = () => {
-  const [login, setLogin] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const loginHandler = (text) => setLogin(text);
-  const emailHandler = (text) => setEmail(text);
-  const passwordHandler = (text) => setPassword(text);
-  console.log(login, email, password);
-  const onLogin = () => {
-    Alert.alert("Credentials", `${login}+ ${email} + ${password}`);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  // const [login, setLogin] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [state, setState] = useState(initialRegistrationState);
+  // const loginHandler = (text) => setLogin(text);
+  // const emailHandler = (text) => setEmail(text);
+  // const passwordHandler = (text) => setPassword(text);
+
+  const onSubmitPress = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    Alert.alert(`${state.login} ${state.email} ${state.password}`);
+
+    console.log(state);
+    setState(initialRegistrationState);
   };
+
+  // const onLogin = () => {
+  //   Alert.alert("Credentials", `${login}+ ${email} + ${password}`);
+  // };
   return (
     <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
       behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
@@ -37,19 +54,26 @@ export const RegistrationScreen = () => {
 
       <Text style={styles.title}>Регистрация</Text>
       <View style={styles.form}>
+        {/* корректровать */}
         <TextInput
           style={styles.input}
           placeholder="Логин"
           placeholderTextColor="#BDBDBD"
-          value={login}
-          onChangeText={loginHandler}
+          value={state.login}
+          onChangeText={(value) =>
+            setState((prevState) => ({ ...prevState, login: value }))
+          }
+          onFocus={() => setIsShowKeyboard(true)}
         ></TextInput>
         <TextInput
           style={styles.input}
           placeholder="Адрес электронной почты"
           placeholderTextColor="#BDBDBD"
-          value={email}
-          onChangeText={emailHandler}
+          value={state.email}
+          onChangeText={(value) =>
+            setState((prevState) => ({ ...prevState, email: value }))
+          }
+          onFocus={() => setIsShowKeyboard(true)}
         />
         <View>
           <TextInput
@@ -57,16 +81,19 @@ export const RegistrationScreen = () => {
             placeholder="Пароль"
             placeholderTextColor="#BDBDBD"
             secureTextEntry={true}
-            value={password}
-            onChangeText={passwordHandler}
+            value={state.password}
+            onChangeText={(value) =>
+              setState((prevState) => ({ ...prevState, password: value }))
+            }
+            onFocus={() => setIsShowKeyboard(true)}
           />
           <Text style={styles.passwordShow}>Показать</Text>
         </View>
-
         <TouchableOpacity
           style={styles.btn}
           activeOpacity={0.8}
-          onPress={onLogin}
+          // onPress={onLogin}
+          onPress={onSubmitPress}
         >
           <Text style={styles.btnTitle}>Зарегистрироваться</Text>
         </TouchableOpacity>
@@ -141,8 +168,8 @@ const styles = StyleSheet.create({
   },
   form: {
     marginHorizontal: 16,
-    //marginBottom: 78,
-    paddingBottom: 78,
+    marginBottom: 78,
+    //paddingBottom: 78,
     //flex: 1,
 
     //marginHorizontal: 40,
@@ -224,4 +251,4 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 });
-//
+//<View style={{ ...styles.form, marginBottom: isShowKeyboard ? 10 : 78 }}>

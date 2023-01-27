@@ -21,6 +21,7 @@ import { LoginScreen } from "./Screens/LoginScreen";
 //     // "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
 //   });
 // };
+
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -55,7 +56,7 @@ export default function App() {
           style={styles.image}
           source={require("./assets/photo-BG.jpg")}
         >
-          <RegistrationScreen />
+          <LoginScreen />
           <StatusBar style="auto" />
         </ImageBackground>
       </View>
