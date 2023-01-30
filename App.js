@@ -1,3 +1,6 @@
+import "react-native-gesture-handler";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
@@ -25,6 +28,7 @@ import { Home } from "./screens/Home";
 
 SplashScreen.preventAutoHideAsync();
 
+const AuthStack = createStackNavigator();
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
@@ -58,8 +62,14 @@ export default function App() {
             style={styles.image}
             source={require("./assets/photo-BG.jpg")}
           > */}
-      <LoginScreen />
-      <StatusBar style="auto" />
+      <NavigationContainer>
+        <AuthStack.Navigator>
+          <AuthStack.Screen name="Login" component={LoginScreen} />
+          <AuthStack.Screen name="Registr" component={RegistrationScreen} />
+        </AuthStack.Navigator>
+      </NavigationContainer>
+      {/* <LoginScreen />
+      <StatusBar style="auto" /> */}
       {/* </ImageBackground>
         </View> */}
     </View>
