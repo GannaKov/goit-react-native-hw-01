@@ -64,8 +64,16 @@ export default function App() {
           > */}
       <NavigationContainer>
         <AuthStack.Navigator>
-          <AuthStack.Screen name="Login" component={LoginScreen} />
-          <AuthStack.Screen name="Registr" component={RegistrationScreen} />
+          <AuthStack.Screen
+            options={{ headerShown: false }}
+            name="Login"
+            component={LoginScreen}
+          />
+          <AuthStack.Screen
+            options={{ headerShown: false }}
+            name="Registr"
+            component={RegistrationScreen}
+          />
         </AuthStack.Navigator>
       </NavigationContainer>
       {/* <LoginScreen />
