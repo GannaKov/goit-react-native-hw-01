@@ -31,8 +31,7 @@ export const RegistrationScreen = ({ navigation }) => {
   const onSubmitPress = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    Alert.alert(`${state.login} ${state.email} ${state.password}`);
-
+    // Alert.alert(`${state.login} ${state.email} ${state.password}`);
     console.log(state);
     setState(initialRegistrationState);
   };
