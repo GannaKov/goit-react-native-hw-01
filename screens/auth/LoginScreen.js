@@ -18,7 +18,8 @@ const initialLoginState = {
   email: "",
   password: "",
 };
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
+  console.log("nav", navigation);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
@@ -83,7 +84,12 @@ export const LoginScreen = () => {
               >
                 <Text style={styles.btnTitle}>Войти</Text>
               </TouchableOpacity>
-              <Text style={styles.text}>Нет аккаунта? Зарегистрироваться</Text>
+              <Text style={styles.text}>
+                Нет аккаунта?
+                <Text onPress={() => navigation.navigate("Registr")}>
+                  Зарегистрироваться
+                </Text>
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>

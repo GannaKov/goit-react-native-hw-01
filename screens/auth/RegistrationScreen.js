@@ -18,7 +18,7 @@ const initialRegistrationState = {
   email: "",
   password: "",
 };
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   // const [login, setLogin] = useState("");
   // const [email, setEmail] = useState("");
@@ -105,7 +105,10 @@ export const RegistrationScreen = () => {
               >
                 <Text style={styles.btnTitle}>Зарегистрироваться</Text>
               </TouchableOpacity>
-              <Text style={styles.text}>Уже есть аккаунт? Войти</Text>
+              <Text style={styles.text}>
+                Уже есть аккаунт?
+                <Text onPress={() => navigation.navigate("Login")}>Войти</Text>
+              </Text>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
