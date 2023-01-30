@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  ImageBackground,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 const initialLoginState = {
@@ -23,6 +25,7 @@ export const LoginScreen = () => {
   // const emailHandler = (text) => setEmail(text);
   // const passwordHandler = (text) => setPassword(text);
   const [state, setState] = useState(initialLoginState);
+
   const onSubmitPress = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
@@ -34,52 +37,75 @@ export const LoginScreen = () => {
   //   Alert.alert("Credentials", `${email} + ${password}`);
   // };
   return (
-    <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
-      behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
-      style={styles.container}
-    >
-      <Text style={styles.title}>Войти</Text>
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Адрес электронной почты"
-          placeholderTextColor="#BDBDBD"
-          value={state.email}
-          onChangeText={(value) =>
-            setState((prevState) => ({ ...prevState, email: value }))
-          }
-          onFocus={() => setIsShowKeyboard(true)}
-        />
-
-        <View>
-          <TextInput
-            style={styles.inputLast}
-            placeholder="Пароль"
-            placeholderTextColor="#BDBDBD"
-            secureTextEntry={true}
-            value={state.password}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, password: value }))
-            }
-            onFocus={() => setIsShowKeyboard(true)}
-          />
-          <Text style={styles.passwordShow}>Показать</Text>
-        </View>
-
-        <TouchableOpacity
-          style={styles.btn}
-          activeOpacity={0.8}
-          // onPress={onLogin}
-          onPress={onSubmitPress}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.containerMain}>
+        <ImageBackground
+          style={styles.imageBG}
+          source={require("../../assets/photo-BG.jpg")}
         >
-          <Text style={styles.btnTitle}>Войти</Text>
-        </TouchableOpacity>
-        <Text style={styles.text}>Нет аккаунта? Зарегистрироваться</Text>
+          <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
+            behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
+            style={styles.container}
+          >
+            <Text style={styles.title}>Войти</Text>
+            <View style={styles.form}>
+              <TextInput
+                style={styles.input}
+                placeholder="Адрес электронной почты"
+                placeholderTextColor="#BDBDBD"
+                value={state.email}
+                onChangeText={(value) =>
+                  setState((prevState) => ({ ...prevState, email: value }))
+                }
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+
+              <View>
+                <TextInput
+                  style={styles.inputLast}
+                  placeholder="Пароль"
+                  placeholderTextColor="#BDBDBD"
+                  secureTextEntry={true}
+                  value={state.password}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, password: value }))
+                  }
+                  onFocus={() => setIsShowKeyboard(true)}
+                />
+                <Text style={styles.passwordShow}>Показать</Text>
+              </View>
+
+              <TouchableOpacity
+                style={styles.btn}
+                activeOpacity={0.8}
+                // onPress={onLogin}
+                onPress={onSubmitPress}
+              >
+                <Text style={styles.btnTitle}>Войти</Text>
+              </TouchableOpacity>
+              <Text style={styles.text}>Нет аккаунта? Зарегистрироваться</Text>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </View>
-    </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
+  containerMain: {
+    flex: 1,
+    backgroundColor: "#fff",
+    // alignItems: "center",
+    //justifyContent: "center",
+    justifyContent: "flex-end",
+  },
+  imageBG: {
+    flex: 1,
+    resizeMode: "cover",
+    //justifyContent: "flex-end",
+    // justifyContent: "center",
+    // alignItems: "center",
+  },
   container: {
     position: "relative",
     borderTopLeftRadius: 25,

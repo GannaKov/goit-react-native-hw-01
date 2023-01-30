@@ -12,9 +12,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { RegistrationScreen } from "./Screens/RegistrationScreen";
-import { LoginScreen } from "./Screens/LoginScreen";
 
+import { RegistrationScreen } from "./screens/auth/RegistrationScreen";
+import { LoginScreen } from "./screens/auth/LoginScreen";
+import { Home } from "./screens/Home";
 // const loadFonts = async () => {
 //   await Font.loadAsync({
 //     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
@@ -50,17 +51,19 @@ export default function App() {
     return null;
   }
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <ImageBackground
-          style={styles.image}
-          source={require("./assets/photo-BG.jpg")}
-        >
-          <RegistrationScreen />
-          <StatusBar style="auto" />
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+    // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      {/* <View style={styles.container} onLayout={onLayoutRootView}>
+          <ImageBackground
+            style={styles.image}
+            source={require("./assets/photo-BG.jpg")}
+          > */}
+      <LoginScreen />
+      <StatusBar style="auto" />
+      {/* </ImageBackground>
+        </View> */}
+    </View>
+    // </TouchableWithoutFeedback>
   );
 }
 
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     // alignItems: "center",
     //justifyContent: "center",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",!!!!
   },
   image: {
     flex: 1,
@@ -83,4 +86,4 @@ const styles = StyleSheet.create({
 
 /* <Text>Open up App.js to start working KuKuKu!</Text>
       <StatusBar style="auto" /> */
-//// "orientation": "default",
+//// "orientation": "default", from App.json "expo"
