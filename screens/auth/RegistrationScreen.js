@@ -32,7 +32,6 @@ export const RegistrationScreen = ({ navigation }) => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     // Alert.alert(`${state.login} ${state.email} ${state.password}`);
-    console.log(state);
     setState(initialRegistrationState);
   };
 

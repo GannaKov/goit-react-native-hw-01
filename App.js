@@ -23,47 +23,16 @@ import {
 import { RegistrationScreen } from "./screens/auth/RegistrationScreen";
 import { LoginScreen } from "./screens/auth/LoginScreen";
 import { Home } from "./screens/main/Home";
-// const loadFonts = async () => {
-//   await Font.loadAsync({
-//     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
-//     // "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
-//   });
-// };
+import { useRoute } from "./router";
+
 //-----------------------------------------------------------------------
 SplashScreen.preventAutoHideAsync();
 
-const AuthStack = createStackNavigator();
-const MainTab = createBottomTabNavigator();
 //----------------------------------------
 
-export function useRoute(isAuth) {
-  if (!isAuth) {
-    return (
-      <AuthStack.Navigator>
-        <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Login"
-          component={LoginScreen}
-        />
-        <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Registr"
-          component={RegistrationScreen}
-        />
-      </AuthStack.Navigator>
-    );
-  }
-  return (
-    <MainTab.Navigator>
-      <MainTab.Screen name="Posts" component={PostsScreen} />
-      <MainTab.Screen name="Create Post" component={CreatePostsScreen} />
-      <MainTab.Screen name="Profile" component={ProfileScreen} />
-    </MainTab.Navigator>
-  );
-}
 //--------------------------------
 export default function App() {
-  const routing = useRoute(null);
+  const routing = useRoute({});
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
