@@ -10,7 +10,7 @@ import { LoginScreen } from "./screens/auth/LoginScreen";
 import { Home } from "./screens/main/Home";
 
 import { Feather } from "@expo/vector-icons";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 //------------------------------
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
@@ -60,7 +60,7 @@ export function useRoute(isAuth) {
             //   color="#fff"
             // />marginRight: 10,
           ),
-          headerRightContainerStyle: { marginRight: 100 },
+          //   headerRightContainerStyle: { marginRight: 100 },
           headerStyle: {
             backgroundColor: "#FFFFFF",
             height: 88,
@@ -84,7 +84,9 @@ export function useRoute(isAuth) {
       <MainTab.Screen
         options={{
           tabBarIcon: ({ focused, size, color }) => (
-            <Feather name="plus" size={24} color="rgba(33, 33, 33, 0.8)" />
+            <View style={styles.btnAddPost}>
+              <Feather name="plus" size={24} color="#FFFFFF" />
+            </View>
           ),
         }}
         name="Create Post"
@@ -102,3 +104,13 @@ export function useRoute(isAuth) {
     </MainTab.Navigator>
   );
 }
+const styles = StyleSheet.create({
+  btnAddPost: {
+    height: 40,
+    width: 70,
+    backgroundColor: "#FF6C00",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
