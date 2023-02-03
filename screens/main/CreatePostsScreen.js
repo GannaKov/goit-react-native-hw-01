@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     color: "#BDBDBD",
     fontFamily: "Roboto-Regular",
     fontSize: 16,
-    //line-height: 18.75px;
+    lineHeight: 18.75,
   },
   button: {
     width: 60,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "Roboto-Regular",
     fontSize: 16,
-    //line-height: 18.75px;
+    lineHeight: 18.75,
     borderWidth: 1,
     // paddingHorizontal: 16,
     height: 50,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     // position: "relative",
     fontFamily: "Roboto-Regular",
     fontSize: 16,
-    //line-height: 18.75px;
+    lineHeight: 18.75,
     borderWidth: 1,
     // paddingHorizontal: 16,
     height: 50,
@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     //fontWeight: 400,
     fontSize: 16,
-    // lineHeight: 1.19,
+    //lineHeight: 1.19,
+    lineHeight: 19,
     textAlign: "center",
     color: "#BDBDBD",
   },

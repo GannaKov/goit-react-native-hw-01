@@ -39,10 +39,10 @@ export const Home = () => {
             height: 88,
             shadowColor: "rgba(0, 0, 0, 0.3)",
             shadowOffset: { width: 0, height: 0.5 },
-            shadowRadius: 13.5914,
+            shadowRadius: 1.35914,
           },
           headerTitleStyle: {
-            fontWeight: "bold",
+            // fontWeight: "bold",
             fontSize: 17,
 
             fontFamily: "Roboto-Medium",
@@ -61,6 +61,25 @@ export const Home = () => {
               <Feather name="plus" size={24} color="#FFFFFF" />
             </View>
           ),
+          headerTitle: "Создать публикацию",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#FFFFFF",
+            height: 88,
+            shadowColor: "rgba(0, 0, 0, 0.3)",
+            shadowOffset: { width: 0, height: 0.5 },
+            shadowRadius: 1.35914,
+          },
+          headerTitleStyle: {
+            // fontWeight: "bold",
+            fontSize: 17,
+
+            fontFamily: "Roboto-Medium",
+            fontStyle: "normal",
+            lineHeight: 22,
+          },
+          headerTintColor: "#212121",
+          // headerBackVisible: true, //why dont work???
         }}
         name="Create Post"
         component={CreatePostsScreen}
