@@ -14,13 +14,15 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
+//-----------------------------------
 const initialLoginState = {
   email: "",
   password: "",
 };
+
 export const LoginScreen = ({ navigation }) => {
-  console.log("nav", navigation);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
   // const emailHandler = (text) => setEmail(text);
@@ -31,7 +33,7 @@ export const LoginScreen = ({ navigation }) => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     Alert.alert(`${state.email} ${state.password}`);
-    console.log(state);
+    console.log("st", state);
     setState(initialLoginState);
   };
   // const onLogin = () => {

@@ -80,6 +80,15 @@ export const Home = () => {
           },
           headerTintColor: "#212121",
           // headerBackVisible: true, //why dont work???
+          headerLeft: (focused, size, color) => (
+            <View style={{ marginLeft: 16 }}>
+              <Feather
+                name="arrow-left"
+                size={24}
+                color="rgba(33, 33, 33, 0.8)"
+              />
+            </View>
+          ),
         }}
         name="Create Post"
         component={CreatePostsScreen}
