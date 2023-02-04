@@ -13,59 +13,49 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 //---------------------------------------------
 export const CreatePostsScreen = () => {
-  const [hasCameraPermission, setHasCameraPermission] = useState(null);
-  const [camera, setCamera] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [image, setImage] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
 
-  const [cameraRef, setCameraRef] = useState(null);
-
   const [photo, setPhoto] = useState(null);
+  const [hasCameraPermission, requestPermission] =
+    Camera.useCameraPermissions();
+
+  //right!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //const [hasCameraPermission, setHasCameraPermission] = useState(null);
   // useEffect(() => {
   //   (async () => {
-  //     console.log(Camera);
-  //     //const { status } = await Camera.getCameraPermissionsAsync();
-  //     const status = await Camera.getCameraPermissionsAsync();
-  //     console.log(status);
-  //     // await MediaLibrary.requestPermissionsAsync();
-  //     // setHasPermission(status === "granted");
-  //     if (status === "granted") {
-  //       // start the camera
-  //       setHasPermission(true);
-  //     } else {
-  //       Alert.alert("Access denied");
-  //     }
+  //     const cameraStatus = await Camera.requestCameraPermissionsAsync();
+  //     setHasCameraPermission(cameraStatus.status === "granted");
   //   })();
   // }, []);
-  useEffect(() => {
-    (async () => {
-      const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === "granted");
-    })();
-  }, []);
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
+  //right
+  const [camera, setCamera] = useState(null);
   const takePicture = async () => {
-    if (camera) {
-      const picture = await camera.takePictureAsync(null);
+    if (cameraRef) {
+      const options = { quality: 0.5, base64: true, skipProcessing: true };
+      const picture = await cameraRef.takePictureAsync(options);
       setImage(picture.uri);
-      console.log(picture);
+      console.log(picture.uri);
     }
   };
-  //   const takePicture = async () => {!!!!!!
-  //  if (cameraRef.current) {
-  //  const options = { quality: 0.5, base64: true, skipProcessing: true };
-  // const data = await cameraRef.current.takePictureAsync(options);
-  //  const source = data.uri;
-  //  if (source) {
-  //  await cameraRef.current.pausePreview();
-  //  setIsPreview(true);
-  //  console.log("picture", source);
-  //       }
+  // const takePicture = async () => {
+  //   if (cameraRef.current) {
+  //     const options = { quality: 0.5, base64: true, skipProcessing: true };
+  //     const data = await cameraRef.current.takePictureAsync(options);
+  //     const source = data.uri;
+  //     console.log("picture source", source);
+  //     if (source) {
+  //       await cameraRef.current.pausePreview();
+  //       setIsPreview(true);
+  //       console.log("picture source", source);
   //     }
-  //   };
+  //   }
+  // };
 
   if (hasCameraPermission === null) {
     return <View />;
@@ -90,7 +80,7 @@ export const CreatePostsScreen = () => {
         style={styles.camera}
         type={type}
         ref={(ref) => {
-          setCamera(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
+          setCameraRef(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
         }}
       >
         {/* type={type} */}
