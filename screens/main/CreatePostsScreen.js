@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Camera, CameraType } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
@@ -11,13 +13,89 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 //---------------------------------------------
 export const CreatePostsScreen = () => {
+  const [hasCameraPermission, setHasCameraPermission] = useState(null);
+  const [camera, setCamera] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [image, setImage] = useState(null);
+  const [isCameraReady, setIsCameraReady] = useState(false);
+
+  const [cameraRef, setCameraRef] = useState(null);
+
+  const [photo, setPhoto] = useState(null);
+  // useEffect(() => {
+  //   (async () => {
+  //     console.log(Camera);
+  //     //const { status } = await Camera.getCameraPermissionsAsync();
+  //     const status = await Camera.getCameraPermissionsAsync();
+  //     console.log(status);
+  //     // await MediaLibrary.requestPermissionsAsync();
+  //     // setHasPermission(status === "granted");
+  //     if (status === "granted") {
+  //       // start the camera
+  //       setHasPermission(true);
+  //     } else {
+  //       Alert.alert("Access denied");
+  //     }
+  //   })();
+  // }, []);
+  useEffect(() => {
+    (async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      setHasCameraPermission(cameraStatus.status === "granted");
+    })();
+  }, []);
+  const onCameraReady = () => {
+    setIsCameraReady(true);
+  };
+  const takePicture = async () => {
+    if (camera) {
+      const picture = await camera.takePictureAsync(null);
+      setImage(picture.uri);
+      console.log(picture);
+    }
+  };
+  //   const takePicture = async () => {!!!!!!
+  //  if (cameraRef.current) {
+  //  const options = { quality: 0.5, base64: true, skipProcessing: true };
+  // const data = await cameraRef.current.takePictureAsync(options);
+  //  const source = data.uri;
+  //  if (source) {
+  //  await cameraRef.current.pausePreview();
+  //  setIsPreview(true);
+  //  console.log("picture", source);
+  //       }
+  //     }
+  //   };
+
+  if (hasCameraPermission === null) {
+    return <View />;
+  }
+  if (hasCameraPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
+  // const onCameraReady = () => {
+  //   setIsCameraReady(true);
+  // };
+  // if (hasPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera}>
+      <Camera
+        onCameraReady={onCameraReady}
+        style={styles.camera}
+        type={type}
+        ref={(ref) => {
+          setCamera(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
+        }}
+      >
         {/* type={type} */}
         {/* <View style={styles.buttonContainer}> */}
-        <TouchableOpacity style={styles.button}>
-          {/* //onPress={toggleCameraType} */}
+        <TouchableOpacity onPress={() => takePicture()} style={styles.button}>
           <FontAwesome name="camera" size={24} color="#BDBDBD" />
         </TouchableOpacity>
         {/* </View> */}

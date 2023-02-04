@@ -32,7 +32,8 @@ SplashScreen.preventAutoHideAsync();
 
 //--------------------------------
 export default function App() {
-  // console.log(isAuth);
+  // const { isAuth, auth } = useAuth();
+  // console.log("isAuth", isAuth);
   const routing = useRoute({});
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),

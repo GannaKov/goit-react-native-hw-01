@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { startTransition, useState, useEffect } from "react";
 
 import {
   Keyboard,
@@ -13,7 +13,7 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
 } from "react-native";
-
+import { useAuth } from "../../hookAuth";
 //-----------------------------------
 const initialLoginState = {
   email: "",
@@ -36,6 +36,8 @@ export const LoginScreen = ({ navigation }) => {
     console.log("st", state);
     setState(initialLoginState);
   };
+
+  // const [isAuth, auth] = useAuth(kuku);
   // const onLogin = () => {
   //   Alert.alert("Credentials", `${email} + ${password}`);
   // };
