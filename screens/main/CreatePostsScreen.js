@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 import {
+  Image,
   Alert,
   View,
   Text,
@@ -13,49 +15,62 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 //---------------------------------------------
 export const CreatePostsScreen = () => {
+  const [location, setLocation] = useState(null);
+  const [adress, setAdress] = useState("");
+  const [description, setDescription] = useState("");
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [image, setImage] = useState(null);
+  const [picture, setPicture] = useState("");
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  const [photo, setPhoto] = useState(null);
+  //const [photo, setPhoto] = useState(null);
   const [hasCameraPermission, requestPermission] =
-    Camera.useCameraPermissions();
+    Camera.useCameraPermissions(); // instead of all async permissions
 
-  //right!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  //const [hasCameraPermission, setHasCameraPermission] = useState(null);
-  // useEffect(() => {
-  //   (async () => {
-  //     const cameraStatus = await Camera.requestCameraPermissionsAsync();
-  //     setHasCameraPermission(cameraStatus.status === "granted");
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+
+      const place = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      const adr = {
+        country: place[0].country,
+        city: place[0].city,
+        district: place[0].district,
+      };
+      console.log("adr", adr);
+      setAdress(adr);
+    })();
+  }, []);
+  //.city, place.district, play.name
+  // let textAdress = "Waiting..";
+  // if (errorMsg) {
+  //   textAdress = errorMsg;
+  // } else if (location) {
+  //   textAdress = `${adress[0].country} ${adress[0].city} ${adress[0].district}`; //JSON.stringify(location);
+  //   console.log("loc", textAdress);
+  // }
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
   //right
-  const [camera, setCamera] = useState(null);
+  // const [camera, setCamera] = useState(null);
   const takePicture = async () => {
     if (cameraRef) {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
       const picture = await cameraRef.takePictureAsync(options);
-      setImage(picture.uri);
-      console.log(picture.uri);
+      setPicture(picture.uri);
     }
   };
-  // const takePicture = async () => {
-  //   if (cameraRef.current) {
-  //     const options = { quality: 0.5, base64: true, skipProcessing: true };
-  //     const data = await cameraRef.current.takePictureAsync(options);
-  //     const source = data.uri;
-  //     console.log("picture source", source);
-  //     if (source) {
-  //       await cameraRef.current.pausePreview();
-  //       setIsPreview(true);
-  //       console.log("picture source", source);
-  //     }
-  //   }
-  // };
 
   if (hasCameraPermission === null) {
     return <View />;
@@ -63,46 +78,52 @@ export const CreatePostsScreen = () => {
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
-
-  // const onCameraReady = () => {
-  //   setIsCameraReady(true);
-  // };
-  // if (hasPermission === null) {
-  //   return <View />;
-  // }
-  // if (hasPermission === false) {
-  //   return <Text>No access to camera</Text>;
-  // }
+  console.log("aaa", adress);
+  let textLocation = "Location";
+  if (adress) {
+    textLocation = `${adress.country} ${adress.city} ${adress.district}`;
+  }
   return (
     <View style={styles.container}>
-      <Camera
-        onCameraReady={onCameraReady}
-        style={styles.camera}
-        type={type}
-        ref={(ref) => {
-          setCameraRef(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
-        }}
-      >
-        {/* type={type} */}
-        {/* <View style={styles.buttonContainer}> */}
-        <TouchableOpacity onPress={() => takePicture()} style={styles.button}>
-          <FontAwesome name="camera" size={24} color="#BDBDBD" />
-        </TouchableOpacity>
-        {/* </View> */}
-      </Camera>
+      {picture ? (
+        <View style={styles.takenPictureContainer}>
+          <Image
+            source={{ uri: picture }}
+            style={{ width: "100%", height: 240, borderRadius: 8 }}
+          />
+        </View>
+      ) : (
+        <Camera
+          onCameraReady={onCameraReady}
+          style={styles.camera}
+          type={type}
+          ref={(ref) => {
+            setCameraRef(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
+          }}
+        >
+          {/* type={type} */}
+          {/* <View style={styles.buttonContainer}> */}
+          <TouchableOpacity onPress={() => takePicture()} style={styles.button}>
+            <FontAwesome name="camera" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
+          {/* </View> */}
+        </Camera>
+      )}
       <Text style={styles.loadPhotoText}>Загрузите фото</Text>
       <TextInput
         style={styles.input}
-        placeholder="Название..."
+        placeholder="Image description"
         placeholderTextColor="#BDBDBD"
         // value={state.email}
+        value={description}
+        onChangeText={setDescription}
       />
       <View style={{ marginBottom: 32 }}>
         <TextInput
           style={styles.lastInput}
-          placeholder="Местность..."
+          placeholder="Location"
           placeholderTextColor="#BDBDBD"
-          // value={state.email}
+          value={textLocation}
         />
         <Feather
           name="map-pin"
@@ -216,5 +237,12 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     textAlign: "center",
     color: "#BDBDBD",
+  },
+  takenPictureContainer: {
+    marginTop: 32,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 8,
+    height: 240,
   },
 });
