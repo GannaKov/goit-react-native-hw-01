@@ -15,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 //---------------------------------------------
 export const CreatePostsScreen = () => {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState(null); //!!!!
   const [adress, setAdress] = useState("");
   const [description, setDescription] = useState("");
   const [cameraRef, setCameraRef] = useState(null);
@@ -23,8 +23,6 @@ export const CreatePostsScreen = () => {
   const [picture, setPicture] = useState("");
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-
-  //const [photo, setPhoto] = useState(null);
   const [hasCameraPermission, requestPermission] =
     Camera.useCameraPermissions(); // instead of all async permissions
 
@@ -37,7 +35,18 @@ export const CreatePostsScreen = () => {
       }
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+    })();
+  }, []);
 
+  const onCameraReady = () => {
+    setIsCameraReady(true);
+  };
+
+  const takePicture = async () => {
+    if (cameraRef) {
+      const options = { quality: 0.5, base64: true, skipProcessing: true };
+      const picture = await cameraRef.takePictureAsync(options);
+      setPicture(picture.uri);
       const place = await Location.reverseGeocodeAsync({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -49,26 +58,6 @@ export const CreatePostsScreen = () => {
       };
       console.log("adr", adr);
       setAdress(adr);
-    })();
-  }, []);
-  //.city, place.district, play.name
-  // let textAdress = "Waiting..";
-  // if (errorMsg) {
-  //   textAdress = errorMsg;
-  // } else if (location) {
-  //   textAdress = `${adress[0].country} ${adress[0].city} ${adress[0].district}`; //JSON.stringify(location);
-  //   console.log("loc", textAdress);
-  // }
-  const onCameraReady = () => {
-    setIsCameraReady(true);
-  };
-  //right
-  // const [camera, setCamera] = useState(null);
-  const takePicture = async () => {
-    if (cameraRef) {
-      const options = { quality: 0.5, base64: true, skipProcessing: true };
-      const picture = await cameraRef.takePictureAsync(options);
-      setPicture(picture.uri);
     }
   };
 
@@ -78,8 +67,8 @@ export const CreatePostsScreen = () => {
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
-  console.log("aaa", adress);
-  let textLocation = "Location";
+
+  let textLocation = "";
   if (adress) {
     textLocation = `${adress.country} ${adress.city} ${adress.district}`;
   }
@@ -109,12 +98,11 @@ export const CreatePostsScreen = () => {
           {/* </View> */}
         </Camera>
       )}
-      <Text style={styles.loadPhotoText}>Загрузите фото</Text>
+      <Text style={styles.loadPhotoText}>Upload a picture</Text>
       <TextInput
         style={styles.input}
         placeholder="Image description"
         placeholderTextColor="#BDBDBD"
-        // value={state.email}
         value={description}
         onChangeText={setDescription}
       />
@@ -139,7 +127,7 @@ export const CreatePostsScreen = () => {
         // onPress={onLogin}
         // onPress={onSubmitPress}
       >
-        <Text style={styles.btnTitle}>Опубликовать</Text>
+        <Text style={styles.btnTitle}>Send</Text>
       </TouchableOpacity>
     </View>
   );
