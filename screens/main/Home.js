@@ -22,7 +22,7 @@ export const Home = () => {
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
           ),
-          headerTitle: "Публикации",
+          headerTitle: "Posts",
           headerTitleAlign: "center",
           headerRight: (focused, size, color) => (
             <View style={{ marginRight: 10 }}>
@@ -61,7 +61,7 @@ export const Home = () => {
               <Feather name="plus" size={24} color="#FFFFFF" />
             </View>
           ),
-          headerTitle: "Создать публикацию",
+          headerTitle: "Create Post",
           headerTitleAlign: "center",
           headerStyle: {
             backgroundColor: "#FFFFFF",
