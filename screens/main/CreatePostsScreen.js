@@ -14,7 +14,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 //---------------------------------------------
-export const CreatePostsScreen = () => {
+export const CreatePostsScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null); //!!!!
   const [adress, setAdress] = useState("");
   const [description, setDescription] = useState("");
@@ -56,7 +56,7 @@ export const CreatePostsScreen = () => {
         city: place[0].city,
         district: place[0].district,
       };
-      console.log("adr", adr);
+
       setAdress(adr);
     }
   };
@@ -72,6 +72,10 @@ export const CreatePostsScreen = () => {
   if (adress) {
     textLocation = `${adress.country} ${adress.city} ${adress.district}`;
   }
+  const sendPhoto = () => {
+    navigation.navigate("Posts", { picture });
+    setPicture("");
+  };
   return (
     <View style={styles.container}>
       {picture ? (
@@ -125,7 +129,7 @@ export const CreatePostsScreen = () => {
         style={styles.btn}
         activeOpacity={0.8}
         // onPress={onLogin}
-        // onPress={onSubmitPress}
+        onPress={sendPhoto}
       >
         <Text style={styles.btnTitle}>Send</Text>
       </TouchableOpacity>
