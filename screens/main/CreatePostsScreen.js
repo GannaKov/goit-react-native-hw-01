@@ -70,6 +70,11 @@ export const CreatePostsScreen = ({ navigation }) => {
     setDescription("");
     setAdress("");
   };
+  const deletePhoto = () => {
+    setPicture("");
+    setDescription("");
+    setAdress("");
+  };
   return (
     <View style={styles.container}>
       {picture ? (
@@ -88,15 +93,15 @@ export const CreatePostsScreen = ({ navigation }) => {
             setCameraRef(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
           }}
         >
-          {/* type={type} */}
-          {/* <View style={styles.buttonContainer}> */}
           <TouchableOpacity onPress={() => takePicture()} style={styles.button}>
             <FontAwesome name="camera" size={24} color="#BDBDBD" />
           </TouchableOpacity>
           {/* </View> */}
         </Camera>
       )}
-      <Text style={styles.loadPhotoText}>Upload a picture</Text>
+      <Text style={styles.loadPhotoText}>
+        {picture ? "Edit photo" : "Upload photo"}
+      </Text>
       <TextInput
         style={styles.input}
         placeholder="Image description"
@@ -119,7 +124,6 @@ export const CreatePostsScreen = ({ navigation }) => {
           style={{ position: "absolute", bottom: 13 }}
         />
       </View>
-
       <TouchableOpacity
         style={
           picture ? { ...styles.btn, backgroundColor: "#FF6C00" } : styles.btn
@@ -135,6 +139,9 @@ export const CreatePostsScreen = ({ navigation }) => {
         >
           Send
         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => deletePhoto()} style={styles.trash}>
+        <Feather name="trash-2" size={24} color="#BDBDBD" />
       </TouchableOpacity>
     </View>
   );
@@ -220,7 +227,13 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     marginBottom: 16,
   },
-
+  trash: {
+    alignSelf: "center",
+    marginBottom: 34,
+    marginTop: "auto",
+    // alignItems: "center",
+    // justifyContent: "center",
+  },
   btnTitle: {
     color: "#f0f8ff",
 
