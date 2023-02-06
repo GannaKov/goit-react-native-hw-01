@@ -39,7 +39,12 @@ export const PostsScreen = ({ route }) => {
             </Text>
             <View style={styles.description}>
               <View style={styles.comments}>
-                <Feather name="message-circle" size={24} color="#BDBDBD" />
+                <Feather
+                  name="message-circle"
+                  size={24}
+                  color="#BDBDBD"
+                  style={{ marginRight: 9 }}
+                />
                 <Text
                   style={{
                     fontSize: 16,
@@ -92,6 +97,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  comments: { flexDirection: "row" },
-  location: { flexDirection: "row" },
+  comments: {
+    flexDirection: "row",
+    //justifyContent: "center",
+    alignItems: "center",
+  },
+  location: { flexDirection: "row", alignItems: "center" },
 });
