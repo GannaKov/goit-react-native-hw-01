@@ -1,6 +1,6 @@
 import "react-native-gesture-handler"; //the libraries that are required by the stack navigator
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PostsScreen } from "./PostsScreen";
@@ -11,6 +11,7 @@ import { Feather } from "@expo/vector-icons";
 const MainTab = createBottomTabNavigator();
 //--------------------------------------------------
 export const Home = () => {
+  //{ navigation }
   return (
     <MainTab.Navigator
       screenOptions={{
@@ -42,7 +43,6 @@ export const Home = () => {
             shadowRadius: 1.35914,
           },
           headerTitleStyle: {
-            // fontWeight: "bold",
             fontSize: 17,
 
             fontFamily: "Roboto-Medium",
@@ -71,7 +71,6 @@ export const Home = () => {
             shadowRadius: 1.35914,
           },
           headerTitleStyle: {
-            // fontWeight: "bold",
             fontSize: 17,
 
             fontFamily: "Roboto-Medium",
@@ -81,13 +80,16 @@ export const Home = () => {
           headerTintColor: "#212121",
           // headerBackVisible: true, //why dont work???
           headerLeft: (focused, size, color) => (
-            <View style={{ marginLeft: 16 }}>
+            <TouchableOpacity
+              style={{ marginLeft: 16, width: 20, height: 20 }}
+              // onPress={() => navigation.navigate("Posts")} //!!!!!!!!!!!!!
+            >
               <Feather
                 name="arrow-left"
                 size={24}
                 color="rgba(33, 33, 33, 0.8)"
               />
-            </View>
+            </TouchableOpacity>
           ),
         }}
         name="Create Post"

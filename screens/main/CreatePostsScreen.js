@@ -65,7 +65,11 @@ export const CreatePostsScreen = ({ navigation }) => {
   }
 
   const sendPhoto = () => {
-    navigation.navigate("Posts", { picture });
+    navigation.navigate("Posts", {
+      picture: picture,
+      adress: adress,
+      description: description,
+    });
     setPicture("");
     setDescription("");
     setAdress("");

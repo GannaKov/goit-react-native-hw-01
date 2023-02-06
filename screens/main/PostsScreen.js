@@ -6,7 +6,8 @@ export const PostsScreen = ({ route }) => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     if (route.params) {
-      setPosts((prevState) => [...prevState, route.params]);
+      console.log(route.params);
+      setPosts((prevState) => [route.params, ...prevState]);
     }
   }, [route.params]);
 
@@ -35,7 +36,7 @@ export const PostsScreen = ({ route }) => {
                 lineHeight: 19,
               }}
             >
-              Forest
+              {item.description}
             </Text>
             <View style={styles.description}>
               <View style={styles.comments}>
@@ -72,7 +73,7 @@ export const PostsScreen = ({ route }) => {
                     textDecorationLine: "underline",
                   }}
                 >
-                  Ivano-Frankivs'k Region, Ukraine
+                  {item.adress}
                 </Text>
               </View>
             </View>
