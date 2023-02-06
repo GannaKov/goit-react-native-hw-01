@@ -229,10 +229,15 @@ const styles = StyleSheet.create({
   },
   trash: {
     alignSelf: "center",
-    marginBottom: 34,
+    marginBottom: 22,
     marginTop: "auto",
-    // alignItems: "center",
-    // justifyContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 70,
+    height: 40,
+    backgroundColor: "#FFFFFF",
+
+    borderRadius: 20,
   },
   btnTitle: {
     color: "#f0f8ff",

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export const PostsScreen = ({ route }) => {
   const [posts, setPosts] = useState([]);
@@ -18,8 +19,58 @@ export const PostsScreen = ({ route }) => {
             {/* style={styles.takenPictureContainer} */}
             <Image
               source={{ uri: item.picture }}
-              style={{ width: 250, height: 240, borderRadius: 8 }}
+              style={{
+                width: "100%",
+                height: 240,
+                borderRadius: 8,
+                marginBottom: 8,
+              }}
             />
+            <Text
+              style={{
+                marginBottom: 11,
+                fontFamily: "Roboto-Medium",
+                fontStyle: "normal",
+                fontSize: 16,
+                lineHeight: 19,
+              }}
+            >
+              Forest
+            </Text>
+            <View style={styles.description}>
+              <View style={styles.comments}>
+                <Feather name="message-circle" size={24} color="#BDBDBD" />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 18.75,
+                    color: "#BDBDBD",
+                    fontFamily: "Roboto-Regular",
+                  }}
+                >
+                  0
+                </Text>
+              </View>
+              <View style={styles.location}>
+                <Feather
+                  name="map-pin"
+                  size={24}
+                  color="#BDBDBD"
+                  style={{ marginRight: 4 }}
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    lineHeight: 19,
+                    color: "#212121",
+                    fontFamily: "Roboto-Regular",
+                    textDecorationLine: "underline",
+                  }}
+                >
+                  Ivano-Frankivs'k Region, Ukraine
+                </Text>
+              </View>
+            </View>
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
@@ -32,6 +83,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // alignItems: "center",
-    justifyContent: "center",
+    //justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 16,
   },
+  description: {
+    paddingBottom: 34,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  comments: { flexDirection: "row" },
+  location: { flexDirection: "row" },
 });
