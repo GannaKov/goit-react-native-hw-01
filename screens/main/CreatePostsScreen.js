@@ -51,13 +51,9 @@ export const CreatePostsScreen = ({ navigation }) => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
-      const adr = {
-        country: place[0].country,
-        city: place[0].city,
-        district: place[0].district,
-      };
 
-      setAdress(adr);
+      const adrText = `${place[0].country}  ${place[0].city} ${place[0].district}`;
+      setAdress(adrText);
     }
   };
 
@@ -68,13 +64,11 @@ export const CreatePostsScreen = ({ navigation }) => {
     return <Text>No access to camera</Text>;
   }
 
-  let textLocation = "";
-  if (adress) {
-    textLocation = `${adress.country} ${adress.city} ${adress.district}`;
-  }
   const sendPhoto = () => {
     navigation.navigate("Posts", { picture });
     setPicture("");
+    setDescription("");
+    setAdress("");
   };
   return (
     <View style={styles.container}>
@@ -115,7 +109,8 @@ export const CreatePostsScreen = ({ navigation }) => {
           style={styles.lastInput}
           placeholder="Location"
           placeholderTextColor="#BDBDBD"
-          value={textLocation}
+          value={adress ? adress : ""}
+          onChangeText={setAdress}
         />
         <Feather
           name="map-pin"
@@ -126,12 +121,20 @@ export const CreatePostsScreen = ({ navigation }) => {
       </View>
 
       <TouchableOpacity
-        style={styles.btn}
+        style={
+          picture ? { ...styles.btn, backgroundColor: "#FF6C00" } : styles.btn
+        }
         activeOpacity={0.8}
         // onPress={onLogin}
         onPress={sendPhoto}
       >
-        <Text style={styles.btnTitle}>Send</Text>
+        <Text
+          style={
+            picture ? { ...styles.btnTitle, color: "#fff" } : styles.btnTitle
+          }
+        >
+          Send
+        </Text>
       </TouchableOpacity>
     </View>
   );
