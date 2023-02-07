@@ -65,7 +65,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   }
 
   const sendPhoto = () => {
-    navigation.navigate("Posts", {
+    navigation.navigate("DefaultScreenPosts", {
       picture: picture,
       adress: adress,
       description: description,

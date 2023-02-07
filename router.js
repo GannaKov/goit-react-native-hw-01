@@ -29,88 +29,16 @@ export function useRoute(isAuth) {
           name="Registr"
           component={RegistrationScreen}
         />
-        <AuthStack.Screen
-          options={{ headerShown: false }}
-          name="Home"
-          component={Home}
-        />
       </AuthStack.Navigator>
     );
   }
   return (
-    <Home />
-    // <MainTab.Navigator
-    //   screenOptions={{
-    //     tabBarShowLabel: false,
-    //   }}
-    // >
-    //   <MainTab.Screen
-    //     options={{
-    //       tabBarIcon: ({ focused, size, color }) => (
-    //         <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
-    //       ),
-    //       headerTitle: "Публикации",
-    //       headerTitleAlign: "center",
-    //       headerRight: (focused, size, color) => (
-    //         <View style={{ marginRight: 10 }}>
-    //           <Feather
-    //             name="log-out"
-    //             size={24}
-    //             color="rgba(189, 189, 189, 1)"
-    //           />
-    //         </View>
-    //       ),
-
-    //       headerStyle: {
-    //         backgroundColor: "#FFFFFF",
-    //         height: 88,
-    //         shadowColor: "rgba(0, 0, 0, 0.3)",
-    //         shadowOffset: { width: 0, height: 0.5 },
-    //         shadowRadius: 13.5914,
-    //       },
-    //       headerTitleStyle: {
-    //         fontWeight: "bold",
-    //         fontSize: 17,
-
-    //         fontFamily: "Roboto-Medium",
-    //         fontStyle: "normal",
-    //         lineHeight: 22,
-    //       },
-    //       headerTintColor: "#212121",
-    //     }}
-    //     name="Posts"
-    //     component={PostsScreen}
-    //   />
-    //   <MainTab.Screen
-    //     options={{
-    //       tabBarIcon: ({ focused, size, color }) => (
-    //         <View style={styles.btnAddPost}>
-    //           <Feather name="plus" size={24} color="#FFFFFF" />
-    //         </View>
-    //       ),
-    //     }}
-    //     name="Create Post"
-    //     component={CreatePostsScreen}
-    //   />
-    //   <MainTab.Screen
-    //     options={{
-    //       tabBarIcon: ({ focused, size, color }) => (
-    //         <Feather name="user" size={24} color="rgba(33, 33, 33, 0.8)" />
-    //       ),
-    //     }}
-    //     name="Profile"
-    //     component={ProfileScreen}
-    //   />
-    // </MainTab.Navigator>
+    <AuthStack.Navigator>
+      <AuthStack.Screen
+        options={{ headerShown: false }}
+        name="Home"
+        component={Home}
+      />
+    </AuthStack.Navigator>
   );
 }
-// const styles = StyleSheet.create({
-//   btnAddPost: {
-//     height: 40,
-//     width: 70,
-//     backgroundColor: "#FF6C00",
-//     borderRadius: 20,
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
