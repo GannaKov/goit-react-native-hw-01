@@ -23,6 +23,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [picture, setPicture] = useState("");
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [coords, setCoords] = useState(null);
   const [hasCameraPermission, requestPermission] =
     Camera.useCameraPermissions(); // instead of all async permissions
 
@@ -34,6 +35,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
+
       setLocation(location);
     })();
   }, []);
@@ -51,6 +53,11 @@ export const CreatePostsScreen = ({ navigation }) => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setCoords(coords);
 
       const adrText = `${place[0].country}  ${place[0].city} ${place[0].district}`;
       setAdress(adrText);
@@ -69,6 +76,7 @@ export const CreatePostsScreen = ({ navigation }) => {
       picture: picture,
       adress: adress,
       description: description,
+      coords: coords,
     });
     setPicture("");
     setDescription("");

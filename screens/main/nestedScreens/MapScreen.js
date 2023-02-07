@@ -1,32 +1,43 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps"; //52.55177392916994, 13.438224515059725
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 //-----------------
 export const MapScreen = ({ route }) => {
+  const [coo, setCoo] = useState(null);
+  useEffect(() => {
+    if (route.params) {
+      setCoo(route.params);
+    }
+  }, [route.params]);
+
   return (
     <View style={styles.container}>
-      <MapView
-        style={{
-          width: "100%",
-          height: "100%",
-          outlineWidth: 1,
-          outlineColor: "# 7fff00",
-          outlineStyle: "'solid',",
-        }}
-        region={{
-          latitude: 52.55177392916994,
-          longitude: 13.438224515059725,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.006,
-        }}
-      >
-        <Marker
-          coordinate={{
-            latitude: 52.55177392916994,
-            longitude: 13.438224515059725,
+      {coo ? (
+        <MapView
+          style={{
+            width: "100%",
+            height: "100%",
+            outlineWidth: 1,
+            outlineColor: "# 7fff00",
+            outlineStyle: "'solid',",
           }}
-        />
-      </MapView>
+          region={{
+            latitude: coo.coords.latitude,
+            longitude: coo.coords.longitude,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.006,
+          }}
+        >
+          <Marker
+            coordinate={{
+              latitude: coo.coords.latitude,
+              longitude: coo.coords.longitude,
+            }}
+          />
+        </MapView>
+      ) : (
+        <Text>Map is not avaiable. Try again</Text>
+      )}
     </View>
   );
 };
