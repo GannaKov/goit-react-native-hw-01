@@ -2,9 +2,11 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 //-----------------
 export const CommentsScreen = ({ route }) => {
-  <View style={styles.container}>
-    <Text>Comments</Text>
-  </View>;
+  return (
+    <View style={styles.container}>
+      <Text>Comments</Text>
+    </View>
+  );
 };
 const styles = StyleSheet.create({
   container: {
