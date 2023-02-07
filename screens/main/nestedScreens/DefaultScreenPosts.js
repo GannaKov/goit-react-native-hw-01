@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-export const DefaultScreenPosts = ({ route }) => {
+export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     if (route.params) {
@@ -39,12 +46,17 @@ export const DefaultScreenPosts = ({ route }) => {
             </Text>
             <View style={styles.description}>
               <View style={styles.comments}>
-                <Feather
-                  name="message-circle"
-                  size={24}
-                  color="#BDBDBD"
-                  style={{ marginRight: 9 }}
-                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("CommentsScreen")}
+                >
+                  <Feather
+                    name="message-circle"
+                    size={24}
+                    color="#BDBDBD"
+                    style={{ marginRight: 9 }}
+                  />
+                </TouchableOpacity>
+
                 <Text
                   style={{
                     fontSize: 16,
@@ -64,6 +76,7 @@ export const DefaultScreenPosts = ({ route }) => {
                   style={{ marginRight: 4 }}
                 />
                 <Text
+                  onPress={() => navigation.navigate("Map")}
                   style={{
                     fontSize: 16,
                     lineHeight: 19,
