@@ -33,7 +33,12 @@ export const MapScreen = ({ route }) => {
               latitude: coo.coords.latitude,
               longitude: coo.coords.longitude,
             }}
-          />
+          >
+            <Image
+              source={{ uri: coo.picture }}
+              style={{ width: 40, height: 40, resizeMode: "contain" }}
+            />
+          </Marker>
         </MapView>
       ) : (
         <Text>Map is not avaiable. Try again</Text>

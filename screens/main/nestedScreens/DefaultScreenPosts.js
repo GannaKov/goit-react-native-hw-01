@@ -77,7 +77,10 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                 />
                 <Text
                   onPress={() =>
-                    navigation.navigate("Map", { coords: item.coords })
+                    navigation.navigate("Map", {
+                      coords: item.coords,
+                      picture: item.picture,
+                    })
                   }
                   style={{
                     fontSize: 16,
