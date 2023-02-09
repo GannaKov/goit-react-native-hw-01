@@ -42,14 +42,11 @@ export default function App() {
   onAuthStateChanged(auth, (user) => {
     // setUser(user);
     if (user) {
-      console.log("hi is login", user);
-
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       uid = user.uid;
       // ...
     } else {
-      console.log("hi is not login");
       // User is signed out
       // ...
     }
@@ -101,3 +98,4 @@ const styles = StyleSheet.create({
 /* <Text>Open up App.js to start working KuKuKu!</Text>
       <StatusBar style="auto" /> */
 //// "orientation": "default", from App.json "expo"
+// i was able to solve mine by setting the backgroundColor on the "splash" at app.json to #3F51B5.then restart dev client

@@ -1,10 +1,13 @@
 ////import db from "../../firebase/config";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
+import { Alert } from "react-native";
+import { authSlice } from "./authSlice";
 //---------------------------
 // export const authRegistration = () => async (dispatch, getState) => {
 //   try {
@@ -21,7 +24,6 @@ import { auth } from "../../firebase/config";
 export const authRegistration =
   ({ email, password }) =>
   async (dispatch, getState) => {
-    console.log("in acync", email, password);
     //dispatch, getState
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -29,12 +31,15 @@ export const authRegistration =
         email,
         password
       );
+
       const user = userCredential.user;
-      console.log("user", user); // const user = userCredential.user;
+      //console.log("user", user); // const user = userCredential.user;
+      dispatch(authSlice.actions.updateUserProfile({ userId: user.uid }));
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log("err", error.message);
+      Alert.alert(errorMessage);
     }
   };
 // createUserWithEmailAndPassword(auth, email, password)
@@ -60,11 +65,12 @@ export const authLogIn =
         password
       );
       const user = userCredential.user;
-      console.log("userLog", user); // const user = userCredential.user;
+      // console.log("userLog", user); // const user = userCredential.user;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log("err", error.message);
+      Alert.alert(errorMessage);
     }
   };
 //---------------------------------------------------
