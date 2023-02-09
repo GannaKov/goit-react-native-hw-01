@@ -1,4 +1,6 @@
 import "react-native-gesture-handler";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -34,7 +36,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   // const { isAuth, auth } = useAuth();
   // console.log("isAuth", isAuth);
-  const routing = useRoute({});
+  const routing = useRoute(false);
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
@@ -46,34 +48,17 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
-  // console.log(isReady);
-  // if (!isReady) {
-  //   return (
-  //     <AppLoading
-  //       startAsync={loadFonts}
-  //       onFinish={() => setIsReady(true)}
-  //       onError={console.warn}
-  //     />
-  //   );
-  // }
   if (!fontsLoaded) {
     return null;
   }
   return (
-    // <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      {/* <View style={styles.container} onLayout={onLayoutRootView}>
-          <ImageBackground
-            style={styles.image}
-            source={require("./assets/photo-BG.jpg")}
-          > */}
-      <NavigationContainer>{routing}</NavigationContainer>
-      {/* <LoginScreen />
-      <StatusBar style="auto" /> */}
-      {/* </ImageBackground>
-        </View> */}
-    </View>
-    // </TouchableWithoutFeedback>
+    <Provider store={store}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          <NavigationContainer>{routing}</NavigationContainer>
+        </View>
+      </TouchableWithoutFeedback>
+    </Provider>
   );
 }
 

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import { useDispatch } from "react-redux";
 import {
   TouchableWithoutFeedback,
   ImageBackground,
@@ -12,12 +14,14 @@ import {
   Platform,
   Alert,
 } from "react-native";
-
+import { authRegistration } from "../../redux/auth/authOperations";
+//-------------------------------------------
 const initialRegistrationState = {
   login: "",
   email: "",
   password: "",
 };
+//------------------------------------------
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   // const [login, setLogin] = useState("");
@@ -27,17 +31,19 @@ export const RegistrationScreen = ({ navigation }) => {
   // const loginHandler = (text) => setLogin(text);
   // const emailHandler = (text) => setEmail(text);
   // const passwordHandler = (text) => setPassword(text);
-
+  //!const dispatch = useDispatch();
   const onSubmitPress = () => {
+    // authRegistration(state);
     setIsShowKeyboard(false);
     Keyboard.dismiss();
+
+    authRegistration(state);
+    console.log("JaJa", state);
     // Alert.alert(`${state.login} ${state.email} ${state.password}`);
+    //dispatch(authRegistration(state));
     setState(initialRegistrationState);
   };
 
-  // const onLogin = () => {
-  //   Alert.alert("Credentials", `${login}+ ${email} + ${password}`);
-  // };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.containerMain}>
