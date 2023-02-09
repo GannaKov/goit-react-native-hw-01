@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { Alert } from "react-native";
@@ -22,19 +23,34 @@ import { authSlice } from "./authSlice";
 // };
 
 export const authRegistration =
-  ({ email, password }) =>
+  ({ email, password, login }) =>
   async (dispatch, getState) => {
     //dispatch, getState
     try {
-      const userCredential = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
+        //const userCredential =
         auth,
+
         email,
         password
       );
+      //photoURL: "https://example.com/jane-q-user/profile.jpg",
 
-      const user = userCredential.user;
+      await updateProfile(auth.currentUser, {
+        displayName: login,
+      });
+      const { displayName, uid } = auth.currentUser;
+      console.log("auth.currentUser", auth.currentUser);
+      console.log("displayName", displayName);
+      const userUpdateProfile = {
+        login: displayName,
+        userId: uid,
+      };
+      console.log("userUpdateProfile", userUpdateProfile);
+      dispatch(authSlice.actions.updateUserProfile(userUpdateProfile));
+
+      // const user = userCredential.user;
       //console.log("user", user); // const user = userCredential.user;
-      dispatch(authSlice.actions.updateUserProfile({ userId: user.uid }));
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
