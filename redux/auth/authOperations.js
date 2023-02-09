@@ -10,23 +10,13 @@ import { auth } from "../../firebase/config";
 import { Alert } from "react-native";
 import { authSlice } from "./authSlice";
 //---------------------------
-// export const authRegistration = () => async (dispatch, getState) => {
-//   try {
-//     const user = await db
-//       .auth()
-//       .createUserWithEmailAndPassword("login", "emai", "password");
-//     console.log("user", user);
-//   } catch (error) {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//   }
-// };
 
 export const authRegistration =
   ({ email, password, login }) =>
   async (dispatch, getState) => {
     //dispatch, getState
     try {
+      console.log("auth", auth);
       await createUserWithEmailAndPassword(
         //const userCredential =
         auth,
@@ -40,13 +30,12 @@ export const authRegistration =
         displayName: login,
       });
       const { displayName, uid } = auth.currentUser;
-      console.log("auth.currentUser", auth.currentUser);
-      console.log("displayName", displayName);
+
       const userUpdateProfile = {
         login: displayName,
         userId: uid,
       };
-      console.log("userUpdateProfile", userUpdateProfile);
+
       dispatch(authSlice.actions.updateUserProfile(userUpdateProfile));
 
       // const user = userCredential.user;
@@ -58,17 +47,14 @@ export const authRegistration =
       Alert.alert(errorMessage);
     }
   };
-// createUserWithEmailAndPassword(auth, email, password)
-//   .then((userCredential) => {
-//     // Signed in
-//     const user = userCredential.user;
-//     // ...
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     // ..
-//   });
+//-------------------------
+export const authStateCahngeUser = () => async (dispatch, getState) => {
+  onAuthStateChanged(auth, (user) => {
+    console.log("user", user);
+    setUser(user);
+  });
+};
+
 //-------------------------------------------
 export const authLogIn =
   ({ email, password }) =>
