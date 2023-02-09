@@ -31,12 +31,31 @@ import { useRoute } from "./router";
 SplashScreen.preventAutoHideAsync();
 
 //----------------------------------------
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
 
 //--------------------------------
 export default function App() {
-  // const { isAuth, auth } = useAuth();
+  const [user, setUser] = useState(null);
   // console.log("isAuth", isAuth);
-  const routing = useRoute(false);
+  let uid;
+  onAuthStateChanged(auth, (user) => {
+    // setUser(user);
+    if (user) {
+      console.log("hi is login", user);
+
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      uid = user.uid;
+      // ...
+    } else {
+      console.log("hi is not login");
+      // User is signed out
+      // ...
+    }
+  });
+
+  const routing = useRoute(user);
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),

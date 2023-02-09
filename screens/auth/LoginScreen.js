@@ -1,5 +1,5 @@
 import React, { startTransition, useState, useEffect } from "react";
-
+import { useDispatch } from "react-redux";
 import {
   Keyboard,
   StyleSheet,
@@ -13,13 +13,14 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useAuth } from "../../hookAuth";
+
+import { authLogIn } from "../../redux/auth/authOperations";
 //-----------------------------------
 const initialLoginState = {
   email: "",
   password: "",
 };
-
+//------------------------------------
 export const LoginScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
@@ -28,12 +29,12 @@ export const LoginScreen = ({ navigation }) => {
   // const emailHandler = (text) => setEmail(text);
   // const passwordHandler = (text) => setPassword(text);
   const [state, setState] = useState(initialLoginState);
+  const dispatch = useDispatch();
 
   const onSubmitPress = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    Alert.alert(`${state.email} ${state.password}`);
-    console.log("st", state);
+    dispatch(authLogIn(state));
     setState(initialLoginState);
   };
 

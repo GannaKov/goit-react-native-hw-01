@@ -31,16 +31,15 @@ export const RegistrationScreen = ({ navigation }) => {
   // const loginHandler = (text) => setLogin(text);
   // const emailHandler = (text) => setEmail(text);
   // const passwordHandler = (text) => setPassword(text);
-  //!const dispatch = useDispatch();
+  const dispatch = useDispatch();
+
   const onSubmitPress = () => {
     // authRegistration(state);
     setIsShowKeyboard(false);
     Keyboard.dismiss();
 
-    authRegistration(state);
-    console.log("JaJa", state);
     // Alert.alert(`${state.login} ${state.email} ${state.password}`);
-    //dispatch(authRegistration(state));
+    dispatch(authRegistration(state));
     setState(initialRegistrationState);
   };
 
