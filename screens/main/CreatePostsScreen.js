@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 //---------------------------------------------
 export const CreatePostsScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null); //!!!!
@@ -70,8 +71,37 @@ export const CreatePostsScreen = ({ navigation }) => {
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
+  //-----------------------
+  const storage = getStorage();
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(picture);
+    const file = await response.blob();
+    console.log("blob", file);
+    const uniquePostId = Date.now().toString();
+    const storageRef = ref(storage, `images/${uniquePostId}`);
+    const data = await uploadBytes(storageRef, file);
+    //.then((snapshot) => { });
+    console.log("data", data);
+    await getDownloadURL(ref(storage, `images/${uniquePostId}`))
+      .then((url) => {
+        console.log("url", url);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log("err", error.message);
+        Alert.alert(errorMessage);
+      });
+    // const processedPhoto = await db
+    //   .storage()
+    //   .ref("postImage")
+    //   .child(uniquePostId)
+    //   .getDownloadURL();
+  };
 
+  // getDownloadURL(ref(storage, "images/stars.jpg")).then((url) => {});
+  //-----------------------
   const sendPhoto = () => {
+    uploadPhotoToServer();
     navigation.navigate("DefaultScreenPosts", {
       picture: picture,
       adress: adress,
@@ -87,6 +117,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     setDescription("");
     setAdress("");
   };
+
   return (
     <View style={styles.container}>
       {picture ? (
