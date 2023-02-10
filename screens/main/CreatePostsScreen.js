@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { Camera, CameraType } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import {
   Image,
@@ -14,6 +14,8 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../firebase/config";
 //---------------------------------------------
 export const CreatePostsScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null); //!!!!
@@ -27,6 +29,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [coords, setCoords] = useState(null);
   const [hasCameraPermission, requestPermission] =
     Camera.useCameraPermissions(); // instead of all async permissions
+  const { userId, login } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -80,28 +83,32 @@ export const CreatePostsScreen = ({ navigation }) => {
     const uniquePostId = Date.now().toString();
     const storageRef = ref(storage, `images/${uniquePostId}`);
     const data = await uploadBytes(storageRef, file);
-    //.then((snapshot) => { });
     console.log("data", data);
-    await getDownloadURL(ref(storage, `images/${uniquePostId}`))
-      .then((url) => {
-        console.log("url", url);
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log("err", error.message);
-        Alert.alert(errorMessage);
-      });
-    // const processedPhoto = await db
-    //   .storage()
-    //   .ref("postImage")
-    //   .child(uniquePostId)
-    //   .getDownloadURL();
+    const urlPhoto = await getDownloadURL(
+      ref(storage, `images/${uniquePostId}`)
+    );
+    return urlPhoto;
   };
+  const uploadPostToServer = async () => {
+    try {
+      const photo = await uploadPhotoToServer();
 
-  // getDownloadURL(ref(storage, "images/stars.jpg")).then((url) => {});
+      await addDoc(collection(db, "posts"), {
+        photo,
+        description,
+        location: coords,
+        userId,
+        login,
+      });
+    } catch (error) {
+      const errorMessage = error.message;
+      console.log("err", error.message);
+      Alert.alert(errorMessage);
+    }
+  };
   //-----------------------
   const sendPhoto = () => {
-    uploadPhotoToServer();
+    uploadPostToServer();
     navigation.navigate("DefaultScreenPosts", {
       picture: picture,
       adress: adress,
@@ -193,8 +200,6 @@ export const CreatePostsScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: "center",
-    // justifyContent: "center",
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 16,
   },
