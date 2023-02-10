@@ -1,24 +1,22 @@
-////import db from "../../firebase/config";
-
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { Alert } from "react-native";
 import { authSlice } from "./authSlice";
 //---------------------------
-
+const { authSignOut, authUserStateChange, updateUserProfile } =
+  authSlice.actions;
 export const authRegistration =
   ({ email, password, login }) =>
   async (dispatch, getState) => {
-    //dispatch, getState
     try {
       console.log("auth", auth);
       await createUserWithEmailAndPassword(
-        //const userCredential =
         auth,
 
         email,
@@ -36,10 +34,7 @@ export const authRegistration =
         userId: uid,
       };
 
-      dispatch(authSlice.actions.updateUserProfile(userUpdateProfile));
-
-      // const user = userCredential.user;
-      //console.log("user", user); // const user = userCredential.user;
+      dispatch(updateUserProfile(userUpdateProfile));
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -55,8 +50,8 @@ export const authStateCahnge = () => async (dispatch, getState) => {
         login: user.displayName,
         userId: user.uid,
       };
-      dispatch(authSlice.actions.authUserStateChange({ stateChange: true }));
-      dispatch(authSlice.actions.updateUserProfile(userUpdateProfile));
+      dispatch(authUserStateChange({ stateChange: true }));
+      dispatch(updateUserProfile(userUpdateProfile));
     }
   });
 };
@@ -65,15 +60,13 @@ export const authStateCahnge = () => async (dispatch, getState) => {
 export const authLogIn =
   ({ email, password }) =>
   async (dispatch, getState) => {
-    //dispatch, getState
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const user = userCredential.user;
-      // console.log("userLog", user); // const user = userCredential.user;
+      //const user = userCredential.user;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -82,19 +75,15 @@ export const authLogIn =
     }
   };
 //---------------------------------------------------
-// export const authLogOut = () => async (dispatch, getState) => {
-//   //dispatch, getState
-//   try {
-//     const userCredential = await signInWithEmailAndPassword(
-//       auth,
-//       email,
-//       password
-//     );
-//     const user = userCredential.user;
-//     console.log("userLog", user); // const user = userCredential.user;
-//   } catch (error) {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     console.log("err", error.message);
-//   }
-// };
+
+export const authSignOutUser = () => async (dispatch, getState) => {
+  await signOut(auth)
+    .then(() => {
+      dispatch(authSignOut());
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      console.log("err", error.message);
+      Alert.alert(errorMessage);
+    });
+};

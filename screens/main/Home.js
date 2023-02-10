@@ -1,5 +1,6 @@
 import "react-native-gesture-handler"; //the libraries that are required by the stack navigator
 import React from "react";
+import { useDispatch } from "react-redux";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -7,11 +8,16 @@ import { PostsScreen } from "./PostsScreen";
 import { CreatePostsScreen } from "./CreatePostsScreen";
 import { ProfileScreen } from "./ProfileScreen";
 import { Feather } from "@expo/vector-icons";
-
+import { authSignOutUser } from "../../redux/auth/authOperations";
 //-------------------------------------------------------
 const MainTab = createBottomTabNavigator();
 //--------------------------------------------------
 export const Home = () => {
+  const dispatch = useDispatch();
+
+  const signOut = () => {
+    dispatch(authSignOutUser());
+  };
   //{ navigation }
   return (
     <MainTab.Navigator
@@ -27,15 +33,14 @@ export const Home = () => {
           headerTitle: "Posts",
           headerTitleAlign: "center",
           headerRight: (focused, size, color) => (
-            <View style={{ marginRight: 10 }}>
+            <TouchableOpacity style={{ marginRight: 10 }} onPress={signOut}>
               <Feather
                 name="log-out"
                 size={24}
                 color="rgba(189, 189, 189, 1)"
               />
-            </View>
+            </TouchableOpacity>
           ),
-
           headerStyle: {
             backgroundColor: "#FFFFFF",
             height: 88,
