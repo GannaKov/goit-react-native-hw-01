@@ -24,17 +24,12 @@ const initialRegistrationState = {
 //------------------------------------------
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  // const [login, setLogin] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
+
   const [state, setState] = useState(initialRegistrationState);
-  // const loginHandler = (text) => setLogin(text);
-  // const emailHandler = (text) => setEmail(text);
-  // const passwordHandler = (text) => setPassword(text);
+
   const dispatch = useDispatch();
 
   const onSubmitPress = () => {
-    // authRegistration(state);
     setIsShowKeyboard(false);
     Keyboard.dismiss();
 

@@ -48,10 +48,16 @@ export const authRegistration =
     }
   };
 //-------------------------
-export const authStateCahngeUser = () => async (dispatch, getState) => {
+export const authStateCahnge = () => async (dispatch, getState) => {
   onAuthStateChanged(auth, (user) => {
-    console.log("user", user);
-    setUser(user);
+    if (user) {
+      const userUpdateProfile = {
+        login: user.displayName,
+        userId: user.uid,
+      };
+      dispatch(authSlice.actions.authUserStateChange({ stateChange: true }));
+      dispatch(authSlice.actions.updateUserProfile(userUpdateProfile));
+    }
   });
 };
 
