@@ -79,11 +79,10 @@ export const CreatePostsScreen = ({ navigation }) => {
   const uploadPhotoToServer = async () => {
     const response = await fetch(picture);
     const file = await response.blob();
-    console.log("blob", file);
+
     const uniquePostId = Date.now().toString();
     const storageRef = ref(storage, `images/${uniquePostId}`);
     const data = await uploadBytes(storageRef, file);
-    console.log("data", data);
     const urlPhoto = await getDownloadURL(
       ref(storage, `images/${uniquePostId}`)
     );
@@ -109,12 +108,15 @@ export const CreatePostsScreen = ({ navigation }) => {
   //-----------------------
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate("DefaultScreenPosts", {
-      picture: picture,
-      adress: adress,
-      description: description,
-      coords: coords,
-    });
+    navigation.navigate(
+      "DefaultScreenPosts"
+      //  {
+      //   picture: picture,
+      //   adress: adress,
+      //   description: description,
+      //   coords: coords,
+      // }
+    );
     setPicture("");
     setDescription("");
     setAdress("");

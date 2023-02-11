@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase/config";
 import {
   View,
   Text,
@@ -11,12 +13,57 @@ import { Feather } from "@expo/vector-icons";
 
 export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  useEffect(() => {
-    if (route.params) {
-      setPosts((prevState) => [route.params, ...prevState]);
-    }
-  }, [route.params]);
 
+  // const getAllPost = async () => {
+  //   await db
+  //     .firestore()
+  //     .collection("posts")
+  //     .onSnapshot((data) =>
+  //       setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  //     );
+  // };
+  const getAllPost = async () => {
+    const querySnapshot = await getDocs(collection(db, "posts")).then(
+      (querySnapshot) => {
+        const newData = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setPosts(newData);
+      }
+    );
+    // console.log("querySnapshot", querySnapshot);
+    // querySnapshot.forEach((doc) => {
+    //   const post = { doc: doc.data(), id: doc.id };
+    //   console.log("post", post);
+    //   setPosts([...posts, post]);
+  };
+  // querySnapshot.forEach((doc) => {{ ...doc.data(), id: doc.id }
+  //   console.log("id++data", doc.id, doc.data());
+  //   console.log("id+data", `${doc.id} => ${doc.data()}`);
+  // });
+
+  // const fetchPost = async () => {
+
+  //         await getDocs(collection(db, "todos"))
+  //             .then((querySnapshot)=>{
+  //                 const newData = querySnapshot.docs
+  //                     .map((doc) => ({...doc.data(), id:doc.id }));
+  //                 setTodos(newData);
+  //                 console.log(todos, newData);
+  //             })
+  // useEffect(() => {
+  //   if (route.params) {
+  //     setPosts((prevState) => [route.params, ...prevState]);
+  //   }
+  // }, [route.params]);
+
+  useEffect(() => {
+    console.log("in effect");
+    getAllPost();
+  }, []);
+  console.log("posts", posts);
+  // useEffect(() => {}, [posts]);
   return (
     <View style={styles.container}>
       <FlatList
@@ -25,7 +72,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           <View>
             {/* style={styles.takenPictureContainer} */}
             <Image
-              source={{ uri: item.picture }}
+              source={{ uri: item.photo }}
               style={{
                 width: "100%",
                 height: 240,
