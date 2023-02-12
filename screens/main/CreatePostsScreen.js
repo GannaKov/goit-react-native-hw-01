@@ -31,26 +31,39 @@ export const CreatePostsScreen = ({ navigation }) => {
     Camera.useCameraPermissions(); // instead of all async permissions
   const { userId, login } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
+  const getLocation = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        console.log("status", status);
+        return;
+      } else {
+        const locationRes = await Location.getCurrentPositionAsync({});
+        if (!locationRes) {
+          console.log("No in Eff", locationRes);
           return;
         }
-        //in take Pic
-        let locationRes = await Location.getCurrentPositionAsync({});
-
-        console.log("location in Eff", location);
+        console.log("location in Eff", locationRes);
         setLocation(locationRes);
-      } catch (error) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("err", error.message);
-        Alert.alert(errorMessage);
+        const place = await Location.reverseGeocodeAsync({
+          latitude: locationRes.coords.latitude,
+          longitude: locationRes.coords.longitude,
+        });
+        const adrText = `${place[0].country}  ${place[0].city} ${place[0].district}`;
+        console.log("adrText in Eff", adrText);
+        setAdress(adrText);
       }
-    })();
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log("err", error.message);
+      Alert.alert(errorMessage);
+    }
+  };
+
+  useEffect(() => {
+    getLocation();
   }, []);
 
   const onCameraReady = () => {
@@ -62,17 +75,6 @@ export const CreatePostsScreen = ({ navigation }) => {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
       const picture = await cameraRef.takePictureAsync(options);
       setPicture(picture.uri);
-      let locationRes = await Location.getCurrentPositionAsync({});
-      console.log("location in takeP", location);
-      console.log("l-coord", location.coords);
-      console.log("loc", location);
-      setLocation(location);
-      const place = await Location.reverseGeocodeAsync({
-        latitude: locationRes.coords.latitude,
-        longitude: locationRes.coords.longitude,
-      });
-      const adrText = `${place[0].country}  ${place[0].city} ${place[0].district}`;
-      setAdress(adrText);
     }
   };
 
@@ -177,7 +179,7 @@ export const CreatePostsScreen = ({ navigation }) => {
           style={styles.lastInput}
           placeholder="Location"
           placeholderTextColor="#BDBDBD"
-          value={adress ? adress : ""}
+          value={adress ? adress : "Wait...We are trying to find the location"}
           onChangeText={setAdress}
         />
         <Feather

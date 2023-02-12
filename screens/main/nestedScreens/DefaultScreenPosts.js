@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
@@ -43,7 +44,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           id: doc.id,
         });
         setPosts(photoArr);
-        console.log("Current photoArr ", photoArr);
       });
     });
   };
@@ -83,6 +83,12 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   //   }
   // }, [route.params]);
 
+  // const mapNav = (loc, pic) => {
+  //   navigation.navigate("Map", {
+  //     loc,
+  //     pic,
+  //   });
+  // };
   useEffect(() => {
     console.log("in effect 1");
     getAllPost();
@@ -152,12 +158,17 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   style={{ marginRight: 4 }}
                 />
                 <Text
-                  onPress={() =>
-                    navigation.navigate("Map", {
-                      location: item.location,
-                      picture: item.photo,
-                    })
-                  }
+                  // onPress={mapNav(item.location, item.photo)}
+                  onPress={() => {
+                    if (item.location) {
+                      navigation.navigate("Map", {
+                        location: item.location,
+                        picture: item.photo,
+                      });
+                    } else {
+                      Alert.alert("There is no location");
+                    }
+                  }}
                   style={{
                     fontSize: 16,
                     lineHeight: 19,
@@ -166,7 +177,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                     textDecorationLine: "underline",
                   }}
                 >
-                  {item.adress}
+                  {item.adress ? item.adress : "Somewhere in the World"}
                 </Text>
               </View>
             </View>
