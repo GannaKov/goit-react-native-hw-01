@@ -48,17 +48,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
     });
   };
 
-  // querySnapshot.forEach((doc) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   console.log(doc.id, " => ", doc.data());
-  // });
-  //const q = query(citiesRef, orderBy("date", "desc"));
-  // const querySnapshot = await getDocs(collection(db, "cities"));
-  // querySnapshot.forEach((doc) => {
-  //   // doc.data() is never undefined for query doc snapshots
-  //   console.log(doc.id, " => ", doc.data());
-  // });
-
   //var 2
   // const getAllPost = async () => {
   //   const querySnapshot = await getDocs(collection(db, "posts"));
@@ -103,6 +92,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
     <View style={styles.container}>
       <FlatList
         data={posts}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View>
             {/* style={styles.takenPictureContainer} */}
@@ -183,7 +173,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
             </View>
           </View>
         )}
-        keyExtractor={(item, index) => index.toString()}
       />
     </View>
   );
@@ -191,7 +180,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     // alignItems: "center",
     //justifyContent: "center",
     backgroundColor: "#FFFFFF",

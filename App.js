@@ -48,11 +48,11 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container} onLayout={onLayoutRootView}>
-          <Main />
-        </View>
-      </TouchableWithoutFeedback>
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <Main />
+      </View>
+      {/* </TouchableWithoutFeedback> */}
     </Provider>
   );
 }
