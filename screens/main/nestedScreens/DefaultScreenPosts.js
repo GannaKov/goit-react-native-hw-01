@@ -79,14 +79,12 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   //   });
   // };
   useEffect(() => {
-    console.log("in effect 1");
     getAllPost();
-    console.log("posts 1", posts);
+    console.log("in Eff posts 1");
   }, []);
 
   useEffect(() => {
-    console.log("in effect 2");
-    console.log("posts2", posts);
+    console.log("in effect 2posts");
   }, [posts]);
   return (
     <View style={styles.container}>
@@ -119,7 +117,9 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
             <View style={styles.description}>
               <View style={styles.comments}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Comments")}
+                  onPress={() =>
+                    navigation.navigate("Comments", { postId: item.id })
+                  }
                 >
                   <Feather
                     name="message-circle"

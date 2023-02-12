@@ -44,14 +44,14 @@ export const CreatePostsScreen = ({ navigation }) => {
           console.log("No in Eff", locationRes);
           return;
         }
-        console.log("location in Eff", locationRes);
+
         setLocation(locationRes);
         const place = await Location.reverseGeocodeAsync({
           latitude: locationRes.coords.latitude,
           longitude: locationRes.coords.longitude,
         });
         const adrText = `${place[0].country}  ${place[0].city} ${place[0].district}`;
-        console.log("adrText in Eff", adrText);
+
         setAdress(adrText);
       }
     } catch (error) {
