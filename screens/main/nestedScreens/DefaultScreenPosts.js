@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "../../../firebase/config";
 import {
   View,
@@ -16,17 +22,42 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
 
   //var 1!!!
 
+  // const getAllPost = async () => {
+  //   const querySnapshot = await getDocs(collection(db, "posts")).then(
+  //     (querySnapshot) => {
+  //       const newData = querySnapshot.docs.map((doc) => ({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //       }));
+  //       setPosts(newData);
+  //     }
+  //   );
+  // };
   const getAllPost = async () => {
-    const querySnapshot = await getDocs(collection(db, "posts")).then(
-      (querySnapshot) => {
-        const newData = querySnapshot.docs.map((doc) => ({
+    const q = query(collection(db, "posts"), orderBy("date", "desc"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const photoArr = [];
+      querySnapshot.forEach((doc) => {
+        photoArr.push({
           ...doc.data(),
           id: doc.id,
-        }));
-        setPosts(newData);
-      }
-    );
+        });
+        setPosts(photoArr);
+        console.log("Current photoArr ", photoArr);
+      });
+    });
   };
+
+  // querySnapshot.forEach((doc) => {
+  //   // doc.data() is never undefined for query doc snapshots
+  //   console.log(doc.id, " => ", doc.data());
+  // });
+  //const q = query(citiesRef, orderBy("date", "desc"));
+  // const querySnapshot = await getDocs(collection(db, "cities"));
+  // querySnapshot.forEach((doc) => {
+  //   // doc.data() is never undefined for query doc snapshots
+  //   console.log(doc.id, " => ", doc.data());
+  // });
 
   //var 2
   // const getAllPost = async () => {
@@ -53,11 +84,15 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   // }, [route.params]);
 
   useEffect(() => {
-    console.log("in effect");
+    console.log("in effect 1");
     getAllPost();
+    console.log("posts 1", posts);
   }, []);
-  console.log("posts", posts);
-  useEffect(() => {}, [posts]);
+
+  useEffect(() => {
+    console.log("in effect 2");
+    console.log("posts2", posts);
+  }, [posts]);
   return (
     <View style={styles.container}>
       <FlatList

@@ -33,14 +33,23 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          setErrorMsg("Permission to access location was denied");
+          return;
+        }
+        //in take Pic
+        let locationRes = await Location.getCurrentPositionAsync({});
 
-      setLocation(location);
+        console.log("location in Eff", location);
+        setLocation(locationRes);
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("err", error.message);
+        Alert.alert(errorMessage);
+      }
     })();
   }, []);
 
@@ -53,16 +62,15 @@ export const CreatePostsScreen = ({ navigation }) => {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
       const picture = await cameraRef.takePictureAsync(options);
       setPicture(picture.uri);
+      let locationRes = await Location.getCurrentPositionAsync({});
+      console.log("location in takeP", location);
+      console.log("l-coord", location.coords);
+      console.log("loc", location);
+      setLocation(location);
       const place = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: locationRes.coords.latitude,
+        longitude: locationRes.coords.longitude,
       });
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setCoords(coords);
-
       const adrText = `${place[0].country}  ${place[0].city} ${place[0].district}`;
       setAdress(adrText);
     }
@@ -90,6 +98,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
   const uploadPostToServer = async () => {
     try {
+      const date = new Date();
       const photo = await uploadPhotoToServer();
 
       await addDoc(collection(db, "posts"), {
@@ -99,6 +108,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         userId,
         login,
         adress,
+        date,
       });
     } catch (error) {
       const errorMessage = error.message;
