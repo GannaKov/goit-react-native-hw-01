@@ -98,6 +98,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         location: coords,
         userId,
         login,
+        adress,
       });
     } catch (error) {
       const errorMessage = error.message;

@@ -22,16 +22,16 @@ export const MapScreen = ({ route }) => {
             outlineStyle: "'solid',",
           }}
           region={{
-            latitude: coo.coords.latitude,
-            longitude: coo.coords.longitude,
+            latitude: coo.location.latitude,
+            longitude: coo.location.longitude,
             latitudeDelta: 0.001,
             longitudeDelta: 0.006,
           }}
         >
           <Marker
             coordinate={{
-              latitude: coo.coords.latitude,
-              longitude: coo.coords.longitude,
+              latitude: coo.location.latitude,
+              longitude: coo.location.longitude,
             }}
           >
             <Image

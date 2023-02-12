@@ -15,32 +15,35 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
 
   //var 1!!!
-  // const getAllPost = async () => {
-  //   const querySnapshot = await getDocs(collection(db, "posts")).then(
-  //     (querySnapshot) => {
-  //       const newData = querySnapshot.docs.map((doc) => ({
-  //         ...doc.data(),
-  //         id: doc.id,
-  //       }));
-  //       setPosts(newData);
-  //     }
-  //   );
-  // };
+
   const getAllPost = async () => {
-    const querySnapshot = await getDocs(collection(db, "posts"));
-    const dataArr = [];
-    querySnapshot.forEach((doc) => {
-      dataArr.unshift({
-        photo: doc.data().photo,
-        location: doc.data().location,
-        description: doc.data().description,
-        id: doc.id,
-        userId: doc.data().userId,
-        login: doc.data().login,
-      });
-    });
-    setPosts(tickets);
+    const querySnapshot = await getDocs(collection(db, "posts")).then(
+      (querySnapshot) => {
+        const newData = querySnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setPosts(newData);
+      }
+    );
   };
+
+  //var 2
+  // const getAllPost = async () => {
+  //   const querySnapshot = await getDocs(collection(db, "posts"));
+  //   const dataArr = [];
+  //   querySnapshot.forEach((doc) => {
+  //     dataArr.unshift({
+  //       photo: doc.data().photo,
+  //       location: doc.data().location,
+  //       description: doc.data().description,
+  //       id: doc.id,
+  //       userId: doc.data().userId,
+  //       login: doc.data().login,
+  //     });
+  //   });
+  //   setPosts(dataArr);
+  // };
 
   //     old var
   // useEffect(() => {
@@ -54,7 +57,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
     getAllPost();
   }, []);
   console.log("posts", posts);
-  // useEffect(() => {}, [posts]);
+  useEffect(() => {}, [posts]);
   return (
     <View style={styles.container}>
       <FlatList
@@ -116,8 +119,8 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                 <Text
                   onPress={() =>
                     navigation.navigate("Map", {
-                      coords: item.coords,
-                      picture: item.picture,
+                      location: item.location,
+                      picture: item.photo,
                     })
                   }
                   style={{

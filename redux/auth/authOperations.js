@@ -11,6 +11,7 @@ import { authSlice } from "./authSlice";
 //---------------------------
 const { authSignOut, authUserStateChange, updateUserProfile } =
   authSlice.actions;
+
 export const authRegistration =
   ({ email, password, login }) =>
   async (dispatch, getState) => {
