@@ -45,6 +45,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           id: doc.id,
         });
       });
+      console.log("photoArr", photoArr);
       setPosts(photoArr);
     });
   };
@@ -119,7 +120,10 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
               <View style={styles.comments}>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate("Comments", { postId: item.id })
+                    navigation.navigate("Comments", {
+                      postId: item.id,
+                      postPhoto: item.photo,
+                    })
                   }
                 >
                   <Feather
