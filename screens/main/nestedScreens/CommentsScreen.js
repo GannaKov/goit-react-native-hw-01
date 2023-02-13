@@ -19,6 +19,8 @@ import {
   TouchableOpacity,
   FlatList,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../../../firebase/config";
@@ -72,21 +74,26 @@ export const CommentsScreen = ({ route }) => {
       setAllComments(commentsArr);
     });
   };
-
+  const keyboardHide = () => {
+    Keyboard.dismiss();
+  };
   //__________________________
   return (
     <View style={styles.container}>
       <View style={styles.postsContainer}>
-        <Image
-          source={{ uri: postPhoto }}
-          style={{
-            width: "100%",
-            height: 240,
-            borderRadius: 8,
-            marginBottom: 32,
-          }}
-        />
-
+        <TouchableWithoutFeedback onPress={keyboardHide}>
+          <View>
+            <Image
+              source={{ uri: postPhoto }}
+              style={{
+                width: "100%",
+                height: 240,
+                borderRadius: 8,
+                marginBottom: 32,
+              }}
+            />
+          </View>
+        </TouchableWithoutFeedback>
         <FlatList
           data={allComments}
           keyExtractor={(item, index) => index.toString()}
