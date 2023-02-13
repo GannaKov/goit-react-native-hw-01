@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import {
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
+
 import {
   Alert,
   View,
@@ -7,6 +16,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../../../firebase/config";
@@ -16,16 +26,12 @@ export const CommentsScreen = ({ route }) => {
   const { postId } = route.params;
   const [comment, setComment] = useState("");
   const { login } = useSelector((state) => state.auth);
-  console.log("in Comments", postId, login);
+  const [allComments, setAllComments] = useState([]);
 
-  // const createComment = async () => {
-  //   db.firestore()
-  //     .collection("posts")
-  //     .doc(postId)
-  //     .collection("comments")
-  //     .add({ comment, login });
-  // };
-
+  useEffect(() => {
+    getAllComments();
+    console.log("allComments", allComments);
+  }, []);
   // oder addDoc????use setDoc to set a specific id
   const sendComment = async () => {
     try {
@@ -43,6 +49,20 @@ export const CommentsScreen = ({ route }) => {
     }
   };
 
+  const getAllComments = async () => {
+    const q = query(collection(db, "posts", postId, "comments"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const commentsArr = [];
+      querySnapshot.forEach((doc) => {
+        commentsArr.push({
+          ...doc.data(),
+          id: doc.id,
+        });
+      });
+      setAllComments(commentsArr);
+      console.log("commentsArr", commentsArr);
+    });
+  };
   //__________________________
   return (
     <View style={styles.container}>

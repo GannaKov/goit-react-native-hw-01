@@ -37,14 +37,15 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   const getAllPost = async () => {
     const q = query(collection(db, "posts"), orderBy("date", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      //await!!
       const photoArr = [];
       querySnapshot.forEach((doc) => {
         photoArr.push({
           ...doc.data(),
           id: doc.id,
         });
-        setPosts(photoArr);
       });
+      setPosts(photoArr);
     });
   };
 
@@ -83,9 +84,9 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
     console.log("in Eff posts 1");
   }, []);
 
-  useEffect(() => {
-    console.log("in effect 2posts");
-  }, [posts]);
+  // useEffect(() => {
+  //   console.log("in effect 2posts");
+  // }, [posts]);
   return (
     <View style={styles.container}>
       <FlatList

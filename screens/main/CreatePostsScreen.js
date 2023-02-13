@@ -26,7 +26,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [picture, setPicture] = useState("");
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [coords, setCoords] = useState(null);
+  const [coordinates, setCoordinates] = useState(null);
   const [hasCameraPermission, requestPermission] =
     Camera.useCameraPermissions(); // instead of all async permissions
   const { userId, login } = useSelector((state) => state.auth);
@@ -44,8 +44,12 @@ export const CreatePostsScreen = ({ navigation }) => {
           console.log("No in Eff", locationRes);
           return;
         }
-
         setLocation(locationRes);
+        const loc = {
+          latitude: locationRes.coords.latitude,
+          longitude: locationRes.coords.longitude,
+        };
+        setCoordinates(loc);
         const place = await Location.reverseGeocodeAsync({
           latitude: locationRes.coords.latitude,
           longitude: locationRes.coords.longitude,
@@ -100,13 +104,14 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
   const uploadPostToServer = async () => {
     try {
+      console.log("loc in uploadPost", coordinates);
       const date = new Date();
       const photo = await uploadPhotoToServer();
 
       await addDoc(collection(db, "posts"), {
         photo,
         description,
-        location: coords,
+        location: coordinates,
         userId,
         login,
         adress,
