@@ -129,6 +129,7 @@ export const CommentsScreen = ({ route }) => {
       </View>
       <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
         behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
+        keyboardVerticalOffset={200}
         style={{
           position: "absolute",
           left: 16,
