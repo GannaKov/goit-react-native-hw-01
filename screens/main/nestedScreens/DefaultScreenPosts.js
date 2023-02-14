@@ -45,7 +45,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           id: doc.id,
         });
       });
-      console.log("photoArr", photoArr);
+
       setPosts(photoArr);
     });
   };
@@ -82,7 +82,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   // };
   useEffect(() => {
     getAllPost();
-    console.log("in Eff posts 1");
   }, []);
 
   // useEffect(() => {

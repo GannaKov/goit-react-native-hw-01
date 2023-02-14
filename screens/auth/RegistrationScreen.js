@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { Asset } from "expo-asset";
+import { useAssets } from "expo-asset";
 import { useDispatch } from "react-redux";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import uuid from "react-native-uuid";
@@ -19,6 +21,7 @@ import {
   Alert,
 } from "react-native";
 import { authRegistration } from "../../redux/auth/authOperations";
+
 //-------------------------------------------
 // const initialRegistrationState = {
 //   login: "",
@@ -31,11 +34,13 @@ export const RegistrationScreen = ({ navigation }) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [state, setState] = useState(initialRegistrationState);
+  // const [state, setState] = useState(initialRegistrationState);
   const [avatar, setAvatar] = useState(null);
   const [statusImPic, requestPermissionImPic] =
     ImagePicker.useMediaLibraryPermissions();
-
+  const [assets, error] = useAssets([
+    require("../../assets/images/green_frog.png"),
+  ]);
   const dispatch = useDispatch();
 
   const onSubmitPress = async () => {
@@ -44,8 +49,10 @@ export const RegistrationScreen = ({ navigation }) => {
         Alert.alert("Please, fill all the fields");
       }
       Alert.alert(`Welkome, ${login}!`);
-      const avatar = await uploadPhotoToServer();
-      dispatch(authRegistration({ login, email, password, avatar: avatar }));
+      const avatarPhoto = await uploadPhotoToServer();
+      dispatch(
+        authRegistration({ login, email, password, avatar: avatarPhoto })
+      );
       setLogin("");
       setEmail("");
       setPassword("");
@@ -69,15 +76,25 @@ export const RegistrationScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
+    console.log("result", result);
 
     if (!result.canceled) {
       setAvatar(result.assets[0].uri);
     }
   };
+  //---------------------------------
   const storage = getStorage();
   const uploadPhotoToServer = async () => {
-    const response = await fetch(avatar);
+    let AvUrl = avatar;
+    if (!avatar) {
+      AvUrl = assets[0].localUri;
+      // setAvatar(assets[0].localUri);
+
+      console.log("assets[0].localUri", assets[0].localUri);
+      console.log("AvUrl", AvUrl);
+    }
+    console.log("avatar", avatar);
+    const response = await fetch(AvUrl); //const response = await fetch(avatar);
     const file = await response.blob();
 
     const uniquePostId = uuid.v4();

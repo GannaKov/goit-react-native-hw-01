@@ -16,10 +16,10 @@ import {
 
 import { authLogIn } from "../../redux/auth/authOperations";
 //-----------------------------------
-const initialLoginState = {
-  email: "",
-  password: "",
-};
+// const initialLoginState = {
+//   email: "",
+//   password: "",
+// };
 //------------------------------------
 export const LoginScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -27,7 +27,7 @@ export const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   // const emailHandler = (text) => setEmail(text);
   // const passwordHandler = (text) => setPassword(text);
-  const [state, setState] = useState(initialLoginState);
+  // const [state, setState] = useState(initialLoginState);
   const dispatch = useDispatch();
   const handleEmail = (value) => setEmail(value.trim());
   const handlePassword = (value) => setPassword(value.trim());

@@ -41,7 +41,6 @@ export const CreatePostsScreen = ({ navigation }) => {
       } else {
         const locationRes = await Location.getCurrentPositionAsync({});
         if (!locationRes) {
-          console.log("No in Eff", locationRes);
           return;
         }
         setLocation(locationRes);
@@ -104,7 +103,6 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
   const uploadPostToServer = async () => {
     try {
-      console.log("loc in uploadPost", coordinates);
       const date = new Date();
       const photo = await uploadPhotoToServer();
 

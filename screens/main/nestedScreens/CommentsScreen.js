@@ -64,7 +64,7 @@ export const CommentsScreen = ({ route }) => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const commentsArr = [];
       querySnapshot.forEach((doc) => {
-        console.dir("date", doc.date);
+      
         commentsArr.push({
           ...doc.data(),
           id: doc.id,
