@@ -76,8 +76,6 @@ export const RegistrationScreen = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log("result", result);
-
     if (!result.canceled) {
       setAvatar(result.assets[0].uri);
     }
@@ -85,16 +83,13 @@ export const RegistrationScreen = ({ navigation }) => {
   //---------------------------------
   const storage = getStorage();
   const uploadPhotoToServer = async () => {
-    let AvUrl = avatar;
+    let AvtUrl = avatar;
     if (!avatar) {
-      AvUrl = assets[0].localUri;
+      AvtUrl = assets[0].localUri;
       // setAvatar(assets[0].localUri);
-
-      console.log("assets[0].localUri", assets[0].localUri);
-      console.log("AvUrl", AvUrl);
     }
-    console.log("avatar", avatar);
-    const response = await fetch(AvUrl); //const response = await fetch(avatar);
+
+    const response = await fetch(AvtUrl); //const response = await fetch(avatar);
     const file = await response.blob();
 
     const uniquePostId = uuid.v4();

@@ -16,7 +16,6 @@ export const authRegistration =
   ({ email, password, login, avatar }) =>
   async (dispatch, getState) => {
     try {
-      console.log("auth", auth);
       await createUserWithEmailAndPassword(
         auth,
 
@@ -30,7 +29,7 @@ export const authRegistration =
         photoURL: avatar,
       });
       const { displayName, uid, photoURL } = auth.currentUser;
-
+      console.log("auth.currentUser", auth.currentUser);
       const userUpdateProfile = {
         login: displayName,
         userId: uid,

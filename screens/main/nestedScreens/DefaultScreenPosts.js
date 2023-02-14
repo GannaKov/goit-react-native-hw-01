@@ -122,6 +122,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                     navigation.navigate("Comments", {
                       postId: item.id,
                       postPhoto: item.photo,
+                      autorPostId: item.userId,
                     })
                   }
                 >

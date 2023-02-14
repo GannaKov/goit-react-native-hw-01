@@ -29,10 +29,11 @@ import { Feather } from "@expo/vector-icons";
 export const CommentsScreen = ({ route }) => {
   const { postId } = route.params;
   const { postPhoto } = route.params;
+  const { autorPostId } = route.params;
   const [comment, setComment] = useState("");
-  const { login } = useSelector((state) => state.auth);
-  const [allComments, setAllComments] = useState([]);
 
+  const [allComments, setAllComments] = useState([]);
+  const { userId, login, avatar } = useSelector((state) => state.auth);
   useEffect(() => {
     getAllComments();
   }, []);
@@ -44,7 +45,10 @@ export const CommentsScreen = ({ route }) => {
         comment: comment,
         login: login,
         date: date,
+        autorCommentId: userId,
+        avatar: avatar,
       });
+      console.log("autorPostId:", autorPostId, "autorCommentId", userId); //!!!!!!!!
     } catch (error) {
       const errorMessage = error.message;
       console.log("err", error.message);
@@ -54,17 +58,17 @@ export const CommentsScreen = ({ route }) => {
   const sendComment = () => {
     addComment();
     setComment("");
+    keyboardHide();
   };
 
   const getAllComments = async () => {
     const q = query(
       collection(db, "posts", postId, "comments"),
-      orderBy("date", "asc")
+      orderBy("date", "desc")
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const commentsArr = [];
       querySnapshot.forEach((doc) => {
-      
         commentsArr.push({
           ...doc.data(),
           id: doc.id,
@@ -100,7 +104,17 @@ export const CommentsScreen = ({ route }) => {
           renderItem={({ item }) => (
             <View>
               <View style={styles.commentArrea}>
-                <View style={styles.commentLogin}></View>
+                <View style={styles.commentLogin}>
+                  <Image
+                    source={{ uri: item.avatar }}
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 100,
+                      marginBottom: 32,
+                    }}
+                  />
+                </View>
                 <View style={styles.commentBox}>
                   <Text
                     style={{
@@ -172,10 +186,10 @@ const styles = StyleSheet.create({
   postsContainer: { marginBottom: 350 },
   commentArrea: { flexDirection: "row" },
   commentLogin: {
-    borderRadius: 100,
-    backgroundColor: "#dc143c",
-    width: 28,
-    height: 28,
+    // borderRadius: 100,
+    // // backgroundColor: "#dc143c",
+    // width: 28,
+    // height: 28,
     marginRight: 16,
   },
   commentBox: {
