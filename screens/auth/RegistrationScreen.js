@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   TouchableWithoutFeedback,
   ImageBackground,
+  Image,
   Keyboard,
   StyleSheet,
   Text,
@@ -27,7 +28,7 @@ const initialRegistrationState = {
 //------------------------------------------
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [name, setName] = useState("");
+  const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [state, setState] = useState(initialRegistrationState);
@@ -37,15 +38,25 @@ export const RegistrationScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const onSubmitPress = () => {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-
-    // Alert.alert(`${state.login} ${state.email} ${state.password}`);
-    dispatch(authRegistration(state));
-    setState(initialRegistrationState);
+  const onSubmitPress = async () => {
+    try {
+      if (!login.trim() || !email.trim() || !password.trim()) {
+        Alert.alert("Please, fill all the fields");
+      }
+      Alert.alert(`Welkome, ${login}!`);
+      const avatar = await uploadPhotoToServer();
+      dispatch(authRegistration({ login, email, password, avatar: avatar }));
+      setLogin("");
+      setEmail("");
+      setPassword("");
+      setAvatar(null);
+      setIsShowKeyboard(false);
+      Keyboard.dismiss();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-  const handleName = (value) => setName(value);
+  const handleLogin = (value) => setLogin(value);
   const handleEmail = (value) => setEmail(value.trim());
   const handlePassword = (value) => setPassword(value.trim());
   //-----Avatar______
@@ -66,7 +77,7 @@ export const RegistrationScreen = ({ navigation }) => {
   };
   const storage = getStorage();
   const uploadPhotoToServer = async () => {
-    const response = await fetch(picture);
+    const response = await fetch(avatar);
     const file = await response.blob();
 
     const uniquePostId = uuid.v4();
@@ -91,10 +102,11 @@ export const RegistrationScreen = ({ navigation }) => {
             style={styles.container}
           >
             <View style={styles.userPhoto}>
-              <TouchableOpacity
-                style={styles.btnAddPhoto}
-                onPress={() => Alert.alert("Simple Button pressed")}
-              >
+              <Image
+                source={{ uri: avatar }}
+                style={{ width: 120, height: 120, borderRadius: 16 }}
+              />
+              <TouchableOpacity style={styles.btnAddPhoto} onPress={pickImage}>
                 <Ionicons name="add" size={24} color="#FF6C00" />
               </TouchableOpacity>
             </View>
@@ -104,37 +116,31 @@ export const RegistrationScreen = ({ navigation }) => {
               {/* корректровать */}
               <TextInput
                 style={styles.input}
-                placeholder="Логин"
+                placeholder="Login"
                 placeholderTextColor="#BDBDBD"
-                value={state.login}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, login: value }))
-                }
+                value={login}
+                onChangeText={handleLogin}
                 onFocus={() => setIsShowKeyboard(true)}
               ></TextInput>
               <TextInput
                 style={styles.input}
-                placeholder="Адрес электронной почты"
+                placeholder="Email"
                 placeholderTextColor="#BDBDBD"
-                value={state.email}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, email: value }))
-                }
+                value={email}
+                onChangeText={handleEmail}
                 onFocus={() => setIsShowKeyboard(true)}
               />
               <View>
                 <TextInput
                   style={styles.inputLast}
-                  placeholder="Пароль"
+                  placeholder="Password"
                   placeholderTextColor="#BDBDBD"
                   secureTextEntry={true}
-                  value={state.password}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, password: value }))
-                  }
+                  value={password}
+                  onChangeText={handlePassword}
                   onFocus={() => setIsShowKeyboard(true)}
                 />
-                <Text style={styles.passwordShow}>Показать</Text>
+                <Text style={styles.passwordShow}>Show</Text>
               </View>
               <TouchableOpacity
                 style={styles.btn}
@@ -142,11 +148,13 @@ export const RegistrationScreen = ({ navigation }) => {
                 // onPress={onLogin}
                 onPress={onSubmitPress}
               >
-                <Text style={styles.btnTitle}>Зарегистрироваться</Text>
+                <Text style={styles.btnTitle}>Sign Up</Text>
               </TouchableOpacity>
               <Text style={styles.text}>
-                Уже есть аккаунт?
-                <Text onPress={() => navigation.navigate("Login")}>Войти</Text>
+                Already have an account?
+                <Text onPress={() => navigation.navigate("Login")}>
+                  Sign In
+                </Text>
               </Text>
             </View>
           </KeyboardAvoidingView>
