@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-
+import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import uuid from "react-native-uuid";
+import { Ionicons } from "@expo/vector-icons";
 import {
   TouchableWithoutFeedback,
   ImageBackground,
@@ -24,8 +27,13 @@ const initialRegistrationState = {
 //------------------------------------------
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [state, setState] = useState(initialRegistrationState);
+  const [avatar, setAvatar] = useState(null);
+  const [statusImPic, requestPermissionImPic] =
+    ImagePicker.useMediaLibraryPermissions();
 
   const dispatch = useDispatch();
 
@@ -36,6 +44,39 @@ export const RegistrationScreen = ({ navigation }) => {
     // Alert.alert(`${state.login} ${state.email} ${state.password}`);
     dispatch(authRegistration(state));
     setState(initialRegistrationState);
+  };
+  const handleName = (value) => setName(value);
+  const handleEmail = (value) => setEmail(value.trim());
+  const handlePassword = (value) => setPassword(value.trim());
+  //-----Avatar______
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setAvatar(result.assets[0].uri);
+    }
+  };
+  const storage = getStorage();
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(picture);
+    const file = await response.blob();
+
+    const uniquePostId = uuid.v4();
+    const storageRef = ref(storage, `avatar/${uniquePostId}`);
+    const data = await uploadBytes(storageRef, file);
+
+    const urlAvatar = await getDownloadURL(
+      ref(storage, `avatar/${uniquePostId}`)
+    );
+    return urlAvatar;
   };
 
   return (
@@ -54,7 +95,7 @@ export const RegistrationScreen = ({ navigation }) => {
                 style={styles.btnAddPhoto}
                 onPress={() => Alert.alert("Simple Button pressed")}
               >
-                <Text style={styles.btnAddPhotoIcon}>+</Text>
+                <Ionicons name="add" size={24} color="#FF6C00" />
               </TouchableOpacity>
             </View>
 
@@ -174,10 +215,10 @@ const styles = StyleSheet.create({
   },
   btnAddPhotoIcon: {
     //fontSize: 25,
-    color: "#FF6C00",
+    // color: "#FF6C00",
     //width: "200%",
     // textAlignVertical: "center",
-    textAlign: "center",
+    // textAlign: "center",
   },
   title: {
     marginBottom: 33,
