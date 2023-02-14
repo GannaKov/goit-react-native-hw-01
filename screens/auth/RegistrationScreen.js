@@ -20,11 +20,11 @@ import {
 } from "react-native";
 import { authRegistration } from "../../redux/auth/authOperations";
 //-------------------------------------------
-const initialRegistrationState = {
-  login: "",
-  email: "",
-  password: "",
-};
+// const initialRegistrationState = {
+//   login: "",
+//   email: "",
+//   password: "",
+// };
 //------------------------------------------
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);

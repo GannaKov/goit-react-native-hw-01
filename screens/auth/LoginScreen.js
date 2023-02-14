@@ -23,19 +23,22 @@ const initialLoginState = {
 //------------------------------------
 export const LoginScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   // const emailHandler = (text) => setEmail(text);
   // const passwordHandler = (text) => setPassword(text);
   const [state, setState] = useState(initialLoginState);
   const dispatch = useDispatch();
+  const handleEmail = (value) => setEmail(value.trim());
+  const handlePassword = (value) => setPassword(value.trim());
 
   const onSubmitPress = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    dispatch(authLogIn(state));
-    setState(initialLoginState);
+    dispatch(authLogIn({ email, password }));
+
+    setEmail("");
+    setPassword("");
   };
 
   // const [isAuth, auth] = useAuth(kuku);
@@ -53,32 +56,28 @@ export const LoginScreen = ({ navigation }) => {
             behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
             style={styles.container}
           >
-            <Text style={styles.title}>Войти</Text>
+            <Text style={styles.title}>Log In</Text>
             <View style={styles.form}>
               <TextInput
                 style={styles.input}
-                placeholder="Адрес электронной почты"
+                placeholder="Email"
                 placeholderTextColor="#BDBDBD"
-                value={state.email}
-                onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, email: value }))
-                }
+                value={email}
+                onChangeText={handleEmail}
                 onFocus={() => setIsShowKeyboard(true)}
               />
 
               <View>
                 <TextInput
                   style={styles.inputLast}
-                  placeholder="Пароль"
+                  placeholder="Password"
                   placeholderTextColor="#BDBDBD"
                   secureTextEntry={true}
-                  value={state.password}
-                  onChangeText={(value) =>
-                    setState((prevState) => ({ ...prevState, password: value }))
-                  }
+                  value={password}
+                  onChangeText={handlePassword}
                   onFocus={() => setIsShowKeyboard(true)}
                 />
-                <Text style={styles.passwordShow}>Показать</Text>
+                <Text style={styles.passwordShow}>Show</Text>
               </View>
 
               <TouchableOpacity
@@ -87,12 +86,12 @@ export const LoginScreen = ({ navigation }) => {
                 // onPress={onLogin}
                 onPress={onSubmitPress}
               >
-                <Text style={styles.btnTitle}>Войти</Text>
+                <Text style={styles.btnTitle}>Log In</Text>
               </TouchableOpacity>
               <Text style={styles.text}>
-                Нет аккаунта?
+                Have no account?
                 <Text onPress={() => navigation.navigate("Registr")}>
-                  Зарегистрироваться
+                  Sign Up
                 </Text>
               </Text>
             </View>
