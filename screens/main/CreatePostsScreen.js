@@ -115,6 +115,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         adress,
         date,
         avatar,
+        likes: 0,
       });
     } catch (error) {
       const errorMessage = error.message;

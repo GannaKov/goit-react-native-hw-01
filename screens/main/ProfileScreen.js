@@ -8,6 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
+
 import {
   Keyboard,
   StyleSheet,
@@ -137,6 +138,18 @@ export const ProfileScreen = () => {
                       {item.commentsQuantity}
                     </Text>
                   </View>
+                  <View style={styles.likes}>
+                    <TouchableOpacity>
+                      <Feather
+                        name="thumbs-up"
+                        size={24}
+                        color="#BDBDBD"
+                        style={{ marginRight: 9 }}
+                      />
+                    </TouchableOpacity>
+                    <Text>0</Text>
+                  </View>
+
                   <View style={styles.location}>
                     <Feather
                       name="map-pin"
@@ -193,6 +206,7 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   container: {
+    paddingHorizontal: 16,
     position: "relative",
 
     borderTopLeftRadius: 25,
@@ -230,5 +244,6 @@ const styles = StyleSheet.create({
     //justifyContent: "center",
     alignItems: "center",
   },
+  likes: { flexDirection: "row", alignItems: "center" },
   location: { flexDirection: "row", alignItems: "center" },
 });

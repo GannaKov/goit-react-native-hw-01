@@ -6,6 +6,9 @@ import {
   query,
   orderBy,
   onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../../firebase/config";
 import {
@@ -21,6 +24,7 @@ import { Feather } from "@expo/vector-icons";
 
 export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
+  const [likes, setLikes] = useState(null);
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
   //var 1!!!
 
@@ -68,26 +72,33 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   //   setPosts(dataArr);
   // };
 
-  //     old var
-  // useEffect(() => {
-  //   if (route.params) {
-  //     setPosts((prevState) => [route.params, ...prevState]);
-  //   }
-  // }, [route.params]);
-
-  // const mapNav = (loc, pic) => {
-  //   navigation.navigate("Map", {
-  //     loc,
-  //     pic,
-  //   });
-  // };
   useEffect(() => {
     getAllPost();
   }, []);
+  const sendLike = (likes, itemId) => {
+    updateLike(likes, itemId);
+    console.log("in sendLike", itemId);
+  };
 
-  // useEffect(() => {
-  //   console.log("in effect 2posts");
-  // }, [posts]);
+  // async function updateLikes(likes, itemId) {
+  //   console.log("updateLike", itemId);
+  //   const likeRef = doc(db, "posts", itemId);
+
+  //   // Set the "capital" field of the city 'DC'
+  //   await updateDoc(likeRef, {
+  //     likes: likes,
+  //   });
+  // }
+
+  const updateLikes = async (likes, itemId) => {
+    console.log("updateLike", itemId);
+    const likeRef = doc(db, "posts", itemId);
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(likeRef, {
+      likes: likes,
+    });
+  };
   return (
     <View style={styles.container}>
       <View
@@ -131,6 +142,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
         </View>
       </View>
       <FlatList
+        style={{ marginBottom: 130 }}
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
@@ -215,6 +227,23 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   {item.commentsQuantity}
                 </Text>
               </View>
+              <View style={styles.likes}>
+                <TouchableOpacity
+                  onPress={() => {
+                    updateLikes(item.likes + 1, item.id);
+                    console.log("in onPress", item.id, item.likes + 1);
+                  }}
+                >
+                  {/* () => setLikes(likes + 1) */}
+                  <Feather
+                    name="thumbs-up"
+                    size={24}
+                    color="#BDBDBD"
+                    style={{ marginRight: 9 }}
+                  />
+                </TouchableOpacity>
+                <Text>{item.likes}</Text>
+              </View>
               <View style={styles.location}>
                 <Feather
                   name="map-pin"
@@ -270,5 +299,6 @@ const styles = StyleSheet.create({
     //justifyContent: "center",
     alignItems: "center",
   },
+  likes: { flexDirection: "row", alignItems: "center" },
   location: { flexDirection: "row", alignItems: "center" },
 });
