@@ -93,8 +93,37 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View>
-            {/* style={styles.takenPictureContainer} */}
+          <View style={{ marginTop: 8 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                // justifyContent: "center ",
+                alignItems: "center",
+                marginBottom: 16,
+              }}
+            >
+              <Image
+                source={{ uri: item.avatar }}
+                style={{
+                  width: 28,
+                  height: 28,
+                  borderRadius: 100,
+
+                  marginRight: 16,
+                }}
+              />
+              <Text
+                style={{
+                  // marginBottom: 11,
+                  fontFamily: "Roboto-Medium",
+                  fontStyle: "normal",
+                  fontSize: 16,
+                  lineHeight: 19,
+                }}
+              >
+                {item.login}
+              </Text>
+            </View>
             <Image
               source={{ uri: item.photo }}
               style={{
