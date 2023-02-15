@@ -103,8 +103,20 @@ export const CommentsScreen = ({ route }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View>
-              <View style={styles.commentArrea}>
-                <View style={styles.commentLogin}>
+              <View
+                style={
+                  autorPostId === item.autorCommentId
+                    ? styles.commentArreaReverse
+                    : styles.commentArrea
+                }
+              >
+                <View
+                  style={
+                    autorPostId === item.autorCommentId
+                      ? { marginLeft: 16 }
+                      : { marginRight: 16 }
+                  }
+                >
                   <Image
                     source={{ uri: item.avatar }}
                     style={{
@@ -115,7 +127,13 @@ export const CommentsScreen = ({ route }) => {
                     }}
                   />
                 </View>
-                <View style={styles.commentBox}>
+                <View
+                  style={
+                    autorPostId === item.autorCommentId
+                      ? { ...styles.commentBox, borderTopRightRadius: 0 }
+                      : { ...styles.commentBox, borderTopLeftRadius: 0 }
+                  }
+                >
                   <Text
                     style={{
                       marginBottom: 8,
@@ -185,6 +203,7 @@ const styles = StyleSheet.create({
   },
   postsContainer: { marginBottom: 350 },
   commentArrea: { flexDirection: "row" },
+  commentArreaReverse: { flexDirection: "row-reverse" },
   commentLogin: {
     // borderRadius: 100,
     // // backgroundColor: "#dc143c",
@@ -198,7 +217,6 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.03)",
     marginBottom: 24,
     borderRadius: 6,
-    borderTopLeftRadius: 0,
   },
   inputBox: {
     position: "absolute",
