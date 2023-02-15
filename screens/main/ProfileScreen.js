@@ -39,12 +39,11 @@ export const ProfileScreen = () => {
       // orderBy("date", "desc")
     );
     const querySnapshot = await getDocs(q);
-    console.log(querySnapshot);
+
     // const unsubscribe = onSnapshot(q, (querySnapshot) => {
     //await!!
     const photoArr = [];
     querySnapshot.forEach((doc) => {
-      console.log("doc", doc.data());
       photoArr.push({
         ...doc.data(),
         id: doc.id,
@@ -78,6 +77,7 @@ export const ProfileScreen = () => {
               textAlign: "center",
 
               color: "#212121",
+              marginBottom: 33,
             }}
           >
             {login}
@@ -87,37 +87,6 @@ export const ProfileScreen = () => {
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    // justifyContent: "center ",
-                    alignItems: "center",
-                    marginBottom: 16,
-                  }}
-                >
-                  <Image
-                    source={{ uri: item.avatar }}
-                    style={{
-                      width: 28,
-                      height: 28,
-                      borderRadius: 100,
-
-                      marginRight: 8,
-                    }}
-                  />
-                  <Text
-                    style={{
-                      // marginBottom: 11,
-                      fontFamily: "Roboto-Medium",
-                      fontStyle: "normal",
-                      fontSize: 13,
-                      lineHeight: 19,
-                      marginBottom: 33,
-                    }}
-                  >
-                    {item.login}
-                  </Text>
-                </View>
                 <Image
                   source={{ uri: item.photo }}
                   style={{
@@ -251,4 +220,15 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
   },
+  description: {
+    paddingBottom: 34,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  comments: {
+    flexDirection: "row",
+    //justifyContent: "center",
+    alignItems: "center",
+  },
+  location: { flexDirection: "row", alignItems: "center" },
 });

@@ -53,7 +53,7 @@ export const CreatePostsScreen = ({ navigation }) => {
           latitude: locationRes.coords.latitude,
           longitude: locationRes.coords.longitude,
         });
-        const adrText = `${place[0].country}  ${place[0].city} ${place[0].district}`;
+        const adrText = `${place[0].country}  ${place[0].city} `; //${place[0].district}
 
         setAdress(adrText);
       }

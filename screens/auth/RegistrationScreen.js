@@ -33,11 +33,12 @@ export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(true);
   const [password, setPassword] = useState("");
-  // const [state, setState] = useState(initialRegistrationState);
   const [avatar, setAvatar] = useState(null);
   const [statusImPic, requestPermissionImPic] =
     ImagePicker.useMediaLibraryPermissions();
+  console.log("statusImPic", statusImPic.granted);
   const [assets, error] = useAssets([
     require("../../assets/images/green_frog.png"),
   ]);
@@ -123,7 +124,7 @@ export const RegistrationScreen = ({ navigation }) => {
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.title}>Регистрация</Text>
+            <Text style={styles.title}>Sign Up</Text>
             <View style={styles.form}>
               {/* корректровать */}
               <TextInput
@@ -147,12 +148,29 @@ export const RegistrationScreen = ({ navigation }) => {
                   style={styles.inputLast}
                   placeholder="Password"
                   placeholderTextColor="#BDBDBD"
-                  secureTextEntry={true}
+                  secureTextEntry={passwordVisible}
                   value={password}
                   onChangeText={handlePassword}
                   onFocus={() => setIsShowKeyboard(true)}
                 />
-                <Text style={styles.passwordShow}>Show</Text>
+                <TouchableOpacity
+                  onPress={() => setPasswordVisible(!passwordVisible)}
+                  style={styles.passwordShow}
+                >
+                  {passwordVisible ? (
+                    <Text style={styles.passwordText}>Show</Text>
+                  ) : (
+                    <Text style={styles.passwordText}>Hide</Text>
+                  )}
+                </TouchableOpacity>
+                {/* label="Password" secureTextEntry={passwordVisible}
+                right=
+                {
+                  <TextInput.Icon
+                    name={passwordVisible ? "eye" : "eye-off"}
+                    onPress={() => setPasswordVisible(!passwordVisible)}
+                  />
+                } */}
               </View>
               <TouchableOpacity
                 style={styles.btn}
@@ -295,15 +313,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 16,
     top: 10,
+
+    /* identical to box height */
+
+    //textAlign: "right",
+  },
+  passwordText: {
+    color: "#1B4371",
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     //fontWeight: 400,
     fontSize: 16,
-    //line-height: 19px;
-    /* identical to box height */
-
-    //textAlign: "right",
-    color: "#1B4371",
+    lineHeight: 19,
   },
   btn: {
     alignItems: "center",

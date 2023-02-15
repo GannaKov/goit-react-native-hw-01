@@ -25,6 +25,7 @@ export const LoginScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(true);
   // const emailHandler = (text) => setEmail(text);
   // const passwordHandler = (text) => setPassword(text);
   // const [state, setState] = useState(initialLoginState);
@@ -72,14 +73,30 @@ export const LoginScreen = ({ navigation }) => {
                   style={styles.inputLast}
                   placeholder="Password"
                   placeholderTextColor="#BDBDBD"
-                  secureTextEntry={true}
+                  secureTextEntry={passwordVisible}
                   value={password}
                   onChangeText={handlePassword}
                   onFocus={() => setIsShowKeyboard(true)}
                 />
-                <Text style={styles.passwordShow}>Show</Text>
+                <TouchableOpacity
+                  onPress={() => setPasswordVisible(!passwordVisible)}
+                  style={styles.passwordShow}
+                >
+                  {passwordVisible ? (
+                    <Text style={styles.passwordText}>Show</Text>
+                  ) : (
+                    <Text style={styles.passwordText}>Hide</Text>
+                  )}
+                </TouchableOpacity>
+                {/* label="Password" secureTextEntry={passwordVisible}
+                right=
+                {
+                  <TextInput.Icon
+                    name={passwordVisible ? "eye" : "eye-off"}
+                    onPress={() => setPasswordVisible(!passwordVisible)}
+                  />
+                } */}
               </View>
-
               <TouchableOpacity
                 style={styles.btn}
                 activeOpacity={0.8}
@@ -177,14 +194,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 16,
     top: 10,
+
+    /* identical to box height */
+
+    //textAlign: "right",
+  },
+  passwordText: {
+    color: "#1B4371",
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
     //fontWeight: 400,
     fontSize: 16,
-    //line-height: 19px;
-    /* identical to box height */
-    //textAlign: "right",
-    color: "#1B4371",
+    lineHeight: 19,
   },
 
   btn: {
