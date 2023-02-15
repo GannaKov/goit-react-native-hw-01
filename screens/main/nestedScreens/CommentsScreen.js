@@ -48,7 +48,14 @@ export const CommentsScreen = ({ route }) => {
         autorCommentId: userId,
         avatar: avatar,
       });
-      console.log("autorPostId:", autorPostId, "autorCommentId", userId); //!!!!!!!!
+      const cityRef = doc(db, "posts", postId);
+      await setDoc(
+        cityRef,
+        { commentsQuantity: allComments.length + 1 },
+        { merge: true }
+      );
+
+      console.log("commentsQuantity", allComments.length + 1);
     } catch (error) {
       const errorMessage = error.message;
       console.log("err", error.message);

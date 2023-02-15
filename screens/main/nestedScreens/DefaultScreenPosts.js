@@ -142,7 +142,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                     fontFamily: "Roboto-Regular",
                   }}
                 >
-                  0
+                  {item.commentsQuantity}
                 </Text>
               </View>
               <View style={styles.location}>

@@ -14,7 +14,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, setDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 //---------------------------------------------
 export const CreatePostsScreen = ({ navigation }) => {
