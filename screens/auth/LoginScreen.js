@@ -50,7 +50,7 @@ export const LoginScreen = ({ navigation }) => {
       <View style={styles.containerMain}>
         <ImageBackground
           style={styles.imageBG}
-          source={require("../../assets/photo-BG.jpg")}
+          source={require("../../assets/images/photo-BG.jpg")}
         >
           <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
             behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
