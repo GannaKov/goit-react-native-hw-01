@@ -29,7 +29,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [coordinates, setCoordinates] = useState(null);
   const [hasCameraPermission, requestPermission] =
     Camera.useCameraPermissions(); // instead of all async permissions
-  const { userId, login } = useSelector((state) => state.auth);
+  const { userId, login, avatar } = useSelector((state) => state.auth);
 
   const getLocation = async () => {
     try {
@@ -114,6 +114,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         login,
         adress,
         date,
+        avatar,
       });
     } catch (error) {
       const errorMessage = error.message;

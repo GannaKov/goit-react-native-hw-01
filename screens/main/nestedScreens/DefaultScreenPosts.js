@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   collection,
   getDocs,
@@ -20,7 +21,7 @@ import { Feather } from "@expo/vector-icons";
 
 export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-
+  const { userId, login, avatar, email } = useSelector((state) => state.auth);
   //var 1!!!
 
   // const getAllPost = async () => {
@@ -89,11 +90,51 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   // }, [posts]);
   return (
     <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 32,
+          marginTop: 32,
+        }}
+      >
+        <Image
+          source={{ uri: avatar }}
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 16,
+            marginRight: 8,
+          }}
+        />
+        <View>
+          <Text
+            style={{
+              fontFamily: "Roboto-Medium",
+              fontStyle: "normal",
+              fontSize: 13,
+              lineHeight: 15,
+            }}
+          >
+            {login}
+          </Text>
+          <Text
+            style={{
+              fontSize: 11,
+              lineHeight: 12.89,
+              color: "#212121",
+              fontFamily: "Roboto-Regular",
+            }}
+          >
+            {email}
+          </Text>
+        </View>
+      </View>
       <FlatList
         data={posts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={{ marginTop: 8 }}>
+          <View>
             <View
               style={{
                 flexDirection: "row",
@@ -109,7 +150,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   height: 28,
                   borderRadius: 100,
 
-                  marginRight: 16,
+                  marginRight: 8,
                 }}
               />
               <Text
@@ -117,7 +158,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   // marginBottom: 11,
                   fontFamily: "Roboto-Medium",
                   fontStyle: "normal",
-                  fontSize: 16,
+                  fontSize: 13,
                   lineHeight: 19,
                 }}
               >
