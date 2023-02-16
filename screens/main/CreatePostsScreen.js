@@ -18,17 +18,20 @@ import { addDoc, collection, setDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 //---------------------------------------------
 export const CreatePostsScreen = ({ navigation }) => {
-  const [location, setLocation] = useState(null); //!!!!
+  // const [location, setLocation] = useState(null); //!!!!
   const [adress, setAdress] = useState("");
+  const [coordinates, setCoordinates] = useState(null);
+
   const [description, setDescription] = useState("");
+
+  const [hasCameraPermission, requestPermission] =
+    Camera.useCameraPermissions(); // instead of all async permissions
   const [cameraRef, setCameraRef] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [picture, setPicture] = useState("");
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [coordinates, setCoordinates] = useState(null);
-  const [hasCameraPermission, requestPermission] =
-    Camera.useCameraPermissions(); // instead of all async permissions
+
   const { userId, login, avatar } = useSelector((state) => state.auth);
 
   const getLocation = async () => {
@@ -36,19 +39,20 @@ export const CreatePostsScreen = ({ navigation }) => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
-        console.log("status", status);
+
         return;
       } else {
         const locationRes = await Location.getCurrentPositionAsync({});
         if (!locationRes) {
           return;
         }
-        setLocation(locationRes);
+        // setLocation(locationRes);
         const loc = {
           latitude: locationRes.coords.latitude,
           longitude: locationRes.coords.longitude,
         };
         setCoordinates(loc);
+
         const place = await Location.reverseGeocodeAsync({
           latitude: locationRes.coords.latitude,
           longitude: locationRes.coords.longitude,
@@ -61,7 +65,7 @@ export const CreatePostsScreen = ({ navigation }) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.log("err", error.message);
-      Alert.alert(errorMessage);
+      // Alert.alert(errorMessage);
     }
   };
 
@@ -120,21 +124,13 @@ export const CreatePostsScreen = ({ navigation }) => {
     } catch (error) {
       const errorMessage = error.message;
       console.log("err", error.message);
-      Alert.alert(errorMessage);
+      // Alert.alert(errorMessage);
     }
   };
   //-----------------------
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate(
-      "DefaultScreenPosts"
-      //  {
-      //   picture: picture,
-      //   adress: adress,
-      //   description: description,
-      //   coords: coords,
-      // }
-    );
+    navigation.navigate("DefaultScreenPosts");
     setPicture("");
     setDescription("");
     setAdress("");
@@ -143,6 +139,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     setPicture("");
     setDescription("");
     setAdress("");
+    getLocation();
   };
 
   return (
@@ -170,10 +167,10 @@ export const CreatePostsScreen = ({ navigation }) => {
         </Camera>
       )}
       <Text style={styles.loadPhotoText}>
-        {picture ? "Add info" : "Upload photo"}
+        {picture ? "Add information" : "Upload photo"}
       </Text>
       <TextInput
-        style={styles.input}
+        style={{ ...styles.input, marginBottom: 16 }}
         placeholder="Image description"
         placeholderTextColor="#BDBDBD"
         value={description}
@@ -181,7 +178,7 @@ export const CreatePostsScreen = ({ navigation }) => {
       />
       <View style={{ marginBottom: 32 }}>
         <TextInput
-          style={styles.lastInput}
+          style={{ ...styles.input, paddingLeft: 28 }}
           placeholder="Location"
           placeholderTextColor="#BDBDBD"
           value={adress ? adress : "Wait...We are trying to find the location"}
@@ -199,7 +196,6 @@ export const CreatePostsScreen = ({ navigation }) => {
           picture ? { ...styles.btn, backgroundColor: "#FF6C00" } : styles.btn
         }
         activeOpacity={0.8}
-        // onPress={onLogin}
         onPress={sendPhoto}
       >
         <Text
@@ -230,7 +226,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
     borderColor: "#E8E8E8",
-
+    overflow: "hidden",
     borderRadius: 8,
     marginBottom: 8,
   },
@@ -255,42 +251,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 18.75,
     borderWidth: 1,
-    // paddingHorizontal: 16,
     height: 50,
     borderWidth: 1,
-    //   solid #E8E8E8;
     borderColor: "transparent",
     backgroundColor: "#FFFFFF",
     borderBottomColor: "#E8E8E8",
-
     borderStyle: "solid",
-    marginBottom: 16,
   },
-  lastInput: {
-    // position: "relative",
-    fontFamily: "Roboto-Regular",
-    fontSize: 16,
-    lineHeight: 18.75,
-    borderWidth: 1,
-    // paddingHorizontal: 16,
-    height: 50,
-    borderWidth: 1,
-    //   solid #E8E8E8;
-    borderColor: "transparent",
-    backgroundColor: "#FFFFFF",
-    borderBottomColor: "#E8E8E8",
 
-    borderStyle: "solid",
-    paddingLeft: 28,
-  },
   btn: {
-    // alignItems: "center",
     justifyContent: "center",
     height: 51,
-    // paddingLeft: 32,
-    // paddingRight: 32,
-    // paddingTop: 16,
-    // paddingBottom: 16,
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
     marginBottom: 16,
@@ -304,17 +275,13 @@ const styles = StyleSheet.create({
     width: 70,
     height: 40,
     backgroundColor: "#FFFFFF",
-
     borderRadius: 20,
   },
   btnTitle: {
     color: "#f0f8ff",
-
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    //fontWeight: 400,
     fontSize: 16,
-    //lineHeight: 1.19,
     lineHeight: 19,
     textAlign: "center",
     color: "#BDBDBD",
