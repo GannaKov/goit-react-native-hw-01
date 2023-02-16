@@ -103,6 +103,7 @@ export const Home = () => {
       />
       <MainTab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="user" size={24} color="rgba(33, 33, 33, 0.8)" />
           ),
