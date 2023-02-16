@@ -75,20 +75,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   useEffect(() => {
     getAllPost();
   }, []);
-  const sendLike = (likes, itemId) => {
-    updateLike(likes, itemId);
-    console.log("in sendLike", itemId);
-  };
-
-  // async function updateLikes(likes, itemId) {
-  //   console.log("updateLike", itemId);
-  //   const likeRef = doc(db, "posts", itemId);
-
-  //   // Set the "capital" field of the city 'DC'
-  //   await updateDoc(likeRef, {
-  //     likes: likes,
-  //   });
-  // }
 
   const updateLikes = async (likes, itemId) => {
     console.log("updateLike", itemId);
@@ -211,8 +197,11 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   <Feather
                     name="message-circle"
                     size={24}
-                    color="#BDBDBD"
-                    style={{ marginRight: 9 }}
+                    color={item.commentsQuantity > 0 ? "#FF6C00" : "#BDBDBD"}
+                    style={{
+                      marginRight: 9,
+                      fill: item.commentsQuantity > 0 ? "#FF6C00" : "#BDBDBD",
+                    }}
                   />
                 </TouchableOpacity>
 
@@ -220,29 +209,28 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   style={{
                     fontSize: 16,
                     lineHeight: 18.75,
-                    color: "#BDBDBD",
+                    color: "#212121",
                     fontFamily: "Roboto-Regular",
                   }}
                 >
-                  {item.commentsQuantity}
+                  {item.commentsQuantity ? item.commentsQuantity : ""}
                 </Text>
               </View>
               <View style={styles.likes}>
                 <TouchableOpacity
                   onPress={() => {
                     updateLikes(item.likes + 1, item.id);
-                    console.log("in onPress", item.id, item.likes + 1);
                   }}
                 >
                   {/* () => setLikes(likes + 1) */}
                   <Feather
                     name="thumbs-up"
                     size={24}
-                    color="#BDBDBD"
+                    color={item.likes > 0 ? "#FF6C00" : "#BDBDBD"}
                     style={{ marginRight: 9 }}
                   />
                 </TouchableOpacity>
-                <Text>{item.likes}</Text>
+                <Text>{item.likes ? item.likes : ""}</Text>
               </View>
               <View style={styles.location}>
                 <Feather

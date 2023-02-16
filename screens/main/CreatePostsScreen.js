@@ -170,7 +170,7 @@ export const CreatePostsScreen = ({ navigation }) => {
         </Camera>
       )}
       <Text style={styles.loadPhotoText}>
-        {picture ? "Edit photo" : "Upload photo"}
+        {picture ? "Add info" : "Upload photo"}
       </Text>
       <TextInput
         style={styles.input}

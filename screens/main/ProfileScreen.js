@@ -30,6 +30,7 @@ import { Feather } from "@expo/vector-icons";
 export const ProfileScreen = () => {
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     getAllPost();
   }, []);
@@ -84,6 +85,7 @@ export const ProfileScreen = () => {
             {login}
           </Text>
           <FlatList
+            style={{ marginBottom: 130 }}
             data={posts}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
@@ -122,7 +124,9 @@ export const ProfileScreen = () => {
                       <Feather
                         name="message-circle"
                         size={24}
-                        color="#BDBDBD"
+                        color={
+                          item.commentsQuantity > 0 ? "#FF6C00" : "#BDBDBD"
+                        }
                         style={{ marginRight: 9 }}
                       />
                     </TouchableOpacity>
@@ -131,11 +135,11 @@ export const ProfileScreen = () => {
                       style={{
                         fontSize: 16,
                         lineHeight: 18.75,
-                        color: "#BDBDBD",
+                        color: "#212121",
                         fontFamily: "Roboto-Regular",
                       }}
                     >
-                      {item.commentsQuantity}
+                      {item.commentsQuantity ? item.commentsQuantity : ""}
                     </Text>
                   </View>
                   <View style={styles.likes}>
@@ -143,11 +147,11 @@ export const ProfileScreen = () => {
                       <Feather
                         name="thumbs-up"
                         size={24}
-                        color="#BDBDBD"
+                        color={item.likes > 0 ? "#FF6C00" : "#BDBDBD"}
                         style={{ marginRight: 9 }}
                       />
                     </TouchableOpacity>
-                    <Text>0</Text>
+                    <Text>{item.likes ? item.likes : ""}</Text>
                   </View>
 
                   <View style={styles.location}>

@@ -88,7 +88,7 @@ export const Home = () => {
           headerLeft: (focused, size, color) => (
             <TouchableOpacity
               style={{ marginLeft: 16, width: 20, height: 20 }}
-              // onPress={() => navigation.navigate("Posts")} //!!!!!!!!!!!!!
+              /// onPress={() => navigation.navigate("Posts")} //!!!!!!!!!!!!!
             >
               <Feather
                 name="arrow-left"
