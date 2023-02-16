@@ -33,7 +33,7 @@ export const ProfileScreen = () => {
 
   useEffect(() => {
     getAllPost();
-  }, []);
+  }, [posts]);
   const getAllPost = async () => {
     const q = query(
       collection(db, "posts"),

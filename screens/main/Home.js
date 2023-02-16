@@ -12,7 +12,7 @@ import { authSignOutUser } from "../../redux/auth/authOperations";
 //-------------------------------------------------------
 const MainTab = createBottomTabNavigator();
 //--------------------------------------------------
-export const Home = () => {
+export const Home = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const signOut = () => {
@@ -89,6 +89,7 @@ export const Home = () => {
             <TouchableOpacity
               style={{ marginLeft: 16, width: 20, height: 20 }}
               /// onPress={() => navigation.navigate("Posts")} //!!!!!!!!!!!!!
+              onPress={() => navigation.goBack()}
             >
               <Feather
                 name="arrow-left"
