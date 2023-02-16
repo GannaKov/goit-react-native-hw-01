@@ -16,19 +16,14 @@ import {
 
 import { authLogIn } from "../../redux/auth/authOperations";
 //-----------------------------------
-// const initialLoginState = {
-//   email: "",
-//   password: "",
-// };
+
 //------------------------------------
 export const LoginScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(true);
-  // const emailHandler = (text) => setEmail(text);
-  // const passwordHandler = (text) => setPassword(text);
-  // const [state, setState] = useState(initialLoginState);
+
   const dispatch = useDispatch();
   const handleEmail = (value) => setEmail(value.trim());
   const handlePassword = (value) => setPassword(value.trim());
@@ -37,15 +32,10 @@ export const LoginScreen = ({ navigation }) => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     dispatch(authLogIn({ email, password }));
-
     setEmail("");
     setPassword("");
   };
 
-  // const [isAuth, auth] = useAuth(kuku);
-  // const onLogin = () => {
-  //   Alert.alert("Credentials", `${email} + ${password}`);
-  // };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.containerMain}>
@@ -88,28 +78,19 @@ export const LoginScreen = ({ navigation }) => {
                     <Text style={styles.passwordText}>Hide</Text>
                   )}
                 </TouchableOpacity>
-                {/* label="Password" secureTextEntry={passwordVisible}
-                right=
-                {
-                  <TextInput.Icon
-                    name={passwordVisible ? "eye" : "eye-off"}
-                    onPress={() => setPasswordVisible(!passwordVisible)}
-                  />
-                } */}
               </View>
               <TouchableOpacity
                 style={styles.btn}
                 activeOpacity={0.8}
-                // onPress={onLogin}
                 onPress={onSubmitPress}
               >
                 <Text style={styles.btnTitle}>Log In</Text>
               </TouchableOpacity>
-              <Text style={styles.text}>
-                Have no account?
-                <Text onPress={() => navigation.navigate("Registr")}>
-                  Sign Up
-                </Text>
+              <Text
+                style={styles.text}
+                onPress={() => navigation.navigate("Registr")}
+              >
+                Have no account? Sign Up
               </Text>
             </View>
           </KeyboardAvoidingView>
@@ -122,25 +103,18 @@ const styles = StyleSheet.create({
   containerMain: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    //justifyContent: "center",
     justifyContent: "flex-end",
   },
   imageBG: {
     flex: 1,
     resizeMode: "cover",
-    //justifyContent: "flex-end",
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   container: {
     position: "relative",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     marginTop: "auto",
-    //height: "auto",
     backgroundColor: "#FFFFFF",
-
     paddingTop: 32,
   },
 
@@ -148,18 +122,15 @@ const styles = StyleSheet.create({
     marginBottom: 33,
     fontFamily: "Roboto-Medium",
     fontStyle: "normal",
-    //fontWeight: 500, //Roboto-Medium
     fontSize: 30,
-    //line-height: 35px;
+    lineHeight: 35,
     textAlign: "center",
-    //letter-spacing: 0.01em;
+    letterSpacing: 0.01,
     color: "#212121",
   },
 
   form: {
     marginHorizontal: 16,
-    //flex: 1,
-    //marginHorizontal: 40,
     outlineWidth: 1,
     outlineStyle: "solid",
     marginBottom: 144,
@@ -170,7 +141,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: 40,
     borderWidth: 1,
-    //   solid #E8E8E8;
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
     borderColor: "#E8E8E8",
@@ -194,16 +164,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 16,
     top: 10,
-
-    /* identical to box height */
-
-    //textAlign: "right",
   },
   passwordText: {
     color: "#1B4371",
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    //fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
   },
@@ -224,9 +189,7 @@ const styles = StyleSheet.create({
 
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    //fontWeight: 400,
     fontSize: 16,
-    // lineHeight: 1.19,
     textAlign: "center",
     color: "#FFFFFF",
   },
@@ -234,11 +197,8 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    //fontWeight: 400,
     fontSize: 16,
-    //line-height: 19px;
-    /* identical to box height */
-
+    lineHeight: 19,
     textAlign: "center",
     color: "#1B4371",
   },

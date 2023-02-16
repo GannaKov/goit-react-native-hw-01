@@ -38,7 +38,7 @@ export const RegistrationScreen = ({ navigation }) => {
   const [avatar, setAvatar] = useState(null);
   const [statusImPic, requestPermissionImPic] =
     ImagePicker.useMediaLibraryPermissions();
-  console.log("statusImPic", statusImPic.granted);
+
   const [assets, error] = useAssets([
     require("../../assets/images/green_frog.png"),
   ]);
