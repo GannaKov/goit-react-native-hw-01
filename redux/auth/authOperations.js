@@ -22,6 +22,7 @@ export const authRegistration =
         email,
         password
       );
+
       //photoURL: "https://example.com/jane-q-user/profile.jpg",
 
       await updateProfile(auth.currentUser, {
@@ -36,7 +37,7 @@ export const authRegistration =
         email,
         avatar: photoURL,
       };
-
+      Alert.alert(`Welkome, ${login}!`);
       dispatch(updateUserProfile(userUpdateProfile));
     } catch (error) {
       const errorCode = error.code;

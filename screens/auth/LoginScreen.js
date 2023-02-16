@@ -1,4 +1,4 @@
-import React, { startTransition, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   Keyboard,
@@ -29,11 +29,15 @@ export const LoginScreen = ({ navigation }) => {
   const handlePassword = (value) => setPassword(value.trim());
 
   const onSubmitPress = () => {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-    dispatch(authLogIn({ email, password }));
-    setEmail("");
-    setPassword("");
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Please, fill all the fields");
+    } else {
+      setIsShowKeyboard(false);
+      Keyboard.dismiss();
+      dispatch(authLogIn({ email, password }));
+      setEmail("");
+      setPassword("");
+    }
   };
 
   return (

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { Asset } from "expo-asset";
 import { useAssets } from "expo-asset";
 import { useDispatch } from "react-redux";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -21,13 +20,6 @@ import {
   Alert,
 } from "react-native";
 import { authRegistration } from "../../redux/auth/authOperations";
-
-//-------------------------------------------
-// const initialRegistrationState = {
-//   login: "",
-//   email: "",
-//   password: "",
-// };
 //------------------------------------------
 export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -38,7 +30,6 @@ export const RegistrationScreen = ({ navigation }) => {
   const [avatar, setAvatar] = useState(null);
   const [statusImPic, requestPermissionImPic] =
     ImagePicker.useMediaLibraryPermissions();
-
   const [assets, error] = useAssets([
     require("../../assets/images/green_frog.png"),
   ]);
@@ -48,18 +39,18 @@ export const RegistrationScreen = ({ navigation }) => {
     try {
       if (!login.trim() || !email.trim() || !password.trim()) {
         Alert.alert("Please, fill all the fields");
+      } else {
+        const avatarPhoto = await uploadPhotoToServer();
+        dispatch(
+          authRegistration({ login, email, password, avatar: avatarPhoto })
+        );
+        setLogin("");
+        setEmail("");
+        setPassword("");
+        // setAvatar(null);
+        setIsShowKeyboard(false);
+        Keyboard.dismiss();
       }
-      Alert.alert(`Welkome, ${login}!`);
-      const avatarPhoto = await uploadPhotoToServer();
-      dispatch(
-        authRegistration({ login, email, password, avatar: avatarPhoto })
-      );
-      setLogin("");
-      setEmail("");
-      setPassword("");
-      setAvatar(null);
-      setIsShowKeyboard(false);
-      Keyboard.dismiss();
     } catch (error) {
       console.log(error.message);
     }
@@ -90,7 +81,7 @@ export const RegistrationScreen = ({ navigation }) => {
       // setAvatar(assets[0].localUri);
     }
 
-    const response = await fetch(AvtUrl); //const response = await fetch(avatar);
+    const response = await fetch(AvtUrl);
     const file = await response.blob();
 
     const uniquePostId = uuid.v4();
@@ -126,7 +117,6 @@ export const RegistrationScreen = ({ navigation }) => {
 
             <Text style={styles.title}>Sign Up</Text>
             <View style={styles.form}>
-              {/* корректровать */}
               <TextInput
                 style={styles.input}
                 placeholder="Login"
@@ -163,28 +153,19 @@ export const RegistrationScreen = ({ navigation }) => {
                     <Text style={styles.passwordText}>Hide</Text>
                   )}
                 </TouchableOpacity>
-                {/* label="Password" secureTextEntry={passwordVisible}
-                right=
-                {
-                  <TextInput.Icon
-                    name={passwordVisible ? "eye" : "eye-off"}
-                    onPress={() => setPasswordVisible(!passwordVisible)}
-                  />
-                } */}
               </View>
               <TouchableOpacity
                 style={styles.btn}
                 activeOpacity={0.8}
-                // onPress={onLogin}
                 onPress={onSubmitPress}
               >
                 <Text style={styles.btnTitle}>Sign Up</Text>
               </TouchableOpacity>
-              <Text style={styles.text}>
-                Already have an account?
-                <Text onPress={() => navigation.navigate("Login")}>
-                  Sign In
-                </Text>
+              <Text
+                style={styles.text}
+                onPress={() => navigation.navigate("Login")}
+              >
+                Already have an account? Sign In
               </Text>
             </View>
           </KeyboardAvoidingView>
@@ -197,16 +178,11 @@ const styles = StyleSheet.create({
   containerMain: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    //justifyContent: "center",
     justifyContent: "flex-end",
   },
   imageBG: {
     flex: 1,
     resizeMode: "cover",
-    //justifyContent: "flex-end",
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   container: {
     position: "relative",
@@ -214,11 +190,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     marginTop: "auto",
-    //height: "auto",
     backgroundColor: "#FFFFFF",
-
     paddingTop: 92,
-    // paddingBottom: 78,
   },
 
   userPhoto: {
@@ -228,11 +201,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     top: -60,
     alignSelf: "center",
-    // left: 0,
-    // right: 0,
-    // justifyContent: "center",
-    // alignItems: "center",
-
     marginHorizontal: "auto",
     width: 120,
     height: 120,
@@ -242,7 +210,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     bottom: 14,
     right: "-10%",
-    //transform: [{ translateX: -50 }],
     width: 25,
     height: 25,
     borderRadius: 50,
@@ -251,33 +218,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  btnAddPhotoIcon: {
-    //fontSize: 25,
-    // color: "#FF6C00",
-    //width: "200%",
-    // textAlignVertical: "center",
-    // textAlign: "center",
-  },
+
   title: {
     marginBottom: 33,
 
     fontFamily: "Roboto-Medium",
     fontStyle: "normal",
-    //fontWeight: 400, //Roboto-Medium
     fontSize: 30,
-    //line-height: 35px;
+    lineHeight: 35,
     textAlign: "center",
-    //letter-spacing: 0.01em;
-
+    letterSpacing: 0.01,
     color: "#212121",
   },
   form: {
     marginHorizontal: 16,
     marginBottom: 78,
-    //paddingBottom: 78,
-    //flex: 1,
-
-    //marginHorizontal: 40,
     outlineWidth: 1,
     outlineStyle: "solid",
   },
@@ -287,13 +242,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: 40,
     borderWidth: 1,
-    //   solid #E8E8E8;
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
     borderColor: "#E8E8E8",
     borderStyle: "solid",
     marginBottom: 16,
-    //marginHorizontal: 16,
   },
 
   inputLast: {
@@ -301,28 +254,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: 40,
     backgroundColor: "#F6F6F6",
-    //   solid #E8E8E8;
     borderRadius: 8,
     borderColor: "#E8E8E8",
     borderStyle: "solid",
     borderWidth: 1,
     marginBottom: 43,
-    // marginHorizontal: 16,
   },
   passwordShow: {
     position: "absolute",
     right: 16,
     top: 10,
-
-    /* identical to box height */
-
-    //textAlign: "right",
   },
   passwordText: {
     color: "#1B4371",
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    //fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
   },
@@ -340,22 +286,17 @@ const styles = StyleSheet.create({
     color: "#f0f8ff",
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    //fontWeight: 400,
     fontSize: 16,
-    // lineHeight: 1.19,
+    lineHeight: 19,
     textAlign: "center",
     color: "#FFFFFF",
   },
   text: {
     fontFamily: "Roboto-Regular",
     fontStyle: "normal",
-    //fontWeight: 400,
     fontSize: 16,
-    //line-height: 19px;
-    /* identical to box height */
-
+    lineHeight: 19,
     textAlign: "center",
-
     color: "#1B4371",
   },
 });
