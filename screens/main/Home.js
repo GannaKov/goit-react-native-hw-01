@@ -1,8 +1,8 @@
 import "react-native-gesture-handler"; //the libraries that are required by the stack navigator
 import React from "react";
 import { useDispatch } from "react-redux";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PostsScreen } from "./PostsScreen";
 import { CreatePostsScreen } from "./CreatePostsScreen";
@@ -18,7 +18,7 @@ export const Home = ({ navigation }) => {
   const signOut = () => {
     dispatch(authSignOutUser());
   };
-  //{ navigation }
+
   return (
     <MainTab.Navigator
       screenOptions={{
