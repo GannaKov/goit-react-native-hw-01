@@ -25,18 +25,19 @@ import {
 import { useSelector } from "react-redux";
 import { db } from "../../../firebase/config";
 import { Feather } from "@expo/vector-icons";
-//-----------------
+//-----------------------------------
 export const CommentsScreen = ({ route }) => {
   const { postId } = route.params;
   const { postPhoto } = route.params;
   const { autorPostId } = route.params;
   const [comment, setComment] = useState("");
-
   const [allComments, setAllComments] = useState([]);
+
   const { userId, login, avatar } = useSelector((state) => state.auth);
   useEffect(() => {
     getAllComments();
   }, []);
+
   // oder addDoc????use setDoc to set a specific id
   const addComment = async () => {
     try {
@@ -54,8 +55,6 @@ export const CommentsScreen = ({ route }) => {
         { commentsQuantity: allComments.length + 1 },
         { merge: true }
       );
-
-      console.log("commentsQuantity", allComments.length + 1);
     } catch (error) {
       const errorMessage = error.message;
       console.log("err", error.message);
@@ -201,10 +200,7 @@ export const CommentsScreen = ({ route }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    // justifyContent: "space-between",
     flex: 1,
-    // alignItems: "center",
-    //justifyContent: "center",
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 16,
   },
@@ -212,10 +208,6 @@ const styles = StyleSheet.create({
   commentArrea: { flexDirection: "row" },
   commentArreaReverse: { flexDirection: "row-reverse" },
   commentLogin: {
-    // borderRadius: 100,
-    // // backgroundColor: "#dc143c",
-    // width: 28,
-    // height: 28,
     marginRight: 16,
   },
   commentBox: {
