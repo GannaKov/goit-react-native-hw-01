@@ -23,8 +23,6 @@ export const authRegistration =
         password
       );
 
-      //photoURL: "https://example.com/jane-q-user/profile.jpg",
-
       await updateProfile(auth.currentUser, {
         displayName: login,
         photoURL: avatar,
@@ -72,7 +70,6 @@ export const authLogIn =
         email,
         password
       );
-      //const user = userCredential.user;
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;

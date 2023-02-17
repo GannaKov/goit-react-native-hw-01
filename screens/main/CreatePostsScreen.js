@@ -4,7 +4,6 @@ import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
 import {
   Image,
-  Alert,
   View,
   Text,
   StyleSheet,
@@ -163,7 +162,6 @@ export const CreatePostsScreen = ({ navigation }) => {
           <TouchableOpacity onPress={() => takePicture()} style={styles.button}>
             <FontAwesome name="camera" size={24} color="#BDBDBD" />
           </TouchableOpacity>
-          {/* </View> */}
         </Camera>
       )}
       <Text style={styles.loadPhotoText}>
