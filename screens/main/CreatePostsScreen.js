@@ -9,6 +9,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -143,38 +144,45 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {picture ? (
-        <View style={styles.takenPictureContainer}>
-          <Image
-            source={{ uri: picture }}
-            style={{ width: "100%", height: 240, borderRadius: 8 }}
-          />
-        </View>
-      ) : (
-        <Camera
-          onCameraReady={onCameraReady}
-          style={styles.camera}
-          type={type}
-          ref={(ref) => {
-            setCameraRef(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
-          }}
-        >
-          <TouchableOpacity onPress={() => takePicture()} style={styles.button}>
-            <FontAwesome name="camera" size={24} color="#BDBDBD" />
-          </TouchableOpacity>
-        </Camera>
-      )}
-      <Text style={styles.loadPhotoText}>
-        {picture ? "Add information" : "Upload photo"}
-      </Text>
-      <TextInput
-        style={{ ...styles.input, marginBottom: 16 }}
-        placeholder="Image description"
-        placeholderTextColor="#BDBDBD"
-        value={description}
-        onChangeText={setDescription}
-      />
-      <View style={{ marginBottom: 32 }}>
+      <View>
+        {/* //////1 */}
+        {picture ? (
+          <View style={styles.takenPictureContainer}>
+            <Image
+              source={{ uri: picture }}
+              style={{ width: "100%", height: 240, borderRadius: 8 }}
+            />
+          </View>
+        ) : (
+          <Camera
+            onCameraReady={onCameraReady}
+            style={styles.camera}
+            type={type}
+            ref={(ref) => {
+              setCameraRef(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => takePicture()}
+              style={styles.button}
+            >
+              <FontAwesome name="camera" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </Camera>
+        )}
+        <Text style={styles.loadPhotoText}>
+          {picture ? "Add information" : "Upload photo"}
+        </Text>
+
+        <TextInput
+          style={{ ...styles.input, marginBottom: 16 }}
+          placeholder="Image description"
+          placeholderTextColor="#BDBDBD"
+          value={description}
+          onChangeText={setDescription}
+        />
+
+        {/* <View style={{ marginBottom: 32 }}> */}
         <TextInput
           style={{ ...styles.input, paddingLeft: 28 }}
           placeholder="Location"
@@ -188,25 +196,29 @@ export const CreatePostsScreen = ({ navigation }) => {
           color="#BDBDBD"
           style={{ position: "absolute", bottom: 13 }}
         />
+        {/* </View> */}
       </View>
-      <TouchableOpacity
-        style={
-          picture ? { ...styles.btn, backgroundColor: "#FF6C00" } : styles.btn
-        }
-        activeOpacity={0.8}
-        onPress={sendPhoto}
-      >
-        <Text
+      <View>
+        {/* //3 */}
+        <TouchableOpacity
           style={
-            picture ? { ...styles.btnTitle, color: "#fff" } : styles.btnTitle
+            picture ? { ...styles.btn, backgroundColor: "#FF6C00" } : styles.btn
           }
+          activeOpacity={0.8}
+          onPress={sendPhoto}
         >
-          Send
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => deletePhoto()} style={styles.trash}>
-        <Feather name="trash-2" size={24} color="#BDBDBD" />
-      </TouchableOpacity>
+          <Text
+            style={
+              picture ? { ...styles.btnTitle, color: "#fff" } : styles.btnTitle
+            }
+          >
+            Send
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => deletePhoto()} style={styles.trash}>
+          <Feather name="trash-2" size={24} color="#BDBDBD" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -216,6 +228,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 16,
+    justifyContent: "space-between",
   },
   camera: {
     height: 240,
@@ -267,7 +280,7 @@ const styles = StyleSheet.create({
   trash: {
     alignSelf: "center",
     marginBottom: 22,
-    marginTop: "auto",
+    // marginTop: "auto",
     alignItems: "center",
     justifyContent: "center",
     width: 70,

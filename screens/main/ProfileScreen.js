@@ -6,6 +6,7 @@ import {
   query,
   where,
   doc,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
@@ -28,27 +29,40 @@ export const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     getAllPost();
-  }, [posts]);
+  }, []);
   const getAllPost = async () => {
-    const q = query(
-      collection(db, "posts"),
-      where("userId", "==", userId)
-      // orderBy("date", "desc")
-    );
-    const querySnapshot = await getDocs(q);
-
-    // const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    //await!!
-    const photoArr = [];
-    querySnapshot.forEach((doc) => {
-      photoArr.push({
-        ...doc.data(),
-        id: doc.id,
+    const q = query(collection(db, "posts"), where("userId", "==", userId));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const photoArr = [];
+      querySnapshot.forEach((doc) => {
+        photoArr.push({
+          ...doc.data(),
+          id: doc.id,
+        });
       });
+      setPosts(photoArr);
     });
-    setPosts(photoArr);
-    // });
   };
+  // const getAllPost = async () => {
+  //   const q = query(
+  //     collection(db, "posts"),
+  //     where("userId", "==", userId)
+  //     // orderBy("date", "desc")
+  //   );
+  //   const querySnapshot = await getDocs(q);
+
+  //   // const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  //   //await!!
+  //   const photoArr = [];
+  //   querySnapshot.forEach((doc) => {
+  //     photoArr.push({
+  //       ...doc.data(),
+  //       id: doc.id,
+  //     });
+  //   });
+  //   setPosts(photoArr);
+  //   // });
+  // };
 
   const updateLikes = async (likes, itemId) => {
     const likeRef = doc(db, "posts", itemId);
