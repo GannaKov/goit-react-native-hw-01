@@ -1,33 +1,28 @@
 import React, { useEffect, useState } from "react";
 import {
+  updateDoc,
   collection,
   getDocs,
   query,
-  orderBy,
-  onSnapshot,
   where,
+  doc,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
 import {
-  Keyboard,
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
   Alert,
   ImageBackground,
-  TouchableWithoutFeedback,
   FlatList,
   Image,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { Feather } from "@expo/vector-icons";
 //---------------------------------
-export const ProfileScreen = () => {
+export const ProfileScreen = ({ navigation }) => {
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
   const [posts, setPosts] = useState([]);
 
@@ -51,9 +46,15 @@ export const ProfileScreen = () => {
         id: doc.id,
       });
     });
-
     setPosts(photoArr);
     // });
+  };
+
+  const updateLikes = async (likes, itemId) => {
+    const likeRef = doc(db, "posts", itemId);
+    await updateDoc(likeRef, {
+      likes: likes,
+    });
   };
   return (
     <View style={styles.containerMain}>
@@ -72,12 +73,9 @@ export const ProfileScreen = () => {
             style={{
               fontFamily: "Roboto-Regular",
               fontStyle: "normal",
-              //fontWeight: 400,
               fontSize: 30,
               lineHeight: 35,
-
               textAlign: "center",
-
               color: "#212121",
               marginBottom: 33,
             }}
@@ -143,7 +141,11 @@ export const ProfileScreen = () => {
                     </Text>
                   </View>
                   <View style={styles.likes}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        updateLikes(item.likes + 1, item.id);
+                      }}
+                    >
                       <Feather
                         name="thumbs-up"
                         size={24}
@@ -162,7 +164,6 @@ export const ProfileScreen = () => {
                       style={{ marginRight: 4 }}
                     />
                     <Text
-                      // onPress={mapNav(item.location, item.photo)}
                       onPress={() => {
                         if (item.location) {
                           navigation.navigate("Map", {
@@ -198,16 +199,10 @@ const styles = StyleSheet.create({
   containerMain: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
-    //justifyContent: "center",
-    // justifyContent: "flex-end",
   },
   imageBG: {
     flex: 1,
     resizeMode: "cover",
-    //justifyContent: "flex-end",
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   container: {
     paddingHorizontal: 16,
@@ -220,7 +215,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
 
     paddingTop: 92,
-    // paddingBottom: 78,
   },
   userPhoto: {
     position: "absolute",
@@ -229,11 +223,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     top: -60,
     alignSelf: "center",
-    // left: 0,
-    // right: 0,
-    // justifyContent: "center",
-    // alignItems: "center",
-
     marginHorizontal: "auto",
     width: 120,
     height: 120,
@@ -245,7 +234,6 @@ const styles = StyleSheet.create({
   },
   comments: {
     flexDirection: "row",
-    //justifyContent: "center",
     alignItems: "center",
   },
   likes: { flexDirection: "row", alignItems: "center" },
