@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import MapView, { Marker } from "react-native-maps"; //52.55177392916994, 13.438224515059725
+import MapView, { Marker } from "react-native-maps";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
-//-----------------
+//------------------------
+
 export const MapScreen = ({ route }) => {
   const [coo, setCoo] = useState(null);
   useEffect(() => {
@@ -49,8 +50,6 @@ export const MapScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: "center",
-    //justifyContent: "center",
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 16,
   },
