@@ -7,7 +7,6 @@ import {
   orderBy,
   onSnapshot,
   doc,
-  getDoc,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../../firebase/config";
@@ -24,10 +23,10 @@ import { Feather } from "@expo/vector-icons";
 
 export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  const [likes, setLikes] = useState(null);
+  // const [likes, setLikes] = useState(null);
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
-  //var 1!!!
 
+  //var 1!!!
   // const getAllPost = async () => {
   //   const querySnapshot = await getDocs(collection(db, "posts")).then(
   //     (querySnapshot) => {
@@ -42,7 +41,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   const getAllPost = async () => {
     const q = query(collection(db, "posts"), orderBy("date", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      //await!!
       const photoArr = [];
       querySnapshot.forEach((doc) => {
         photoArr.push({
@@ -50,7 +48,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           id: doc.id,
         });
       });
-
       setPosts(photoArr);
     });
   };
@@ -77,14 +74,12 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   }, []);
 
   const updateLikes = async (likes, itemId) => {
-    console.log("updateLike", itemId);
     const likeRef = doc(db, "posts", itemId);
-
-    // Set the "capital" field of the city 'DC'
     await updateDoc(likeRef, {
       likes: likes,
     });
   };
+
   return (
     <View style={styles.container}>
       <View
@@ -136,7 +131,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
             <View
               style={{
                 flexDirection: "row",
-                // justifyContent: "center ",
                 alignItems: "center",
                 marginBottom: 16,
               }}
@@ -147,13 +141,11 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   width: 28,
                   height: 28,
                   borderRadius: 100,
-
                   marginRight: 8,
                 }}
               />
               <Text
                 style={{
-                  // marginBottom: 11,
                   fontFamily: "Roboto-Medium",
                   fontStyle: "normal",
                   fontSize: 13,
@@ -222,7 +214,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                     updateLikes(item.likes + 1, item.id);
                   }}
                 >
-                  {/* () => setLikes(likes + 1) */}
                   <Feather
                     name="thumbs-up"
                     size={24}
@@ -240,7 +231,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
                   style={{ marginRight: 4 }}
                 />
                 <Text
-                  // onPress={mapNav(item.location, item.photo)}
                   onPress={() => {
                     if (item.location) {
                       navigation.navigate("Map", {
@@ -272,8 +262,6 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // alignItems: "center",
-    //justifyContent: "center",
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 16,
   },
@@ -284,7 +272,6 @@ const styles = StyleSheet.create({
   },
   comments: {
     flexDirection: "row",
-    //justifyContent: "center",
     alignItems: "center",
   },
   likes: { flexDirection: "row", alignItems: "center" },
