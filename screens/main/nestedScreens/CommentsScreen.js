@@ -90,7 +90,8 @@ export const CommentsScreen = ({ route }) => {
   //__________________________
   return (
     <View style={styles.container}>
-      <View style={styles.postsContainer}>
+      <View>
+        {/* style={styles.postsContainer} */}
         <TouchableWithoutFeedback onPress={keyboardHide}>
           <View>
             <Image
@@ -203,8 +204,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 32,
   },
-  postsContainer: { marginBottom: 350 },
+  //postsContainer: { marginBottom: 350},
   commentArrea: { flexDirection: "row" },
   commentArreaReverse: { flexDirection: "row-reverse" },
   commentLogin: {
@@ -225,7 +228,6 @@ const styles = StyleSheet.create({
     right: 16,
   },
   lastInput: {
-    marginBottom: 16,
     paddingRight: 60,
     position: "relative",
     fontFamily: "Roboto-Regular",
@@ -243,7 +245,7 @@ const styles = StyleSheet.create({
   },
   sendBtn: {
     position: "absolute",
-    bottom: 24,
+    bottom: 10,
     right: 10,
     width: 34,
     height: 34,

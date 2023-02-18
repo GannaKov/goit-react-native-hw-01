@@ -30,6 +30,7 @@ export const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     getAllPost();
   }, []);
+
   const getAllPost = async () => {
     const q = query(collection(db, "posts"), where("userId", "==", userId));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
