@@ -27,35 +27,36 @@ export const Home = ({ navigation }) => {
     >
       <MainTab.Screen
         options={{
+          headerShown: false,
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
           ),
-          headerTitle: "Posts",
-          headerTitleAlign: "center",
-          headerRight: (focused, size, color) => (
-            <TouchableOpacity style={{ marginRight: 10 }} onPress={signOut}>
-              <Feather
-                name="log-out"
-                size={24}
-                color="rgba(189, 189, 189, 1)"
-              />
-            </TouchableOpacity>
-          ),
-          headerStyle: {
-            backgroundColor: "#FFFFFF",
-            height: 88,
-            shadowColor: "rgba(0, 0, 0, 0.3)",
-            shadowOffset: { width: 0, height: 0.5 },
-            shadowRadius: 1.35914,
-          },
-          headerTitleStyle: {
-            fontSize: 17,
+          //   headerTitle: "Posts",
+          //   headerTitleAlign: "center",
+          //   headerRight: (focused, size, color) => (
+          //     <TouchableOpacity style={{ marginRight: 10 }} onPress={signOut}>
+          //       <Feather
+          //         name="log-out"
+          //         size={24}
+          //         color="rgba(189, 189, 189, 1)"
+          //       />
+          //     </TouchableOpacity>
+          //   ),
+          //   headerStyle: {
+          //     backgroundColor: "#FFFFFF",
+          //     height: 88,
+          //     shadowColor: "rgba(0, 0, 0, 0.3)",
+          //     shadowOffset: { width: 0, height: 0.5 },
+          //     shadowRadius: 1.35914,
+          //   },
+          //   headerTitleStyle: {
+          //     fontSize: 17,
 
-            fontFamily: "Roboto-Medium",
-            fontStyle: "normal",
-            lineHeight: 22,
-          },
-          headerTintColor: "#212121",
+          //     fontFamily: "Roboto-Medium",
+          //     fontStyle: "normal",
+          //     lineHeight: 22,
+          //   },
+          //   headerTintColor: "#212121",
         }}
         name="Posts"
         component={PostsScreen}
