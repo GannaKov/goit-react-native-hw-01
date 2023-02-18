@@ -92,7 +92,7 @@ export const authSignOutUser = () => async (dispatch, getState) => {
 };
 //---------------------------------------
 export const authChangeUserAvatar =
-  ({ name, email, avatar }) =>
+  ({ login, email, avatar }) =>
   async (dispatch, getState) => {
     try {
       await updateProfile(auth.currentUser, {

@@ -52,7 +52,9 @@ export const Home = ({ navigation, route }) => {
           tabBarButton: (props) => <TouchableOpacity {...props} />,
           tabBarIcon: ({ focused, size, color }) => {
             return (
-              <View style={styles.btnAddPost}>
+              <View
+                style={{ ...styles.btnAddPost, backgroundColor: "#FF6C00" }}
+              >
                 <Feather name="plus" size={24} color="#FFFFFF" />
               </View>
             );
@@ -104,13 +106,19 @@ export const Home = ({ navigation, route }) => {
             marginTop: 5,
           },
           headerShown: false,
-          tabBarActiveTintColor: "#FFFFFF",
+          tabBarActiveTintColor: "#FF6C00",
           tabBarInactiveTintColor: "#212121CC",
           tabBarButton: (props) => <TouchableOpacity {...props} />,
           tabBarIcon: ({ focused, size, color }) => {
             if (focused) {
               return (
-                <View style={styles.btnAddPost}>
+                <View
+                  style={{
+                    ...styles.btnAddPost,
+                    borderColor: "#FF6C00",
+                    borderWidth: 1,
+                  }}
+                >
                   <Feather
                     name="user"
                     size={24}
@@ -142,7 +150,7 @@ const styles = StyleSheet.create({
   btnAddPost: {
     height: 40,
     width: 70,
-    backgroundColor: "#FF6C00",
+
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",

@@ -22,13 +22,25 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
-import { authSignOutUser } from "../../redux/auth/authOperations";
-
+import {
+  authSignOutUser,
+  authChangeUserAvatar,
+} from "../../redux/auth/authOperations";
+import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import { useAssets } from "expo-asset";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import uuid from "react-native-uuid";
 //---------------------------------
 export const ProfileScreen = ({ navigation }) => {
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
   const [posts, setPosts] = useState([]);
-
+  const [newAvatar, setNewAvatar] = useState(null);
+  const [statusImPic, requestPermissionImPic] =
+    ImagePicker.useMediaLibraryPermissions();
+  const [assets, error] = useAssets([
+    require("../../assets/images/green_frog.png"),
+  ]);
   useEffect(() => {
     getAllPost();
   }, []);
@@ -77,6 +89,49 @@ export const ProfileScreen = ({ navigation }) => {
   const signOut = () => {
     dispatch(authSignOutUser());
   };
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setNewAvatar(result.assets[0].uri);
+    }
+  };
+  const storage = getStorage();
+  const uploadPhotoToServer = async () => {
+    let AvtUrl = newAvatar;
+    if (!newAvatar) {
+      AvtUrl = assets[0].localUri;
+      // setAvatar(assets[0].localUri);
+    }
+
+    const response = await fetch(AvtUrl);
+    const file = await response.blob();
+
+    const uniqueAvatarId = uuid.v4();
+    const storageRef = ref(storage, `avatar/${uniqueAvatarId}`);
+    const data = await uploadBytes(storageRef, file);
+
+    const urlAvatar = await getDownloadURL(
+      ref(storage, `avatar/${uniqueAvatarId}`)
+    );
+    return urlAvatar;
+  };
+  const handleSubmit = async () => {
+    try {
+      const avatar = await uploadPhotoToServer();
+      dispatch(authChangeUserAvatar({ avatar })); //!!!!!
+      Alert.alert("Your avatar has been added");
+      setNewAvatar(null);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <View style={styles.containerMain}>
       <ImageBackground
@@ -94,6 +149,29 @@ export const ProfileScreen = ({ navigation }) => {
               source={{ uri: avatar }}
               style={{ width: 120, height: 120, borderRadius: 16 }}
             />
+            {newAvatar ? (
+              <TouchableOpacity
+                style={{
+                  ...styles.btnAddPhoto,
+                  borderColor: "#439A97",
+                }}
+                onPress={handleSubmit}
+              >
+                <Ionicons
+                  name="add"
+                  size={24}
+                  color="#439A97"
+                  style={{ transform: [{ rotate: "45deg" }] }}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{ ...styles.btnAddPhoto, borderColor: "#FF6C00" }}
+                onPress={pickImage}
+              >
+                <Ionicons name="add" size={24} color="#FF6C00" />
+              </TouchableOpacity>
+            )}
           </View>
           <Text
             style={{
@@ -241,6 +319,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
 
     paddingTop: 92,
+  },
+  btnAddPhoto: {
+    position: "absolute",
+    backgroundColor: "#FFFFFF",
+    bottom: 14,
+    right: "-10%",
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    borderWidth: 1,
+
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoutBtn: { position: "absolute", right: 16, top: 22 },
   userPhoto: {
