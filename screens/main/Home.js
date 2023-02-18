@@ -22,11 +22,11 @@ export const Home = ({ navigation }) => {
 
   return (
     <MainTab.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-      }}
+      screenOptions={({ route }) => ({ tabBarShowLabel: false })}
     >
       <MainTab.Screen
+        name="Posts"
+        component={PostsScreen}
         options={({ route }) => ({
           tabBarStyle: ((route) => {
             const routeName = getFocusedRouteNameFromRoute(route) ?? "";
@@ -42,18 +42,20 @@ export const Home = ({ navigation }) => {
             <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
           ),
         })}
-        name="Posts"
-        component={PostsScreen}
       />
       <MainTab.Screen
-        options={{
+        name="Create Post"
+        component={CreatePostsScreen}
+        options={({ route }) => ({
           tabBarStyle: { display: "none" },
-          tabBarButton: (props) => (
-            <TouchableOpacity {...props} style={styles.btnAddPost} />
-          ),
-          tabBarIcon: ({ focused, size, color }) => (
-            <Feather name="plus" size={24} color="#FFFFFF" />
-          ),
+          tabBarButton: (props) => <TouchableOpacity {...props} />,
+          tabBarIcon: ({ focused, size, color }) => {
+            return (
+              <View style={styles.btnAddPost}>
+                <Feather name="plus" size={24} color="#FFFFFF" />
+              </View>
+            );
+          },
           headerTitle: "Create Post",
           headerTitleAlign: "center",
           headerStyle: {
@@ -85,19 +87,48 @@ export const Home = ({ navigation }) => {
               />
             </TouchableOpacity>
           ),
-        }}
-        name="Create Post"
-        component={CreatePostsScreen}
+        })}
       />
+
       <MainTab.Screen
         options={{
+          // tabBarButton: (props) => (
+          //   <TouchableOpacity {...props} style={styles.btnAddPost} />
+          // ),
+          // tabBarActiveBackgroundColor: "#FF6C00",
+          tabBarItemStyle: {
+            borderRadius: 20,
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 5,
+          },
           headerShown: false,
-          tabBarActiveTintColor: "#FF6C00",
+          tabBarActiveTintColor: "#FFFFFF",
           tabBarInactiveTintColor: "#212121CC",
           tabBarButton: (props) => <TouchableOpacity {...props} />,
-          tabBarIcon: ({ focused, size, color }) => (
-            <Feather name="user" size={24} color={color} focused={focused} />
-          ),
+          tabBarIcon: ({ focused, size, color }) => {
+            if (focused) {
+              return (
+                <View style={styles.btnAddPost}>
+                  <Feather
+                    name="user"
+                    size={24}
+                    color={color}
+                    focused={focused}
+                  />
+                </View>
+              );
+            } else {
+              return (
+                <Feather
+                  name="user"
+                  size={24}
+                  color={color}
+                  focused={focused}
+                />
+              );
+            }
+          },
         }}
         name="Profile"
         component={ProfileScreen}
