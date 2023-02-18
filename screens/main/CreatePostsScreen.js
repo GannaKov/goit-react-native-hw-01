@@ -23,7 +23,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [coordinates, setCoordinates] = useState(null);
 
   const [description, setDescription] = useState("");
-
+  const [hasPermission, setHasPermission] = useState(null); //try for camera
   const [hasCameraPermission, requestPermission] =
     Camera.useCameraPermissions(); // instead of all async permissions
   const [cameraRef, setCameraRef] = useState(null);
@@ -34,6 +34,21 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const { userId, login, avatar } = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  const onCameraReady = () => {
+    setIsCameraReady(true);
+    // console.log("isCameraReady", isCameraReady);
+  };
   const getLocation = async () => {
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -69,14 +84,6 @@ export const CreatePostsScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    getLocation();
-  }, []);
-
-  const onCameraReady = () => {
-    setIsCameraReady(true);
-  };
-
   const takePicture = async () => {
     if (cameraRef) {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
@@ -85,12 +92,12 @@ export const CreatePostsScreen = ({ navigation }) => {
     }
   };
 
-  if (hasCameraPermission === null) {
-    return <View />;
-  }
-  if (hasCameraPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  // if (hasCameraPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasCameraPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
   //-----------------------
   const storage = getStorage();
   const uploadPhotoToServer = async () => {
