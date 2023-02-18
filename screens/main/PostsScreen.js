@@ -8,6 +8,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { authSignOutUser } from "../../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
+
 //----------------------------------
 const NestedStack = createStackNavigator();
 

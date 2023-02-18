@@ -9,6 +9,7 @@ import { CreatePostsScreen } from "./CreatePostsScreen";
 import { ProfileScreen } from "./ProfileScreen";
 import { Feather } from "@expo/vector-icons";
 import { authSignOutUser } from "../../redux/auth/authOperations";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 //-------------------------------------------------------
 const MainTab = createBottomTabNavigator();
 //--------------------------------------------------
@@ -26,7 +27,16 @@ export const Home = ({ navigation }) => {
       }}
     >
       <MainTab.Screen
-        options={{
+        options={({ route }) => ({
+          tabBarStyle: ((route) => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+
+            if (routeName === "Comments" || routeName === "Map") {
+              return { display: "none" };
+            }
+            return;
+          })(route),
+
           headerShown: false,
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
@@ -57,12 +67,13 @@ export const Home = ({ navigation }) => {
           //     lineHeight: 22,
           //   },
           //   headerTintColor: "#212121",
-        }}
+        })}
         name="Posts"
         component={PostsScreen}
       />
       <MainTab.Screen
         options={{
+          tabBarStyle: { display: "none" },
           tabBarIcon: ({ focused, size, color }) => (
             <View style={styles.btnAddPost}>
               <Feather name="plus" size={24} color="#FFFFFF" />
