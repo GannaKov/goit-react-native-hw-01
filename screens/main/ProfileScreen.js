@@ -20,8 +20,10 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
+import { authSignOutUser } from "../../redux/auth/authOperations";
+
 //---------------------------------
 export const ProfileScreen = ({ navigation }) => {
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
@@ -71,6 +73,10 @@ export const ProfileScreen = ({ navigation }) => {
       likes: likes,
     });
   };
+  const dispatch = useDispatch();
+  const signOut = () => {
+    dispatch(authSignOutUser());
+  };
   return (
     <View style={styles.containerMain}>
       <ImageBackground
@@ -78,6 +84,11 @@ export const ProfileScreen = ({ navigation }) => {
         source={require("../../assets/images/photo-BG.jpg")}
       >
         <View style={styles.container}>
+          {/* //---------------------------- */}
+          <TouchableOpacity style={styles.logoutBtn} onPress={signOut}>
+            <Feather name="log-out" size={24} color="rgba(189, 189, 189, 1)" />
+          </TouchableOpacity>
+          {/* //-------------------------------------- */}
           <View style={styles.userPhoto}>
             <Image
               source={{ uri: avatar }}
@@ -231,6 +242,7 @@ const styles = StyleSheet.create({
 
     paddingTop: 92,
   },
+  logoutBtn: { position: "absolute", right: 16, top: 22 },
   userPhoto: {
     position: "absolute",
     marginBottom: 32,
