@@ -41,32 +41,6 @@ export const Home = ({ navigation }) => {
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
           ),
-          //   headerTitle: "Posts",
-          //   headerTitleAlign: "center",
-          //   headerRight: (focused, size, color) => (
-          //     <TouchableOpacity style={{ marginRight: 10 }} onPress={signOut}>
-          //       <Feather
-          //         name="log-out"
-          //         size={24}
-          //         color="rgba(189, 189, 189, 1)"
-          //       />
-          //     </TouchableOpacity>
-          //   ),
-          //   headerStyle: {
-          //     backgroundColor: "#FFFFFF",
-          //     height: 88,
-          //     shadowColor: "rgba(0, 0, 0, 0.3)",
-          //     shadowOffset: { width: 0, height: 0.5 },
-          //     shadowRadius: 1.35914,
-          //   },
-          //   headerTitleStyle: {
-          //     fontSize: 17,
-
-          //     fontFamily: "Roboto-Medium",
-          //     fontStyle: "normal",
-          //     lineHeight: 22,
-          //   },
-          //   headerTintColor: "#212121",
         })}
         name="Posts"
         component={PostsScreen}
@@ -74,10 +48,11 @@ export const Home = ({ navigation }) => {
       <MainTab.Screen
         options={{
           tabBarStyle: { display: "none" },
+          tabBarButton: (props) => (
+            <TouchableOpacity {...props} style={styles.btnAddPost} />
+          ),
           tabBarIcon: ({ focused, size, color }) => (
-            <View style={styles.btnAddPost}>
-              <Feather name="plus" size={24} color="#FFFFFF" />
-            </View>
+            <Feather name="plus" size={24} color="#FFFFFF" />
           ),
           headerTitle: "Create Post",
           headerTitleAlign: "center",
@@ -117,8 +92,11 @@ export const Home = ({ navigation }) => {
       <MainTab.Screen
         options={{
           headerShown: false,
+          tabBarActiveTintColor: "#FF6C00",
+          tabBarInactiveTintColor: "#212121CC",
+          tabBarButton: (props) => <TouchableOpacity {...props} />,
           tabBarIcon: ({ focused, size, color }) => (
-            <Feather name="user" size={24} color="rgba(33, 33, 33, 0.8)" />
+            <Feather name="user" size={24} color={color} focused={focused} />
           ),
         }}
         name="Profile"
@@ -136,5 +114,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 5,
   },
 });
