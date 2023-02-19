@@ -14,7 +14,6 @@ import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 const MainTab = createBottomTabNavigator();
 //--------------------------------------------------
 export const Home = ({ navigation, route }) => {
-  console.log(route);
   const dispatch = useDispatch();
 
   const signOut = () => {

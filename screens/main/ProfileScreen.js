@@ -57,27 +57,10 @@ export const ProfileScreen = ({ navigation }) => {
       });
       setPosts(photoArr);
     });
+    return () => {
+      unsubscribe();
+    };
   };
-  // const getAllPost = async () => {
-  //   const q = query(
-  //     collection(db, "posts"),
-  //     where("userId", "==", userId)
-  //     // orderBy("date", "desc")
-  //   );
-  //   const querySnapshot = await getDocs(q);
-
-  //   // const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //   //await!!
-  //   const photoArr = [];
-  //   querySnapshot.forEach((doc) => {
-  //     photoArr.push({
-  //       ...doc.data(),
-  //       id: doc.id,
-  //     });
-  //   });
-  //   setPosts(photoArr);
-  //   // });
-  // };
 
   const updateLikes = async (likes, itemId) => {
     const likeRef = doc(db, "posts", itemId);
@@ -89,6 +72,7 @@ export const ProfileScreen = ({ navigation }) => {
   const signOut = () => {
     dispatch(authSignOutUser());
   };
+  //-------------------------------------------------
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -102,6 +86,7 @@ export const ProfileScreen = ({ navigation }) => {
       setNewAvatar(result.assets[0].uri);
     }
   };
+  //-----------------------------------------------
   const storage = getStorage();
   const uploadPhotoToServer = async () => {
     let AvtUrl = newAvatar;
@@ -122,16 +107,18 @@ export const ProfileScreen = ({ navigation }) => {
     );
     return urlAvatar;
   };
+  //-------------------------------------------
   const handleSubmit = async () => {
     try {
-      const avatar = await uploadPhotoToServer();
-      dispatch(authChangeUserAvatar({ avatar })); //!!!!!
+      const avatarPhoto = await uploadPhotoToServer();
+      dispatch(authChangeUserAvatar({ avatarN })); //!!!!!
       Alert.alert("Your avatar has been added");
       setNewAvatar(null);
     } catch (error) {
       console.log(error.message);
     }
   };
+  //----------------------------------------
   return (
     <View style={styles.containerMain}>
       <ImageBackground
@@ -144,12 +131,13 @@ export const ProfileScreen = ({ navigation }) => {
             <Feather name="log-out" size={24} color="rgba(189, 189, 189, 1)" />
           </TouchableOpacity>
           {/* //-------------------------------------- */}
-          <View style={styles.userPhoto}>
-            <Image
-              source={{ uri: avatar }}
-              style={{ width: 120, height: 120, borderRadius: 16 }}
-            />
-            {newAvatar ? (
+
+          {newAvatar ? (
+            <View style={styles.userPhoto}>
+              <Image
+                source={{ uri: newAvatar }}
+                style={{ width: 120, height: 120, borderRadius: 16 }}
+              />
               <TouchableOpacity
                 style={{
                   ...styles.btnAddPhoto,
@@ -164,15 +152,22 @@ export const ProfileScreen = ({ navigation }) => {
                   style={{ transform: [{ rotate: "45deg" }] }}
                 />
               </TouchableOpacity>
-            ) : (
+            </View>
+          ) : (
+            <View style={styles.userPhoto}>
+              <Image
+                source={{ uri: avatar }}
+                style={{ width: 120, height: 120, borderRadius: 16 }}
+              />
               <TouchableOpacity
                 style={{ ...styles.btnAddPhoto, borderColor: "#FF6C00" }}
                 onPress={pickImage}
               >
                 <Ionicons name="add" size={24} color="#FF6C00" />
               </TouchableOpacity>
-            )}
-          </View>
+            </View>
+          )}
+
           <Text
             style={{
               fontFamily: "Roboto-Regular",

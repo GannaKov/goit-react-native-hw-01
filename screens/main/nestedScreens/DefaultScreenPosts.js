@@ -50,6 +50,9 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
       });
       setPosts(photoArr);
     });
+    return () => {
+      unsubscribe();
+    };
   };
 
   //var 2
