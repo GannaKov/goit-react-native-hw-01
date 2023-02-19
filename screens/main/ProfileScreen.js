@@ -30,7 +30,9 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useAssets } from "expo-asset";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import uuid from "react-native-uuid";
+import { AntDesign } from "@expo/vector-icons";
 //---------------------------------
 export const ProfileScreen = ({ navigation }) => {
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
@@ -84,14 +86,17 @@ export const ProfileScreen = ({ navigation }) => {
 
     if (!result.canceled) {
       setNewAvatar(result.assets[0].uri);
+      Alert.alert("To confirm press green button");
     }
   };
   //-----------------------------------------------
-  const storage = getStorage();
+
   const uploadPhotoToServer = async () => {
     let AvtUrl = newAvatar;
+
     if (!newAvatar) {
       AvtUrl = assets[0].localUri;
+
       // setAvatar(assets[0].localUri);
     }
 
@@ -99,19 +104,30 @@ export const ProfileScreen = ({ navigation }) => {
     const file = await response.blob();
 
     const uniqueAvatarId = uuid.v4();
-    const storageRef = ref(storage, `avatar/${uniqueAvatarId}`);
-    const data = await uploadBytes(storageRef, file);
 
+    const storage = getStorage();
+    const storageRef = ref(storage, `avatar/${uniqueAvatarId}`);
+    console.log("uploadPhotoToServer 4,3");
+    const data = await uploadBytes(storageRef, file);
+    // uploadBytes(storageRef, file).then((snapshot) => {
+    //   console.log("Uploaded a blob or file!");
+    // });
+    // getDownloadURL(ref(storage, 'images/stars.jpg'))
+    //   .then((url) => {
+    console.log("uploadPhotoToServer 4,5");
     const urlAvatar = await getDownloadURL(
       ref(storage, `avatar/${uniqueAvatarId}`)
     );
+
     return urlAvatar;
   };
+
   //-------------------------------------------
   const handleSubmit = async () => {
     try {
       const avatarPhoto = await uploadPhotoToServer();
-      dispatch(authChangeUserAvatar({ avatarN })); //!!!!!
+      dispatch(authChangeUserAvatar({ avatarPhoto })); //!!!!!
+
       Alert.alert("Your avatar has been added");
       setNewAvatar(null);
     } catch (error) {
@@ -145,12 +161,7 @@ export const ProfileScreen = ({ navigation }) => {
                 }}
                 onPress={handleSubmit}
               >
-                <Ionicons
-                  name="add"
-                  size={24}
-                  color="#439A97"
-                  style={{ transform: [{ rotate: "45deg" }] }}
-                />
+                <AntDesign name="checkcircleo" size={24} color="#439A97" />
               </TouchableOpacity>
             </View>
           ) : (

@@ -9,7 +9,7 @@ import { auth } from "../../firebase/config";
 import { Alert } from "react-native";
 import { authSlice } from "./authSlice";
 //---------------------------
-const { authSignOut, authUserStateChange, updateUserProfile } =
+const { authSignOut, authUserStateChange, updateUserProfile, updateAvatar } =
   authSlice.actions;
 
 export const authRegistration =
@@ -28,7 +28,7 @@ export const authRegistration =
         photoURL: avatar,
       });
       const { displayName, uid, photoURL } = auth.currentUser;
-      console.log("auth.currentUser", auth.currentUser);
+
       const userUpdateProfile = {
         login: displayName,
         userId: uid,
@@ -91,22 +91,41 @@ export const authSignOutUser = () => async (dispatch, getState) => {
     });
 };
 //---------------------------------------
+// export const authChangeUserAvatar =
+//   ({ login, email, avatar }) =>
+//   async (dispatch, getState) => {
+//     try {
+//       await updateProfile(auth.currentUser, {
+//         displayName: login,
+//         photoURL: avatar,
+//       });
+//       const { uid, displayName, photoURL } = auth.currentUser;
+//       const userUpdateProfile = {
+//         login: displayName,
+//         userId: uid,
+//         email,
+//         avatar: photoURL,
+//       };
+//       dispatch(updateUserProfile(userUpdateProfile));
+//     } catch (error) {
+//       console.log(error.message);
+//       const errorMessage = error.message;
+//       Alert.alert(errorMessage);
+//     }
+//   };
 export const authChangeUserAvatar =
-  ({ login, email, avatar }) =>
+  ({ avatarPhoto }) =>
   async (dispatch, getState) => {
     try {
       await updateProfile(auth.currentUser, {
-        displayName: login,
-        photoURL: avatar,
+        photoURL: avatarPhoto,
       });
-      const { uid, displayName, photoURL } = auth.currentUser;
-      const userUpdateProfile = {
-        login: displayName,
-        userId: uid,
-        email,
+      const { photoURL } = auth.currentUser;
+      const userAvatar = {
         avatar: photoURL,
       };
-      dispatch(updateUserProfile(userUpdateProfile));
+
+      dispatch(updateAvatar(userAvatar));
     } catch (error) {
       console.log(error.message);
       const errorMessage = error.message;
