@@ -22,7 +22,11 @@ export const Home = ({ navigation, route }) => {
 
   return (
     <MainTab.Navigator
-      screenOptions={({ route }) => ({ tabBarShowLabel: false })}
+      screenOptions={({ route }) => ({
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "#FFFFFF",
+        tabBarInactiveTintColor: "rgba(33, 33, 33, 0.8)",
+      })}
     >
       <MainTab.Screen
         name="Posts"
@@ -39,7 +43,15 @@ export const Home = ({ navigation, route }) => {
 
           headerShown: false,
           tabBarIcon: ({ focused, size, color }) => (
-            <Feather name="grid" size={24} color="rgba(33, 33, 33, 0.8)" />
+            <View
+              style={
+                focused
+                  ? { ...styles.btnAddPost, backgroundColor: "#FF6C00" }
+                  : styles.btnAddPost
+              }
+            >
+              <Feather name="grid" size={24} color={color} />
+            </View>
           ),
         })}
       />
@@ -52,9 +64,13 @@ export const Home = ({ navigation, route }) => {
           tabBarIcon: ({ focused, size, color }) => {
             return (
               <View
-                style={{ ...styles.btnAddPost, backgroundColor: "#FF6C00" }}
+                style={
+                  focused
+                    ? { ...styles.btnAddPost, backgroundColor: "#FF6C00" }
+                    : styles.btnAddPost
+                }
               >
-                <Feather name="plus" size={24} color="#FFFFFF" />
+                <Feather name="plus" size={24} color={color} />
               </View>
             );
           },
@@ -93,11 +109,9 @@ export const Home = ({ navigation, route }) => {
       />
 
       <MainTab.Screen
+        name="Profile"
+        component={ProfileScreen}
         options={{
-          // tabBarButton: (props) => (
-          //   <TouchableOpacity {...props} style={styles.btnAddPost} />
-          // ),
-          // tabBarActiveBackgroundColor: "#FF6C00",
           tabBarItemStyle: {
             borderRadius: 20,
             alignItems: "center",
@@ -105,41 +119,27 @@ export const Home = ({ navigation, route }) => {
             marginTop: 5,
           },
           headerShown: false,
-          tabBarActiveTintColor: "#FF6C00",
-          tabBarInactiveTintColor: "#212121CC",
+
           tabBarButton: (props) => <TouchableOpacity {...props} />,
           tabBarIcon: ({ focused, size, color }) => {
-            if (focused) {
-              return (
-                <View
-                  style={{
-                    ...styles.btnAddPost,
-                    borderColor: "#FF6C00",
-                    borderWidth: 1,
-                  }}
-                >
-                  <Feather
-                    name="user"
-                    size={24}
-                    color={color}
-                    focused={focused}
-                  />
-                </View>
-              );
-            } else {
-              return (
+            return (
+              <View
+                style={
+                  focused
+                    ? { ...styles.btnAddPost, backgroundColor: "#FF6C00" }
+                    : styles.btnAddPost
+                }
+              >
                 <Feather
                   name="user"
                   size={24}
                   color={color}
                   focused={focused}
                 />
-              );
-            }
+              </View>
+            );
           },
         }}
-        name="Profile"
-        component={ProfileScreen}
       />
     </MainTab.Navigator>
   );

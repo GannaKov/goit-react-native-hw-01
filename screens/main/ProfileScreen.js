@@ -207,10 +207,19 @@ export const ProfileScreen = ({ navigation }) => {
                 style={{ width: 120, height: 120, borderRadius: 16 }}
               />
               <TouchableOpacity
-                style={{ ...styles.btnAddPhoto, borderColor: "#FF6C00" }}
+                style={{
+                  ...styles.btnAddPhoto,
+
+                  borderColor: "rgba(33, 33, 33, 0.8)",
+                }}
                 onPress={pickImage}
               >
-                <Ionicons name="add" size={24} color="#FF6C00" />
+                <Ionicons
+                  name="add"
+                  size={24}
+                  color="rgba(33, 33, 33, 0.8)"
+                  style={{ transform: [{ rotate: "45deg" }] }}
+                />
               </TouchableOpacity>
             </View>
           )}
