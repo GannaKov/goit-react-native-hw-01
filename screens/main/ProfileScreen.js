@@ -19,6 +19,7 @@ import {
   ImageBackground,
   FlatList,
   Image,
+  Platform,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
@@ -29,7 +30,13 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useAssets } from "expo-asset";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getBlob,
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 
 import uuid from "react-native-uuid";
 import { AntDesign } from "@expo/vector-icons";
@@ -81,7 +88,7 @@ export const ProfileScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0,
     });
 
     if (!result.canceled) {
@@ -90,48 +97,77 @@ export const ProfileScreen = ({ navigation }) => {
     }
   };
   //-----------------------------------------------
+  async function blobFromURL(url) {
+    const blob = await fetch(url).then((r) => r.blob());
+    // console.log("blob", blob.data);
+    return blob;
+  }
+
+  const storage = getStorage();
 
   const uploadPhotoToServer = async () => {
     let AvtUrl = newAvatar;
 
     if (!newAvatar) {
       AvtUrl = assets[0].localUri;
-
       // setAvatar(assets[0].localUri);
     }
+    const blob = await blobFromURL(AvtUrl);
+    //console.log("blob", blob.data);
 
-    const response = await fetch(AvtUrl);
-    const file = await response.blob();
+    const uniquePostId = uuid.v4();
 
-    const uniqueAvatarId = uuid.v4();
+    const storageRef = ref(storage, `avatar/${uniquePostId}`);
 
-    const storage = getStorage();
-    const storageRef = ref(storage, `avatar/${uniqueAvatarId}`);
-    console.log("uploadPhotoToServer 4,3");
-    const data = await uploadBytes(storageRef, file);
-    // uploadBytes(storageRef, file).then((snapshot) => {
-    //   console.log("Uploaded a blob or file!");
-    // });
-    // getDownloadURL(ref(storage, 'images/stars.jpg'))
-    //   .then((url) => {
-    console.log("uploadPhotoToServer 4,5");
+    const data = await uploadBytes(storageRef, blob);
+
     const urlAvatar = await getDownloadURL(
-      ref(storage, `avatar/${uniqueAvatarId}`)
+      ref(storage, `avatar/${uniquePostId}`)
     );
 
     return urlAvatar;
   };
+  //-------------------
+  //-------------------
+  // async function uploadImageAsync(uri) {
+  //   // Why are we using XMLHttpRequest? See:
+  //   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  //   const blob = await new Promise((resolve, reject) => {
+  //     const xhr = new XMLHttpRequest();
+  //     xhr.onload = function () {
+  //       resolve(xhr.response);
+  //     };
+  //     xhr.onerror = function (e) {
+  //       console.log(e);
+  //       reject(new TypeError("Network request failed"));
+  //     };
+  //     xhr.responseType = "blob";
+  //     xhr.open("GET", uri, true);
+  //     xhr.send(null);
+  //   });
+  //   // const uploadUri = Platform.OS === "ios" ? uri.replace("file://", "") : uri;
 
+  //   const fileRef = ref(getStorage(), `avatar / uuid.v4()`);
+
+  //   // console.log("blob", blob);
+  //   const result = await uploadBytes(fileRef, uploadUri);
+
+  //   // We're done with the blob, close and release it
+  //   // blob.close();
+
+  //   return await getDownloadURL(fileRef);
+  // }
   //-------------------------------------------
   const handleSubmit = async () => {
     try {
       const avatarPhoto = await uploadPhotoToServer();
+
       dispatch(authChangeUserAvatar({ avatarPhoto })); //!!!!!
 
       Alert.alert("Your avatar has been added");
       setNewAvatar(null);
     } catch (error) {
-      console.log(error.message);
+      console.log("error in Handle", error.message);
     }
   };
   //----------------------------------------

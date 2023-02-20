@@ -65,7 +65,7 @@ export const RegistrationScreen = ({ navigation }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0,
     });
 
     if (!result.canceled) {
@@ -83,7 +83,7 @@ export const RegistrationScreen = ({ navigation }) => {
 
     const response = await fetch(AvtUrl);
     const file = await response.blob();
-
+    // console.log("blob", file);
     const uniquePostId = uuid.v4();
     const storageRef = ref(storage, `avatar/${uniquePostId}`);
     const data = await uploadBytes(storageRef, file);
