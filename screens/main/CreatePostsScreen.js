@@ -39,22 +39,11 @@ export const CreatePostsScreen = ({ navigation }) => {
     getLocation();
   }, []);
 
-  // useEffect(() => {
+  // useEffect(() => {//Ihor2
   //   (async () => {
   //     const { status } = await Camera.requestCameraPermissionsAsync();
   //     setHasPermission(status === "granted");
   //   })();
-  // }, []);
-  // const requestPermissionAgain = () => {
-  //   if (Platform.OS === "ios") {
-  //     Linking.openURL("app-settings:");
-  //   } else {
-  //     Linking.openSettings();
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (!hasCameraPermission?.granted) requestPermissionAgain();
   // }, []);
 
   const onCameraReady = () => {
@@ -109,6 +98,22 @@ export const CreatePostsScreen = ({ navigation }) => {
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
+  // if (!hasCameraPermission?.granted) requestPermissionAgain(); //Ihor1
+
+  // const requestPermissionAgain = () => {
+  //   //Ihor1
+  //   if (Platform.OS === "ios") {
+  //     Linking.openURL("app-settings:");
+  //   } else {
+  //     Linking.openSettings();
+  //   }
+  // };
+  // if (hasPermission === null) {//Ihor2
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
   //-----------------------
   const storage = getStorage();
   const uploadPhotoToServer = async () => {
@@ -206,7 +211,7 @@ export const CreatePostsScreen = ({ navigation }) => {
           placeholder="Location"
           placeholderTextColor="#BDBDBD"
           value={adress ? adress : "Wait...We are trying to find the location"}
-          onChangeText={setAdress}
+          // onChangeText={setAdress}
         />
         <Feather
           name="map-pin"
