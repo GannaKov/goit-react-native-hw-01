@@ -18,12 +18,14 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
+//-------------------------------------
 export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loader, setLoader] = useState(false);
   // const [likes, setLikes] = useState(null);
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
 
@@ -40,6 +42,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   //   );
   // };
   const getAllPost = async () => {
+    setLoader(true);
     const q = query(collection(db, "posts"), orderBy("date", "desc"));
     const unsubscribe = onSnapshot(
       q,
@@ -52,6 +55,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           });
         });
         setPosts(photoArr);
+        setLoader(false);
       },
       (error) => {
         console.log(error);
@@ -136,6 +140,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           </Text>
         </View>
       </View>
+      <ActivityIndicator animating={loader} size="small" color="#0000ff" />
       <FlatList
         style={{ marginBottom: 130 }}
         data={posts}

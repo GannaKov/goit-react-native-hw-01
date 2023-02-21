@@ -19,7 +19,7 @@ import {
   ImageBackground,
   FlatList,
   Image,
-  Platform,
+  ActivityIndicator,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
@@ -43,6 +43,7 @@ import { AntDesign } from "@expo/vector-icons";
 //---------------------------------
 export const ProfileScreen = ({ navigation }) => {
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
+  const [loader, setLoader] = useState(false);
   const [posts, setPosts] = useState([]);
   const [newAvatar, setNewAvatar] = useState(null);
   const [statusImPic, requestPermissionImPic] =
@@ -55,6 +56,7 @@ export const ProfileScreen = ({ navigation }) => {
   }, []);
 
   const getAllPost = async () => {
+    setLoader(true);
     const q = query(collection(db, "posts"), where("userId", "==", userId));
     const unsubscribe = onSnapshot(
       q,
@@ -67,6 +69,7 @@ export const ProfileScreen = ({ navigation }) => {
           });
         });
         setPosts(photoArr);
+        setLoader(false);
       },
       (error) => {
         console.log(error);
@@ -251,6 +254,7 @@ export const ProfileScreen = ({ navigation }) => {
           >
             {login}
           </Text>
+          <ActivityIndicator animating={loader} size="small" color="#0000ff" />
           <FlatList
             style={{ marginBottom: 130 }}
             data={posts}
