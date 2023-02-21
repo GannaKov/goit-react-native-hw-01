@@ -175,15 +175,10 @@ export const CommentsScreen = ({ route }) => {
       </View>
       <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
         behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
-        keyboardVerticalOffset={200}
-        style={{
-          position: "absolute",
-          left: 16,
-          right: 16,
-          bottom: 16,
-        }}
+        keyboardVerticalOffset={100}
+        style={{ position: "absolute", left: 16, right: 16, bottom: 16 }}
       >
-        <View>
+        <View style={{ marginBottom: 16 }}>
           <TextInput
             style={styles.lastInput}
             placeholder="Leave a comment..."
@@ -220,16 +215,11 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderRadius: 6,
   },
-  inputBox: {
-    position: "absolute",
-    bottom: 16,
-    width: "100%",
-    left: 16,
-    right: 16,
-  },
+
   lastInput: {
     paddingRight: 60,
     position: "relative",
+
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
@@ -242,6 +232,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     backgroundColor: "#F6F6F6",
     borderRadius: 100,
+    // marginBottom: 200,
   },
   sendBtn: {
     position: "absolute",
