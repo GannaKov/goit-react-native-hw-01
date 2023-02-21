@@ -23,6 +23,7 @@ import { Feather } from "@expo/vector-icons";
 
 export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   // const [likes, setLikes] = useState(null);
   const { userId, login, avatar, email } = useSelector((state) => state.auth);
 
@@ -40,16 +41,22 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   // };
   const getAllPost = async () => {
     const q = query(collection(db, "posts"), orderBy("date", "desc"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const photoArr = [];
-      querySnapshot.forEach((doc) => {
-        photoArr.push({
-          ...doc.data(),
-          id: doc.id,
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const photoArr = [];
+        querySnapshot.forEach((doc) => {
+          photoArr.push({
+            ...doc.data(),
+            id: doc.id,
+          });
         });
-      });
-      setPosts(photoArr);
-    });
+        setPosts(photoArr);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     return () => {
       unsubscribe();
     };
@@ -77,10 +84,14 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
   }, []);
 
   const updateLikes = async (likes, itemId) => {
-    const likeRef = doc(db, "posts", itemId);
-    await updateDoc(likeRef, {
-      likes: likes,
-    });
+    try {
+      const likeRef = doc(db, "posts", itemId);
+      await updateDoc(likeRef, {
+        likes: likes,
+      });
+    } catch (error) {
+      console.log("err", error.message);
+    }
   };
 
   return (

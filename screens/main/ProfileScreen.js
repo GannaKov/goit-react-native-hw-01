@@ -56,28 +56,42 @@ export const ProfileScreen = ({ navigation }) => {
 
   const getAllPost = async () => {
     const q = query(collection(db, "posts"), where("userId", "==", userId));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const photoArr = [];
-      querySnapshot.forEach((doc) => {
-        photoArr.push({
-          ...doc.data(),
-          id: doc.id,
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const photoArr = [];
+        querySnapshot.forEach((doc) => {
+          photoArr.push({
+            ...doc.data(),
+            id: doc.id,
+          });
         });
-      });
-      setPosts(photoArr);
-    });
+        setPosts(photoArr);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
     return () => {
       unsubscribe();
     };
   };
 
   const updateLikes = async (likes, itemId) => {
-    const likeRef = doc(db, "posts", itemId);
-    await updateDoc(likeRef, {
-      likes: likes,
-    });
+    try {
+      const likeRef = doc(db, "posts", itemId);
+      await updateDoc(likeRef, {
+        likes: likes,
+      });
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log("err", error.message);
+    }
   };
+  //---------------------
   const dispatch = useDispatch();
+  //----------------------------------
   const signOut = () => {
     dispatch(authSignOutUser());
   };

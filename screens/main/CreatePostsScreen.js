@@ -86,12 +86,19 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
 
   const takePicture = async () => {
-    if (cameraRef) {
-      const options = { quality: 0.5, base64: true, skipProcessing: true };
-      const picture = await cameraRef.takePictureAsync(options);
-      setPicture(picture.uri);
+    try {
+      if (cameraRef) {
+        const options = { quality: 0.5, base64: true, skipProcessing: true };
+        const picture = await cameraRef.takePictureAsync(options);
+        setPicture(picture.uri);
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log("err", error.message);
     }
   };
+
   if (hasCameraPermission === null) {
     return <View />;
   }
@@ -116,6 +123,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   // }
   //-----------------------
   const storage = getStorage();
+
   const uploadPhotoToServer = async () => {
     const response = await fetch(picture);
     const file = await response.blob();
@@ -128,6 +136,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     );
     return urlPhoto;
   };
+
   const uploadPostToServer = async () => {
     try {
       const date = new Date();

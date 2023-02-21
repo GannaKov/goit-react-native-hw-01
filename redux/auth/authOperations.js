@@ -46,18 +46,24 @@ export const authRegistration =
   };
 //-------------------------
 export const authStateCahnge = () => async (dispatch, getState) => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const userUpdateProfile = {
-        login: user.displayName,
-        userId: user.uid,
-        email: user.email,
-        avatar: user.photoURL,
-      };
-      dispatch(authUserStateChange({ stateChange: true }));
-      dispatch(updateUserProfile(userUpdateProfile));
-    }
-  });
+  try {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const userUpdateProfile = {
+          login: user.displayName,
+          userId: user.uid,
+          email: user.email,
+          avatar: user.photoURL,
+        };
+        dispatch(authUserStateChange({ stateChange: true }));
+        dispatch(updateUserProfile(userUpdateProfile));
+      }
+    });
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log("err", error.message);
+  }
 };
 
 //-------------------------------------------

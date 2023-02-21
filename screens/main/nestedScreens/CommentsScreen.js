@@ -72,18 +72,28 @@ export const CommentsScreen = ({ route }) => {
       collection(db, "posts", postId, "comments"),
       orderBy("date", "desc")
     );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const commentsArr = [];
-      querySnapshot.forEach((doc) => {
-        commentsArr.push({
-          ...doc.data(),
-          id: doc.id,
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        const commentsArr = [];
+        querySnapshot.forEach((doc) => {
+          commentsArr.push({
+            ...doc.data(),
+            id: doc.id,
+          });
         });
-      });
 
-      setAllComments(commentsArr);
-    });
+        setAllComments(commentsArr);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
   };
+
   const keyboardHide = () => {
     Keyboard.dismiss();
   };

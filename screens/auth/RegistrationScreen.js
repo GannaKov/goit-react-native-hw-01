@@ -60,17 +60,23 @@ export const RegistrationScreen = ({ navigation }) => {
   const handlePassword = (value) => setPassword(value.trim());
   //-----Avatar______
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0,
+      });
 
-    if (!result.canceled) {
-      setAvatar(result.assets[0].uri);
+      if (!result.canceled) {
+        setAvatar(result.assets[0].uri);
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log("err", error.message);
     }
+    // No permissions request is necessary for launching the image library
   };
   //---------------------------------
   const storage = getStorage();
