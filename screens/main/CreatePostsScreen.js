@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
+  Linking,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -37,30 +38,25 @@ export const CreatePostsScreen = ({ navigation }) => {
   useEffect(() => {
     getLocation();
   }, []);
-  if (hasCameraPermission === null) {
-    return <View />;
-  }
-  if (hasCameraPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-  if (!hasCameraPermission?.granted) requestPermissionAgain();
+
   // useEffect(() => {
   //   (async () => {
   //     const { status } = await Camera.requestCameraPermissionsAsync();
   //     setHasPermission(status === "granted");
   //   })();
   // }, []);
-  const requestPermissionAgain = () => {
-    if (Platform.OS === "ios") {
-      Linking.openURL("app-settings:");
-    } else {
-      Linking.openSettings();
-    }
-  };
+  // const requestPermissionAgain = () => {
+  //   if (Platform.OS === "ios") {
+  //     Linking.openURL("app-settings:");
+  //   } else {
+  //     Linking.openSettings();
+  //   }
+  // };
 
   // useEffect(() => {
   //   if (!hasCameraPermission?.granted) requestPermissionAgain();
   // }, []);
+
   const onCameraReady = () => {
     setIsCameraReady(true);
     // console.log("isCameraReady", isCameraReady);
@@ -107,7 +103,12 @@ export const CreatePostsScreen = ({ navigation }) => {
       setPicture(picture.uri);
     }
   };
-
+  if (hasCameraPermission === null) {
+    return <View />;
+  }
+  if (hasCameraPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
   //-----------------------
   const storage = getStorage();
   const uploadPhotoToServer = async () => {

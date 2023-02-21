@@ -87,6 +87,7 @@ export const CommentsScreen = ({ route }) => {
   const keyboardHide = () => {
     Keyboard.dismiss();
   };
+
   //__________________________
   return (
     <View style={styles.container}>
