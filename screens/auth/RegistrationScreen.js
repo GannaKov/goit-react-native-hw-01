@@ -67,7 +67,6 @@ export const RegistrationScreen = ({ navigation }) => {
         aspect: [4, 3],
         quality: 0,
       });
-
       if (!result.canceled) {
         setAvatar(result.assets[0].uri);
       }

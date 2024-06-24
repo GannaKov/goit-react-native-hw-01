@@ -21,6 +21,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { db } from "../../../firebase/config";
@@ -62,6 +63,10 @@ export const CommentsScreen = ({ route }) => {
     }
   };
   const sendComment = () => {
+    if (!comment) {
+      Alert.alert("Write your comment");
+      return;
+    }
     addComment();
     setComment("");
     keyboardHide();
@@ -117,6 +122,7 @@ export const CommentsScreen = ({ route }) => {
           </View>
         </TouchableWithoutFeedback>
         <FlatList
+          style={{ marginBottom: "auto" }}
           data={allComments}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
@@ -185,7 +191,7 @@ export const CommentsScreen = ({ route }) => {
         />
       </View>
       <KeyboardAvoidingView // определяем ОС и настраиваем поведение клавиатуры
-        behavior={Platform.OS == "ios" ? "padding" : null} // "height" doesn't work properly
+        behavior={Platform.OS == "ios" ? "padding" : ""} // "height" doesn't work properly
         keyboardVerticalOffset={100}
         style={{ position: "absolute", left: 16, right: 16, bottom: 16 }}
       >

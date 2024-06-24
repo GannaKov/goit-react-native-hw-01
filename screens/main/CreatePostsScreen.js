@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { Camera, CameraType } from "expo-camera";
+import {
+  Camera,
+  CameraType,
+  CameraView,
+  useCameraPermissions,
+} from "expo-camera";
 import * as Location from "expo-location";
 import {
   Image,
@@ -25,10 +30,9 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const [description, setDescription] = useState("");
   const [hasPermission, setHasPermission] = useState(null); //try for camera
-  const [hasCameraPermission, requestPermission] =
-    Camera.useCameraPermissions(); // instead of all async permissions
+  const [hasCameraPermission, requestPermission] = useCameraPermissions(); // instead of all async permissions
   const [cameraRef, setCameraRef] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [facing, setFacing] = useState("back");
   const [picture, setPicture] = useState("");
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -105,6 +109,17 @@ export const CreatePostsScreen = ({ navigation }) => {
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
+  if (!hasCameraPermission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
   // if (!hasCameraPermission?.granted) requestPermissionAgain(); //Ihor1
 
   // const requestPermissionAgain = () => {
@@ -174,6 +189,9 @@ export const CreatePostsScreen = ({ navigation }) => {
     getLocation();
   };
 
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
   return (
     <View style={styles.container}>
       <View>
@@ -186,10 +204,10 @@ export const CreatePostsScreen = ({ navigation }) => {
             />
           </View>
         ) : (
-          <Camera
+          <CameraView
             onCameraReady={onCameraReady}
             style={styles.camera}
-            type={type}
+            facing={facing}
             ref={(ref) => {
               setCameraRef(ref); // use cameraRef.current.takePhoto(): Promise<dataPhoto> */
             }}
@@ -200,7 +218,7 @@ export const CreatePostsScreen = ({ navigation }) => {
             >
               <FontAwesome name="camera" size={24} color="#BDBDBD" />
             </TouchableOpacity>
-          </Camera>
+          </CameraView>
         )}
         <Text style={styles.loadPhotoText}>
           {picture ? "Add information" : "Make photo"}
